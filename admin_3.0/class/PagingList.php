@@ -1,0 +1,140 @@
+<?
+
+class PagingList {
+	
+	public $_list  			= array() ;	
+	
+	public $debug_sql 			= false;
+	public $debug_list   			= false;
+	
+	public $num_results 		= -1;
+	
+	public $page			 		= 0 ;
+	public $offset 					= 0 ;	
+	public $pages , $pages_range_start  ,	$pages_range  ;
+	public $show_first  , $show_last 	;
+	public $results ;
+		
+	public $sql_fields 	= '';
+	public $sql_extra_fields = '' ;
+	public $sql_tables 	= '' ;
+	public $sql_inner_joins  = '';
+	public $sql_left_joins  = '';
+	public $sql_order	= ' ORDER BY sort ' ;
+	public $sql_param = '';
+	
+	public $sql_count = '';
+	public $sql_rows = '';
+	
+	public function getPage(){
+			return (int)get("page") ;
+	}
+	
+	public function initOffset($page_size){
+		if ( ($this->page 	= $this->getPage()) > 0){
+			 $this->offset = $page_size * $this->page ;
+		}else{
+			$this->page = 0;
+			$this->offset = 0;
+		}
+	}
+	
+	public function getRowSql(){
+		 $sql_rows=  'SELECT '
+								. $this->sql_fields 
+								. $this->sql_extra_fields 
+								. ' FROM '
+								. $this->sql_tables 
+								. $this->sql_left_joins
+								. $this->sql_inner_joins
+								. ' WHERE `'.$this->name.'`.id = '.$this->id
+								. $this->sql_order  ;	
+		return $sql_rows ;
+	}
+	
+	public function getListRowsSql($page_size){
+		 $sql_rows=  'SELECT '
+								. $this->sql_fields 
+								. $this->sql_extra_fields 
+								. ' FROM '
+								. $this->sql_tables 
+								. $this->sql_left_joins
+								. $this->sql_inner_joins
+								. $this->sql_param 
+								. $this->sql_order  ;	
+
+		$this->initOffset($page_size);
+		
+		$sql_rows .= ' LIMIT ' . $this->offset. ','. $page_size ;			
+		return $sql_rows ;
+	}
+	
+	public function getListCountSql(){
+		return 'SELECT COUNT(*) AS cn '
+								. $this->sql_extra_fields
+								. ' FROM '
+								. $this->sql_tables 
+								. $this->sql_inner_joins
+								. $this->sql_param  ; 
+	}	
+	
+	public function getListRows($page_size){
+		$list = $this->db->fetch( $this->getListRowsSql($page_size) );		
+		if ($this->db->last_error != "" ){
+			Debug("Sql list contains errors : " .$this->db->last_error ) ;
+			return array();
+		}
+		return $list;
+	}
+	
+	public function initListPaging($page_size){	
+		
+		$this->initOffset($page_size);
+		$count_sql =  $this->getListCountSql($page_size)  ;
+		$list_count = $this->db->fetchRow($count_sql);
+		if (count($list_count) == 0 ) {
+			Debug("Sql count contains errors " . $this->db->last_error  /*$this->getListCountSql($page_size)*/) ;
+			return ;
+		}
+				
+		$this->num_results = (int)($list_count["cn"]) ;
+
+		$this->pages =  ceil($this->num_results / $page_size ) ;
+				
+		$start = ($this->offset+1);
+		$end = ($this->offset == 0) ?  $page_size : $page_size * ($this->page +1  )  ;
+				
+				
+		if ($end > $this->num_results) {
+			$end = $this->num_results;
+		}
+		$this->results =  $start  . ' - '. $end ;
+				
+				
+		$this->pages_range_start 		= 0 ;
+		$this->pages_range 				= $this->pages ;
+		$this->show_first 					= false;
+		$this->show_last 					= false;
+				
+			if ($this->pages > 7 ){
+				if ($this->page < 7){
+						$this->pages_range 			= $this->page + 4 > 7 ? $this->page + 4 : 7 ;
+						$this->pages_range_start	= $this->page - 3 > -1 ?  $this->page - 3 : 0  ;
+						$this->show_last 					= true;
+				}elseif($this->pages - $this->page > 4 ){
+						$this->pages_range 			= $this->page + 4 ;
+						$this->pages_range_start	= $this->page - 3 ;
+						$this->show_first 					= true;
+						$this->show_last 					= true;
+						
+				}else{
+						$this->show_first 					= true;
+						$this->pages_range 			= $this->pages ;
+						$this->pages_range_start	= $this->page -3 ;
+				}
+			}
+			
+		
+	}	
+}
+?>

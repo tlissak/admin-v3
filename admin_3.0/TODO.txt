@@ -1,0 +1,93 @@
+v4
+- formValidation : spacifique pattern arguments 
+- fields list cache by date inside cookie with file signature
+- diffrents form view selection
+- add unload event when changes mades in form (fields change event)
+- email notification on logins/errors
+- ban bad login
+- log logins attamps ip date 
+- mass photos upload ( auto save )
+- live file editor
+- file browser
+- new UI
+- save state of relation data inside $table->data object 
+- submit only changed fields and save only changed fields
+- new captcha based image (without font) http://php.net/manual/fr/function.imagecreatetruecolor.php
+- default/state sort for listing 
+- full site restore
+
+v3
++ rte disable french correction
++ rte fullsize issue
++ group-button for rte buttons + select style
++ ace indent issue with css *{font}  issue
++ JS obj
++ ace integrated
++ live sql executor w results sets 
++ change date api
+* improve mysql 
++ full site backup
++ formValidation : min & max range 
++ AdminForm.php AdminForm->_Color support
++ AdminForm.php Friendly error
++ jquery.color live 
++ config.php DEV_MODE issue
++ plugin.3.0 ajaxSubmit validation 
++ init.3.0 Callback => ajaxSubmit w validation  / mainFormCallback.call(this,rs) ; issue  / rte width / rte-zone / range support / progress update fix
++ _inc.php jq.layout removed / html5 / rte new API
++ removed jquery.laout.js
++ layout.css field error / ipts width  issue / rte fullscreen /
++ jquery rte mod replaced w/ jquery.rte 
++ css\ jquery.rte.css / new api + full screen 
++ remove rte.mod & rte.tb
++ changed jquery.color replace issue 
++ jq.filedrop.js file name fix / progress update fix
++ file drop progress
++ Multi rte test
++ Add form validation with required fields and data types protections 
++ fullsite backup with ZipArchive
++ context image issue
++ AdminForm(tbl) class with ->Text(fld) 
++ menu ajax
++ un auth keep back uri 
++ splash while saving animation height 100%;
++ css icons full 
++ test relation type m2one
++ upgrade imageRsize class (cleanup to resolve black issues);
++ delete upload file && link
++ per field auto upload path 
++ highlight file field when drag started
++ change upload api 
++ show loading 
++ show message
++ visual isssue on relation poup tab click position relative
++ mysql support + backup
++ cookie class update + bug fix
++ popup relation design
++ change tab system without ids and context level protection
++ issue : filter /pagechange : input name for radios are missing
++ issue : filter from list show only page size items not all !
++ issue : filter /pagechange : RelationDelete RelationAdd  issue on selected value !
++ open relation window attach event to the form tabs parent outside context issue !
++ issue : filter / page change the state of selected values was erased
++ issue : filter /pagechange : when loading m2m list will load all table !
++ ajax paging 
++ relation items list in tab : sort & filter 
++ ajax order / filter
++ open relation window attach event to the form
++ relation items list in tab : groups 
++ edit inner relation callback will add checkbok instead of radio
++ callback of category will give behvior to inner list
++ AdminController change "dispacher" for better cleanest object loading remove somthing like __construct_full !!!
++ known issues when duplication or adding and just after deleting the object to delete is 0
++ issue - after adding then save dosent focus on last object added !
++ after saving getTableRaw( ) dosent shows the relation value 
++ recursions protections
++ verify leaked on large database 
++ test relation type simple
++ test relation type m2m select
++ preview data from relation table if have 
++ relation add/change callback to retrive correct Row 
++ if url conains id=X set selected (with buttons edit duplicate delete  )
++ preview image issue
+

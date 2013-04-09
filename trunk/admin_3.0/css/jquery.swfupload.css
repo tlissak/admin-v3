@@ -1,0 +1,20 @@
+/* CSS Document */
+
+.swfupload{ display:block; width:400px; position:relative;}
+.swfupload .files{ display:block; margin-top:3px;}
+.swfupload  img{ max-height:700px; max-width:700px; display:block;}
+.swfupload .files span{ display:block; padding:3px; border:#CCC 1px solid; margin:1px;padding-left:30px;}
+.swfupload_loading{ background:#f1f1f1 url(../img/loading.gif) left no-repeat; color:#333333;}
+.swfupload_error{ background:#f1f1f1 url(../img/error.gif) left no-repeat; color:#FF0000}
+.swfupload_success{ background:#f1f1f1 url(../img/success.gif) left no-repeat; color:#009900 }
+
+/* jQueryFileUpload */
+
+.jqueryupload input[type='file'] { 	position :absolute ;top:-70px;left:115px;height:21px;width:340px;zIndex:2; opacity:0; cursor:pointer;}
+.jqueryupload .button-continue {	position :absolute ;top:-70px;left:115px;height:21px;width:300px;zIndex:1;line-height:21px}
+.jqueryupload .files{ margin-top:50px;}
+.jqueryupload .upload_path{ display:none;}
+
+
+
+

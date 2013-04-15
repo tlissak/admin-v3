@@ -11,7 +11,7 @@
 	
 	ui.formLoad(function (){	
 	
-		$('.tabs',this).tabsLite()		
+		$('.tabs',this).tabsLite()
 		$('textarea.rte',this).rte({ content_css_url:'../css/style.css',	width:'80%',	height:350
 		,fullsize:function(){ 
 			$(this).closest('.LAY-center').toggleClass('fullsize') ; 
@@ -69,8 +69,7 @@
 						}
 					}
 					,error:function(err,file, i){
-						alert("Error : "+ err);
-						//c('error',this,err,file,i)  //["BrowserNotSupported", "TooManyFiles", "FileTooLarge", "FileTypeNotAllowed", "NotFound", "NotReadable", "AbortError", "ReadError"]
+						alert(UI.lang.FILE_UPLOAD[err]);//c('error',this,err,file,i)  
 					}
 			});
 	});

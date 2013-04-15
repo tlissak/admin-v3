@@ -3,15 +3,10 @@ if (window.console){	c = console.log ;	}
 // ajax submit by me
 ;(function($){
 	$.fn.ajaxSubmit = function(o){
-		this.append('<input class="ajaxSubmit_formCaller" type="hidden" value="" />');		
-		this.find('input:submit').click(function(){	$(this.form).find('.ajaxSubmit_formCaller').attr('name' ,$(this).attr('name') ).val( $(this).val() )	})
-		
 		return this.submit(function(response){				
 				if (o.validation && o.validation instanceof Function ) {
-					if (! o.validation(this)){
-							return false;
-					}
-				}			
+					if (! o.validation(this)){		return false;	}
+				}
 				var f 		= $(this)
 				var data = f.serialize()
 				var uri 	= f.attr('action') ? f.attr('action') : '' ;

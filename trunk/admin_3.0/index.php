@@ -36,9 +36,11 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 <link rel="stylesheet" type="text/css" href="css/layout.css">
 <script src="js/plugin.3.0.js"></script>
 <script src="js/UI.js"></script>
+<script src="js/UI.lang.js"></script>
 <script src="js/UI.docLoad.js"></script>
 <script src="js/UI.formLoad.js"></script>
 <script src="js/UI.formSubmit.js"></script>
+<script src="js/UI.inputValidation.js"></script>
 <script src="js/UI.formValidate.js"></script>
 <!--<script src="js/UI.sqler.js"></script>
 <script src="js/UI.fileBrowser.js"></script>-->

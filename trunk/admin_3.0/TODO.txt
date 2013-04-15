@@ -1,9 +1,11 @@
 - Live edit sort field 
 - file browser 50%
+- fields list cache by date with db->cache with file signature
+- auth token (for cron back) check ps
 
 v4
+- backup transfer to ftp
 - formValidation : spacifique pattern arguments 
-- fields list cache by date inside cookie with file signature
 - diffrents form view selection
 - add unload event when changes mades in form (fields change event)
 - email notification on logins/errors
@@ -17,6 +19,7 @@ v4
 - full site restore from backup
 
 v3
++ UI.js lang 
 + save state of relation data inside $table->data object 
 + check bind first when no iframe + optimize rte bindFirst
 + new UI  layout absolute / z index fixes 

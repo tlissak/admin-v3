@@ -16,12 +16,12 @@ class AdminLoader extends AdminForm{
 		}
 	}	
 	public $relation 	= array() ;
-	public $image 		= array() ;
-	public $view 		= false ;
+	public $image 		= array() ; 
+	public $view 		= false ; // array()
 	public $filter 		= false ;
 	public $order 		= false ;
-	public $fld_title 	= false;
-	public $show 		= 1;
+	public $fld_title 	= false; // require 
+	public $show 		= 1; //in menu
 
 	public function Image($x ){		$this->image[] = $x 	; 	return $this ; }
 	public function View($x ){		$this->view = $x 	; 			return $this ; }
@@ -47,12 +47,6 @@ interface RelationType{
 	const InnerSimple 			= 4 ;
 }
 
-interface PostAction {
-	  const UNSETD 	= 0	;
-	  const ADD 			= 1	;
-	  const MOD 			= 2	;
-	  const DEL 			= 3	;
-}
 
 
 ?>

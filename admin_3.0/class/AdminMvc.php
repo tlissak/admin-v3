@@ -23,7 +23,29 @@ class AdminMvc extends AdminList{
 			$h .= '<a  class="relation-add btn-orange"  data-id="0" >
 						<i class="icon-plus"></i> Nouvelle '. l($this->keys['name']) .'</a>' ;
 		}
-                                            
+		
+		
+		//print state data
+        if ($this->viewtype == "SELECT-EDIT" || $this->viewtype == "SELECT-ONE-EDIT"){	
+		
+			$h .= '<div class="list-state" data-viewtype="'.$this->viewtype.'" data-cache="'.implode(',',$this->selected).'">';
+			if (count($this->selected ) == 0 && $this->viewtype == "SELECT-ONE-EDIT"){
+				$h .= '<input type="hidden" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name .'" value="0"   checked="checked" />'  ;
+			}
+			
+			foreach($this->selected as $id){
+				if ($this->viewtype == "SELECT-EDIT"){
+					$h .= '<input type="hidden" name="'.$this->name.'[]" value="'.$id .'"    />'  ;
+				}
+				if ($this->viewtype == "SELECT-ONE-EDIT"){
+					$h .= '<input type="hidden" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name .'" value="'.$id .'" />'  ;
+				}
+			}
+			
+			$h .= '</div>' ;
+		} 
+		
+		
 		$h .= '<table class="tbl">';
 		
 		$h .= '<thead><tr>';
@@ -149,8 +171,12 @@ class AdminMvc extends AdminList{
 			//this function called by set relation form get row  set selected ok ! 
 			$this->data['_selected'] = 1 ;
 			return $this->getTableRow($this->data) 	;
-		}
-		_die('Out of range should call  #4-67');
+		}else{
+			fb($this->id);
+			fb($this->data);	
+			fb($id);
+			_die('Out of range called  #4-67');
+		}		
 	}
 	
 	function array_keys_exist($keys,$array) {
@@ -177,14 +203,16 @@ class AdminMvc extends AdminList{
 			$tr = '';
 			$tr .= '<tr data-id="' . $id .'" data-tbl="'.$this->name .'" '  ;
 			$tr .= ' class="row-' . $this->name . '-'. $id  ;
-			$tr .=  ($dt['_selected'] ? ' selected ' : '')  ;
+			if ($this->viewtype == "SIMPLE"){
+				$tr .=  ($dt['_selected'] ? ' selected ' : '')  ;
+			}
 			$tr .=  '" >' ;
 			
 			if ($this->viewtype == "SELECT-EDIT"){
-				$tr .= '<td><input type="checkbox" name="'.$this->name.'[]" id="fld_'.$this->name.'_'.$id .'" value="'.$id .'"  '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
+				$tr .= '<td><input class="relation-cb" type="checkbox" name="__'.$this->name.'[]" id="_fld_'.$this->name.'_'.$id .'" value="'.$id .'"  '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
 			}
 			if ($this->viewtype == "SELECT-ONE-EDIT"){
-				$tr .= '<td><input type="radio" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name.'_'.$id .'" value="'.$id .'"   '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
+				$tr .= '<td><input class="relation-cb" type="radio" name="__'.$this->keys['left_key'].'"  id="_fld_'.$this->name.'_'.$id .'" value="'.$id .'"   '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
 			}
 			
 		

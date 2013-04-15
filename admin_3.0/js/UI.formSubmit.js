@@ -16,7 +16,7 @@
 				context 	= form.data('context') ;
 				
 				if(form.is('#main-form')){
-					$('#btn-dupp,#btn-del').toggle(callback.action != "del");			
+					$('.x-dup,.x-del').toggle(callback.action != "del");			
 				}else{ //is poup form
 					$.boxClose(callback.contexttbl+ '_' + ( callback.action == 'add' ? '0' : callback.id )) ;							
 				}
@@ -24,7 +24,7 @@
 				if (callback.action == 'mod'){
 					$('.row-'+ callback.tbl +"-" +callback.id,context)
 					.replaceWith($(callback.tr))
-				}else if( callback.action == 'add'){	
+				}else if( callback.action == 'add' || callback.action == 'dup'){	
 					$(".list-"+callback.tbl+" tr.selected",context).removeClass('selected')
 					$(".list-"+callback.tbl,context).append($(callback.tr))
 				}else if(callback.action == 'del'){
@@ -32,7 +32,7 @@
 					$('.row-'+ callback.tbl +"-" +callback.id).remove();
 				}
 				
-				if (callback.action == 'mod' || callback.action == 'add'){
+				if (callback.action == 'mod' || callback.action == 'add' || callback.action == 'dup'){
 					$('input[name="id"]',this).val( callback.id )
 					$('input[name="form_submit_action_type"]',this).val( 'mod' )
 				}else if(callback.action == "del"){

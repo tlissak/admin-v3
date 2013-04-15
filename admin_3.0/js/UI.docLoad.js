@@ -9,10 +9,21 @@
 			$(document).dragEvent({	 docEnter: function(){ $("body").addClass('dragover'); }
 					,docLeave:function(){	 $("body").removeClass('dragover');	},docDrop:function(){ $("body").removeClass('dragover');	}})
 					
-			$(document).on('click','#btn-del',function(){	if ( confirm('Etes-vous sur de vouloir supprimer l\'élément ?')	 ){
-						$('input[name="form_submit_action_type"]',$('form#main-form')).val( 'del' ) ;
-			}})	
-			$(document).on('click','#btn-dupp',function(){	$('input[name="form_submit_action_type"]',$('form#main-form')).val( 'add' ) 	})
+			$(document).on('click','.x-del,.x-dup',function(){
+					if ($(this).is('.x-del')){ 	
+						var BF = {confirm : 'Etes-vous sur de vouloir supprimer l\'élément ?' , action:"del"}
+					}else{
+						var BF = {confirm : 'Etes-vous sur de vouloir duppliquer l\'élément ?' , action:"dup"}
+					}
+					if ( confirm(BF.confirm)	 ){
+						$.ajax($('#main-form').attr('action'),{ 
+						data:{form_submit_action_type:BF.action,id:$(this).data('id')}
+						,context:$('#main-form')
+						, type:'POST'
+						, success: ui.formSubmit.callback})						
+					}
+					return false;
+			})
 			
 			$(document).on('click',".callback_message",function(){	$(this).remove();	}) ;	
 		
@@ -55,9 +66,11 @@
 	
 	//X
 	ui.mainFormCallback = function (rs){
-		$("#layout-form-controls").html(ui.parseAjaxForm(rs));	
-		$('form#main-form').data('context',$("#list .context")).attr('action' , '?tbl='+ $(this).data('tbl')+ '&set_form_ajax=1' ).data('context',$("#list .context")) ;
-		$("#btn-new").data('tbl', $(this).data('tbl'))			
+		$("#main-form").html(ui.parseAjaxForm(rs))
+		.data('context',$("#list .context"))
+		.attr('action' , '?tbl='+ $(this).data('tbl')+ '&set_form_ajax=1' )
+		
+		$(".x-new").data('tbl', $(this).data('tbl'))			
 		ui.formReady.call(	$('form#main-form'))		
 	}
 
@@ -68,12 +81,11 @@
 			ui.formReady.call($('form#main-form')) ; 
 	
 	
-			$(document).on("click","#list tbody tr,#btn-new",function(){
+			$(document).on("click","#list tbody tr,.x-new",function(){
 					$("#list tbody tr").removeClass('selected');
 					$(this).addClass('selected');		
 					$.ajax('?get_form_ajax=1&'+$.param($(this).data()),{
 						context:this,
-						//X1
 						success:ui.mainFormCallback
 					}) ;
 					return false;

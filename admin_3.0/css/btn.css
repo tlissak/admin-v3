@@ -3,7 +3,7 @@
 .btn [class^="icon-"],.btn [class*=" icon-"],
 [class^="btn-"] [class^="icon-"],.btn [class*=" icon-"],
 [class*=" btn-"] [class^="icon-"],.btn [class*=" icon-"]
-{ margin-top:-1px; margin-right:3px;border-radius:3px; line-height:18px; }
+{ margin-top:-1px; margin-right:3px;border-radius:3px; line-height:17px; font-size:10px;}
 
 
 .btn,[class^="btn-"],[class*=" btn-"]{display:inline-block;*display:inline;padding:1px 6px;margin-bottom:0;*margin-left:.3em;font-size:10.5px;line-height:20px;*line-height:20px;text-align:center; vertical-align:middle;cursor:pointer;	border-width:1px; border-style:solid;border-radius:3px;

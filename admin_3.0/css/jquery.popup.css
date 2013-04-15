@@ -6,5 +6,5 @@
 .p-popup .LAY-tabs{ position:static;}
 .p-popup .page-tabs{ position:relative; height:10%}
 .p-popup-outer ,.p-popup-outer > form ,.p-popup-cont,.p-popup-cont .AJAX_CONT, .p-popup-cont .tabsLite{ height:100%;}
-.p-popup .i-tab{ padding:0 ; height:90%; overflow:auto; margin-top:30px;}
+.p-popup .i-tab{ padding:0 ; height:90%; overflow:auto; }
 .popup-submit{ position:absolute; top:27px; left:29px; z-index:4}

@@ -14,20 +14,22 @@ p{ margin:3px 0;}
 .LAY{ padding:0; background:#f1f1f1; height:100%}
 .LAY>div{ overflow:auto;}
 
-.LAY-left{  position:fixed; top:1px; bottom:1px; background-color:#FFF; margin-right:5px; z-index:9; right:90%; left:1px; }
-.LAY-list{ position:fixed; top:1px;  left:10%; bottom:1px; width:30%; background:#FFF;  }
-.LAY-main{ position:fixed; top:0; left:40%; bottom:1px; background:#FFF; right:5px;margin-left:5px ; overflow:auto ; z-index:9 } /* form */
-.LAY-center{ position:fixed; top:54px; left:40%; bottom:1px; background:#FFF; right:5px;margin-left:5px ; overflow:auto ; z-index:9}
-.LAY-north{ position:fixed; height:50px; left:40%; top:1px; background:#FFF; right:1px; margin-left:5px; overflow:auto;}
-.LAY-tabs{ clear:both; position:fixed; left:40%; margin-left:5px; z-index:3; right:1px; top:54px; height:35px;}
-.LAY-controls{ position:fixed; left:40%; z-index:1; padding:10px 10px 18px 10px; top:0; right:0; background-color:#F1F1F1;}
-.LAY-message{height:30px; position:fixed; top:7px; left:40%; margin-left:230px; z-index:2}
+.LAY-left{  position:absolute; top:1px; bottom:1px; background-color:#FFF; margin-right:5px; z-index:9; right:90%; left:1px; }
+.LAY-list{ position:absolute; top:1px;  left:10%; bottom:1px; width:30%; background:#FFF; overflow:auto;  }
+.LAY-main{ position:absolute; top:0; left:40%; bottom:1px; background:#FFF; right:5px;margin-left:5px ; overflow:auto ; z-index:9 } /* form */
+
+
+.LAY-north{ position:absolute; height:50px; left:0; top:1px; background:#FFF; right:1px; margin-left:1px; overflow:hidden;}
+.LAY-tabs{  position:absolute; left:0; margin-left:5px; z-index:10; right:1px; top:54px; height:35px;}
+.LAY-controls{ position:absolute; left:0; z-index:9; padding:10px 10px 18px 10px; top:0; right:0; background-color:#F1F1F1;}
+.LAY-center{ position:absolute; top:54px; left:0; bottom:1px; background:#FFF; right:5px;margin-left:5px ; overflow:auto ; z-index:9}
+
+.LAY-message{ position:absolute; height:30px;top:7px; left:40%; margin-left:230px; z-index:2}
 .LAY-message > div{ color:#060; float:left; padding:3px 20px; margin:3px; border:#060 1px solid; border-radius:3px; background:rgba(0,204,0,0.3);}
 
 .sql_workspace .LAY-controls{ left:10%;}
-.sql_workspace .LAY-center{ left:10%; height:200px;}
-.sql_workspace .LAY-list{ top:255px; width:auto; right:1px; bottom:0; background-color:#FFC; overflow:auto; }
-/*#sql_editor { position: absolute;  top:54px; right: 0; bottom: 0;  left:30% ;  margin-left:5px;}*/
+.sql_workspace .LAY-center{ left:10%; height:200px; position:absolute;}
+.sql_workspace .LAY-list{ top:255px; width:auto; right:1px; bottom:0; background-color:#FFC;}
 
 
 #menu a{ display:block; margin:10px; padding:10px 0;}
@@ -47,7 +49,7 @@ p{ margin:3px 0;}
 .tabrow li.active {    background: #f1f1f1;    color: #333;    z-index: 2;    border-top-color: #f1f1f1;    }
 .tabrow li.active a{ font-weight:bold;}
 .tabrow [class^="icon-"], [class*=" icon-"]{ float:left; margin-right:10px;}
-.tabsLite{ position:relative; z-index:1}
+
 
 .i-tab{ display:none; position:absolute; top:35px; left:0; width:100%;  visibility:hidden; }
 .i-tab.active{ display:block; visibility:visible;}
@@ -108,3 +110,10 @@ body.dragover .droparea{ padding:30px; background:#FFC}
 
 .rte-zone-outer{margin:0 0 0 3px;padding:1px;border:1px #DDD solid; border-top-color:#f1f1f1; display:inline-block; width:80%; border-radius:4px;}
 .fullsize{ overflow:visible !important;}
+
+
+.filebrowser_workspace .LAY-list a{ color:#333}
+.filebrowser_workspace .LAY-list .list{ margin:10px;}
+.filebrowser_workspace .LAY-list .list td a{ display:block; text-align:left;}
+#file_preview a{ height:90px; width:90px; float:left; margin:10px; display:block; padding:10px; background-color:#f1f1f1; border:#EEE 1px solid; text-align:center}
+#file_preview a img{ max-height:90px; max-width:90px;}

@@ -15,6 +15,7 @@ class AdminRelation extends AdminMvc {
 	
 	public $initializedRelations = false; // both outer and inner relations
 	
+	public $selected = array() ;
 	
 	public function setSelectedByValue($val = 0 ){
 			foreach($this->_list as &$r){  $r['_selected'] =  ($r['id'] == $val) ? 1  : 0; 	}	unset ($r);
@@ -66,8 +67,9 @@ class AdminRelation extends AdminMvc {
 		
 		foreach($this->relations as &$obj){
 				
-				if ($obj->keys['type'] == RelationType::Simple){			}
-				
+				if ($obj->keys['type'] == RelationType::Simple){	
+					Debug(' state NN ->selected = data["key"]');
+				}				
 							
 				// Simple Inner
 				if ($obj->keys['type'] == RelationType::InnerSimple){					
@@ -76,9 +78,12 @@ class AdminRelation extends AdminMvc {
 						$obj->initializedRelationsObject = false;
 						$obj->initInnerRelations( true );
 						$obj->initList() ;
+						
+						if ($this->id>0)
+							$obj->selected = array($this->data[$obj->keys['left_key']]) ;
 							
 						if ($this->id > 0 && count($this->data)){	
-							$obj->setSelectedByValue($this->data[$obj->keys['left_key']]	);
+							$obj->setSelectedByValue($obj->selected[0]);
 						}else{
 							$obj->setSelected(0);	
 						}
@@ -103,8 +108,12 @@ class AdminRelation extends AdminMvc {
 				if ($obj->keys['type'] == RelationType::ManyToMany){				
 					
 					if ($this->id < 1) {continue ; }
-					$obj->sqlParam  = ' WHERE id IN( SELECT `'.$obj->keys['left_key'] .'` AS by_fld FROM `'. $obj->keys['by_tbl'] . '` WHERE `'.$obj->keys['right_key'].'` = ' . $this->id .' ) ' ;
+					
+					$obj->selected = $this->dataRelation[$obj->keys['tbl']] ;
+
+					$obj->sqlParam  = ' WHERE id IN( '. implode( ',',$obj->selected ) .' ) ' ;
 					$obj->initList() ;
+
 					$obj->setSelected(1);
 				}
 				
@@ -114,20 +123,18 @@ class AdminRelation extends AdminMvc {
 					$obj->initInnerRelations( false );
 					
 						
-					$obj->initList() 	;					
+					$obj->initList() ;
 					$obj->setSelected(0);
 					
 					if ($this->id < 1) {continue ;}
 					
-					$sql			= 'SELECT `'.$obj->keys['left_key'] .'` AS by_fld FROM `'. $obj->keys['by_tbl'] . '` WHERE `'.$obj->keys['right_key'].'` = ' . $this->id ;
-					$join_by 	=	$this->db->fetch($sql) ;
+					$obj->selected = $this->dataRelation[$obj->keys['tbl']] ;
 					
-					
-					if (count($join_by)>0){ // inutile loop protection
+					if (count( $obj->selected )>0){ // inutile loop protection
 						foreach($obj->_list as &$j){
 							$bFound = false ;
-							foreach($join_by as $jb){
-								if($j['id']  == $jb['by_fld']){ $bFound = true ;	break ;	}
+							if (in_array($j['id'],$obj->selected)){
+									$bFound = true ;
 							}
 							$j['_selected'] = $bFound ;
 						}
@@ -138,6 +145,9 @@ class AdminRelation extends AdminMvc {
 				//Selectable list via dedicate table
 				if ($obj->keys['type'] == RelationType::ManyToOne){					
 					if ($this->id < 1) {continue ;}
+					
+					$obj->selected = $this->dataRelation[$obj->keys['tbl']] ;
+					
 					$obj->sqlParam = ' WHERE `'. $obj->keys['left_key'] .'` =  ' . $this->id ;					
 					$obj->initList() 	;
 					$obj->setSelected(1);
@@ -160,15 +170,25 @@ class AdminRelation extends AdminMvc {
 			}
 		}
 	}	
-	
-	function addRelations(){ /*add M2M relation only !!! */
+
+	function addRelations($dupplicate = false){
 		if( ! count($this->relation) ){ 		return ; }
 		if ($this->id < 0){ 						return ; }
 		
 		foreach ($this->relation as $k=>$v ) {
+			
 			if ($v['type'] ==  RelationType::ManyToMany ||
-				$v['type'] == RelationType::ManyToManySelect){					
-					$k_ids = post($v['tbl']) ? post($v['tbl']) : array() ; 
+				$v['type'] == RelationType::ManyToManySelect || 
+				$v['type'] ==  RelationType::ManyToOne ){
+					if ($dupplicate){
+						$k_ids = $this->dataRelation[$v['tbl']] ;
+					}else{
+						$k_ids = post($v['tbl']) ? post($v['tbl']) : array() ;
+					}
+			}
+			
+			if ($v['type'] ==  RelationType::ManyToMany ||
+				$v['type'] == RelationType::ManyToManySelect){					 
 					$insert_sql = '';
 					$bulided = false;
 					foreach( $k_ids as $id){						
@@ -183,17 +203,13 @@ class AdminRelation extends AdminMvc {
 						$this->db->q($insert_sql );
 					}
 			}
-			
-			
 			if ($v['type'] ==  RelationType::ManyToOne){
-					$k_ids = post($v['tbl']) ? post($v['tbl']) : array() ; 
 					if (count($k_ids)>0)
 						$this->db->q( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = ' . $this->id . ' WHERE id IN(' . join($k_ids,",") . ') '  );
 					$this->db->q( 'DELETE  FROM `'. $v['tbl']. '` WHERE `' . $v['left_key']. '` =  0 '  );	
 			}
 		}	
-	}	
-	
+	}		
 }
 
 ?>

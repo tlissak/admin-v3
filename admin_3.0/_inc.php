@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="css/btn.css">
 
 <script src="js/jquery.js"></script>
-<script src="js/input_validator.js"></script>
 <script src="js/html5slider.js"></script>
 <script src="js/jquery.color.js"></script>
 <script src="js/jquery.rte.js"></script>

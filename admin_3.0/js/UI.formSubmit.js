@@ -41,14 +41,16 @@
 					$('input[name="form_submit_action_type"]',this).val( 'add' )				
 				}
 				
-				if (callback.action == "mod")	$msg = "modifié" ;
-				if (callback.action == "del")		$msg = "supprimé" ;
-				if (callback.action == "add")	$msg = "ajouté" ;
-				if (callback.action == "dup")	$msg = "dupliqué" ;	
-	
+				if (callback.action == "mod")	$msg =UI.lang.POST_BACK_MODIFIED  ;
+				if (callback.action == "del")		$msg =UI.lang.POST_BACK_DELETED  ;
+				if (callback.action == "add")	$msg =UI.lang.POST_BACK_ADDED  ;
+				if (callback.action == "dup")	$msg =UI.lang.POST_BACK_DUPLICATED  ;	
+				
+				
+				
 				$('.LAY-message >div ',this).remove() ;
 				$('<div class="callback_message" />')
-				.append('<div class="'+callback.action+'" >'+callback.title + '" a été '+ $msg +' avec succès</div>' ) 
+				.append('<div class="'+callback.action+'" >'+callback.title + ' '+ $msg +'</div>' ) 
 				.appendTo($('.LAY-message',this)).fadeIn('slow') ;
 	
 				$('.relation-tab tbody input:not(:checked)').parents("tr").remove();

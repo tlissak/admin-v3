@@ -7,22 +7,21 @@
 			var limit 		= elm.data('limit');		
 			if(require){
 				if (! $.trim(elm.val())){
-					this.show(elm,'data required') ;
+					this.show(elm, UI.lang.VALIDATION_DATA_REQUIRED) ;
 					return false;
 				}
 			}		
 			if(limit){
 				if ($.trim(elm.val()).length > limit){
-					this.show(elm,'data limit reached') ;
+					this.show(elm, UI.lang.VALIDATION_DATA_LIMIT ) ;
 					return false;
 				}
 			}		
 			if (type && $.trim(elm.val())){			
-				ipts_val = new input_validation();			
+				ipts_val = new UI.inputValidation();			
 				handler =  (ipts_val['_'+type]) ? ipts_val['_'+type] : false;			
 				if (handler){
-					if (! handler.pattern.test(elm.val())){
-						
+					if (! handler.pattern.test(elm.val())){						
 						elm.dblclick(function(){
 							if ($(this).data('fix')){
 								fixer = $(this).data('fix')

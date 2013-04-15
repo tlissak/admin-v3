@@ -19,7 +19,7 @@
 	ui.getFilterPagingList = function (page){
 		
 		if ( $('.list-state',this).data('viewtype')  == 'SELECT-EDIT'  ){
-			if (!confirm('inserted data will be lost do you wish to continue ?')) return ;		
+			if (!confirm(UI.lang.CONFIRM_DATA_LOST)) return ;		
 		}
 		$.ajax('?get_list_ajax=1&'+ $.param($(this).data()) +  '&page='+page,{
 							data:$(":input",this).serializeArray()

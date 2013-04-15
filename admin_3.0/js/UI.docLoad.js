@@ -11,9 +11,9 @@
 					
 			$(document).on('click','.x-del,.x-dup',function(){
 					if ($(this).is('.x-del')){ 	
-						var BF = {confirm : 'Etes-vous sur de vouloir supprimer l\'élément ?' , action:"del"}
+						var BF = {confirm : UI.lang.CONFIRM_ITEM_SUPPRESSION, action:"del"}
 					}else{
-						var BF = {confirm : 'Etes-vous sur de vouloir duppliquer l\'élément ?' , action:"dup"}
+						var BF = {confirm : UI.lang.CONFIRM_ITEM_DUPPLICATION, action:"dup"}
 					}
 					if ( confirm(BF.confirm)	 ){
 						$.ajax($('#main-form').attr('action'),{ 
@@ -34,16 +34,17 @@
 					$.ajax('?get_relation_form=1&'+$.param(context)  ,{
 						context:this  
 						,success: function(rs){
+							
 							$.box($(this).closest('.context').data('contexttbl') +'_' + $(this).data('id') , ui.parseAjaxForm(rs) , this ,	function(inner){	
-								context = $(this).closest(".context").data()
-								context.id = $(this).data('id') ; //override the tbl.id val ;						
+								oContext = $(this).closest(".context").data()
+								oContext.id = $(this).data('id') ; //override the tbl.id val ;						
 								var form = inner.find('form') ;
-								form
-								.data('context',$(this).closest('.context'))
-								.ajaxSubmit(ui.formSubmit)
-								.attr('action', '?set_form_ajax=1&'+ $.param(context));						
+								form.data('context',$(this).closest('.context'))
+									.ajaxSubmit(ui.formSubmit)
+									.attr('action', '?set_form_ajax=1&'+ $.param(oContext));						
 								ui.formReady.call(form)
 							}) ;
+							
 						}
 					})
 			})	
@@ -53,7 +54,7 @@
 					if (res == 'OK'){		
 						$(this).closest(".files").empty();
 					}else{
-						alert('ErrorDeletingFile')	;
+						alert(UI.lang.ERROR_DELTING_FILE )	;
 					}
 				}})	
 			})

@@ -40,15 +40,15 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 <script src="js/UI.formLoad.js"></script>
 <script src="js/UI.formSubmit.js"></script>
 <script src="js/UI.formValidate.js"></script>
-<script src="js/UI.sqler.js"></script>
-<script src="js/UI.pagingFilter.js"></script>
+<!--<script src="js/UI.sqler.js"></script>
+<script src="js/UI.fileBrowser.js"></script>-->
+<script src="js/UI.pagingFilterState.js"></script>
 <script>
 UI.docReady();
 </script>
 </head>
 <body>
 <div class="LAY">
-
 <div class="LAY-left">
 		<div  id="menu"> 
 				   <? foreach(Ctrl::$tableInstances as $t) { if ( $t->show == 1 ) {   ?>                   
@@ -57,24 +57,10 @@ UI.docReady();
                    
                 </div>
                 <hr />
-                <div id="basecontrol" >
-                    
+                <div id="basecontrol" >                    
                     <a href="?backup=1" target="_blank" class="btn-turquise"> <i class="icon-archive" ></i> Sauvgarder</a>
-					<a href="#sqler" class="btn-orange sqler" > <i class="icon-mysql-dolphin"></i>  Sqler</a>
                     <a href="?logout=1" class="btn-black"> <i class="icon-off"></i>  Deconnexion</a>
 					</div>
-</div>
-<div class="sql_workspace context">
-<div class="LAY-list"></div>
-<div class="LAY-message"></div>
-<div class="LAY-controls">
-	<a href="#" class="btn-red" id="sql_exec" >Execute</a>
-    <a href="#" class="btn-green right" id="sql_save" >Save</a>    
-</div>
-<div id="sql_editor" class="LAY-center">SELECT 
-* 
-FROM 
-category</div>
 </div>
 <div class="LAY-list">	 
        <div id="list">
@@ -87,45 +73,43 @@ category</div>
 </div>	
 
 <form method="post" id="main-form" action="?tbl=<? c($contexttbl ? $contexttbl : $tbl);?>&set_form_ajax=1" class="LAY-main">
-    				
+    				<!--AJAX_FORM-->
                     
-                   
-			
-					<div class="LAY-center " id="layout-form-controls"> 
-                             
-                        <? if ($contexttbl) { ?>
-   						<!--AJAX_FORM-->
-                        
-                        <? if (!get('get_relation_form')){?>
+                    
+                    
+                    <? if (!get('get_relation_form') && $contexttbl){?>
                      		<div class="LAY-north">
-                        
-                        <div id="layout-form-top">			
+                        		
 			 				<div class="LAY-message"></div>
 							<div class="LAY-controls">
                             <div class="button-group">
 							  <button type="submit" id="btn-save" name="postback"  class="btn-green"  > <i class="icon-ok"></i> Enregistrer</button>                              
-                              <a id="btn-new" href="#" data-id="0" data-tbl="<? c( $contexttbl ) ;?>"  class="btn-orange" > <i class="icon-plus"></i> Nouveau</a>
+                              <a class="btn-orange x-new" data-id="0" data-tbl="<? c( $contexttbl ) ;?>"   > <i class="icon-plus"></i> Nouveau</a>
 
                                </div>
                                
+                               <? if( $ctrl->contextTable->id  > 0) { ?>
                                <div class="button-group right">
-                            	<button type="submit" id="btn-dupp"  class="btn-blue" > <i class="icon-addshape"></i> Dupliquer</button>                           
-                                <button type="submit" id="btn-del"	class="btn-red"  > <i class="icon-trash"></i> Supprimer</button>                                
+                            	<a  class="btn-blue x-dup" data-id="<? c( $ctrl->contextTable->id ) ; ?>" data-tbl="<? c( $contexttbl ) ;?>" > <i class="icon-addshape"></i> Dupliquer</a>                           
+                                <a  class="btn-red x-del" data-id="<? c( $ctrl->contextTable->id ) ; ?>" data-tbl="<? c( $contexttbl ) ;?>"  > <i class="icon-trash"></i> Supprimer</a>                                
                                 </div>
-                                
+                                <? } ?>
                                
-                                </div>
 						</div>	
                     
                     </div>
                     	<? }?>
-                        <div class="AJAX_CONT">
-                        	
-                            <input type="hidden" name="id" class="form-id" value="<? echo $ctrl->contextTable->id; ?>" />
-                            <input type="hidden" name="form_submit_action_type" class="form-action" value="<? echo $ctrl->action; ?>" />
-                           
-                                 <div class="tabs">
-                                 <div class="LAY-tabs">
+                    
+                    
+                    
+                    
+                    <? if ($contexttbl) { ?>
+                    
+                    <input type="hidden" name="id" class="form-id" value="<? c( $ctrl->contextTable->id ) ; ?>" />
+                    <input type="hidden" name="form_submit_action_type" class="form-action" value="<? c( $ctrl->action ) ; ?>" />
+                    
+			        <div class="tabs">
+           						<div class="LAY-tabs">
                                  	<ul class="tabrow">
                                  	<li><a href=".tab-main-<? c($ctrl->contextTable->name) ; ?>"><? c(l($ctrl->contextTable->name)) ; ?></a></li>
                                <? foreach($ctrl->contextTable->relations as $v){  
@@ -135,6 +119,23 @@ category</div>
 
                                  </ul>
                                  </div>
+            
+					
+                             
+                       
+   						
+                        <div class="LAY-center " id="layout-form-controls"> 
+                 
+                        <div class="AJAX_CONT">
+                        	
+                            
+                           
+                                
+                                 
+                                 
+                                 
+                                 
+                                 
                                  <div class="tab-main-<? c($ctrl->contextTable->name) ; ?> context">
                                  
                                  <div class="tab">
@@ -162,24 +163,28 @@ category</div>
                                         </div>
                              		</div>
                           <? }}} ?>
-                                </div>
+                              
                                 
                                
 <div class="debug"  style="display:none;"><?  Debug::p()	?></div>
 <script>
-	if ($('.debug').html()){
+	
+	if ($('.debug').html() && 1==2){
 		dp = window.open('','debug '+ Math.random(),'width=1200,height=500,fullscreen=0,toolbar=1,resizable=1,scrollbars=1,top=200,left=1500',false) ;
 		dp.document.body.innerHTML = $('.debug').html();
 		$(dp.document.body).dblclick(function() { dp.close();     });
 	}
 </script>
+
+
+  </div>
 				
                      </div>
-                     	<!--/AJAX_FORM-->
-                        <? } ?>
+                  
+                      
                      </div>
-                     
-                     
+                       <? } ?>
+                        	<!--/AJAX_FORM-->
                      <div style="height:50px;"></div>
  </form>  					 
 </div>           

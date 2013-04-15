@@ -11,6 +11,16 @@
 
 if(typeof $.fn.rte === "undefined") {
 	
+	function bindFirst(elm,name, fn) { 
+				elm.bind(name, fn);
+				try{	
+					var handlers = $._data(elm.get(0), "events")[name.split('.')[0]] ;	
+					var handler = handlers.pop();
+					handlers.splice(0, 0, handler);
+				}catch(e){
+					console.log(e,"$.fn.bindFirst FAILD" , elm);	
+				}
+	};
 	function parse_css(st){
 		var keys = st.replace(/\{[\s|\S]*?\}/g,',').replace(/\n|\r/g,' ').replace(/@[\s|\S]*?[\;|,]/g,'').replace(/\/\*.*?\*\/?/g,'').replace(/ /g,'').split(',')
 		var out = '' ;
@@ -31,6 +41,7 @@ if(typeof $.fn.rte === "undefined") {
         content_css_url: "rte.css",
         dot_net_button_class: null,
         max_height: 350,
+		select_font:false,
 		fullsize:function(){}
     };
 
@@ -191,7 +202,12 @@ if(typeof $.fn.rte === "undefined") {
 					<select class='cssstyle'></select>\
 					</span>\
 					</p></div>";
-				/*<span class='select-list'><i></i>\
+		
+					
+			var tb = $(_tb) ;
+			
+			if (opts.select_font) {
+				$('p',tb).append("<span class='select-list'><i></i>\
 					 <select class='fontsize'>\
                         <option value=''>- Police -</option>\
                         <option value='1'>1 (8pt)</option>\
@@ -202,11 +218,8 @@ if(typeof $.fn.rte === "undefined") {
 						<option value='6'>6 (18pt)</option>\
 						<option value='7'>7 (20pt)</options>\
                     </select>\
-					</span>\*/
-					
-			var tb = $(_tb) ;
-			
-			
+					</span>") ;
+			}
 			if(opts.content_css_url) {	
 				$.ajax({
 						context:tb,
@@ -221,6 +234,12 @@ if(typeof $.fn.rte === "undefined") {
 							$('.cssstyle',this).html( '<option value="">- css -</option>' + _select );
 						}});
 			}
+			$('.image', tb).click(function(){   
+				var p=prompt("image URL:");    
+				if(p)
+					formatText('InsertImage', p);				
+				return false; 
+			});
 			
 			$('.cssstyle', tb).change(function(){
                 var index = this.selectedIndex;
@@ -240,20 +259,14 @@ if(typeof $.fn.rte === "undefined") {
 			$(".wordclear",tb).click(function(){
 				$('body', iframeDoc).html(cleanupWord($(iframe).contents().find("body").html()));
 				return false;	
-			})
+			})			
             $('.formatblock', tb).change(function(){
                 var index = this.selectedIndex;
-                if( index!=0 ) {
-                    var selected = this.options[index].value;
-                    formatText("formatblock", '<'+selected+'>');
-                }
+                if( index!=0 ) {  formatText("formatblock", '<'+this.options[index].value+'>');  }
             });			
 			$('.fontsize', tb).change(function(){
                 var index = this.selectedIndex;
-                if( index!=0 ) {
-                    var selected = this.options[index].value;
-                    formatText("fontsize", selected);
-                }
+                if( index!=0 ) { formatText("fontsize", this.options[index].value); }
             });
             $('.bold', tb).click(function(){ formatText('bold');return false; });
             $('.italic', tb).click(function(){ formatText('italic');return false; });
@@ -267,8 +280,7 @@ if(typeof $.fn.rte === "undefined") {
 			$('.justifyCenter',tb).click(function(){ formatText('justifyCenter'); return false; })
 			$('.justifyRight',tb).click(function(){ formatText('justifyRight'); return false; })
 			$('.justifyFull',tb).click(function(){ formatText('justifyFull'); return false; })			
-			$('.clearformatting',tb).click(function(){ formatText('removeFormat');formatText('unlink'); return false; })
-            $('.image', tb).click(function(){   var p=prompt("image URL:");    if(p)     formatText('InsertImage', p);     return false; });
+			$('.clearformatting',tb).click(function(){ formatText('removeFormat');formatText('unlink'); return false; })            
             $('.disable', tb).click(function() {
                 disableDesignMode();
                 var edm = $('<a class="rte-edm btn" href="#"><i class="icon-terminal"></i></a>');
@@ -280,17 +292,6 @@ if(typeof $.fn.rte === "undefined") {
                 });
                 return false;
             });
-
-			function bindFirst(elm,name, fn) { 
-				elm.bind(name, fn);
-				try{	
-					var handlers = $._data(elm.get(0), "events")[name.split('.')[0]] ;	
-					var handler = handlers.pop();
-					handlers.splice(0, 0, handler);
-				}catch(e){
-					console.log(e,"$.fn.bindFirst FAILD" , elm);	
-				}
-			};
 		
 			bindFirst($(iframe).closest('form') , 'submit', function(){  
 				try{

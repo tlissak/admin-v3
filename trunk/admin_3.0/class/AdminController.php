@@ -1,5 +1,14 @@
 <?
 
+interface PostAction {
+	  const UNSETD 	= 0	;
+	  const ADD 			= 1	;
+	  const MOD 			= 2	;
+	  const DEL 			= 3	;
+	  const DUP 			= 4	;
+}
+
+
 class AdminController{	
 	
 	
@@ -19,6 +28,12 @@ class AdminController{
 		global $ctrl ;
 		global $contexttbl  ;
 			
+			if (get('browse') == 1){
+				$out = new FileBrowser( get('path') );
+				header('Content-type: application/json');
+				echo json_encode($out) ;
+				die ;
+			}
 			if (get('set_sql') == 1){
 				$sql = trim(get('sql') );
 				$out = array('sql'=> $sql ) ; 
@@ -81,13 +96,15 @@ class AdminController{
 						$this->contextTable->initList($ctrl->PAGE_SIZE);
 						$this->contextTable->setSelectedByValue($this->contextTable->id) ;
 					}else{
-						$this->table->initDbData() ; 
+						
+						$this->table->initDbData() ;
+						$this->table->initDbRelationData();
 						/*remove inutile relations  */
 						foreach($this->table->relations as $r_name=>$r_obj){
 							if ($r_obj->keys['name'] != $contexttbl ){
 								unset($this->table->relations[$r_name]); 
 							}
-						}
+						}						
 						$this->table->initRelations() ; // so the contextTable->initList() will called
 					}
 					
@@ -102,8 +119,9 @@ class AdminController{
 					if (post('form_submit_action_type') == 'add'){			$this->action = PostAction::ADD ; 			}
 					if (post('form_submit_action_type') == 'mod'){			$this->action = PostAction::MOD ; 			}
 					if (post('form_submit_action_type')	== 'del'){ 			$this->action = PostAction::DEL ;			}
+					if (post('form_submit_action_type')	== 'dup'){ 			$this->action = PostAction::DUP ;			}
 					
-					if ($this->action 			==	PostAction::UNSETD){ 			_die('What ? dupp  ? ');		}
+					if ($this->action 			==	PostAction::UNSETD){ 			_die('What ? ');		}
 					
 					$callback = array();
 					$callback['title']				= post($this->contextTable->fld_title) ; // verify when deleting
@@ -111,10 +129,17 @@ class AdminController{
 					$callback['contexttbl']  	= $contexttbl ;
 					$callback['tbl']  				= $this->contextTable->name ;
 					
-					if ($this->action 			==	PostAction::ADD){
-						$this->contextTable->initPostData() ;	
+					
+					
+					if ($this->action 			==	PostAction::ADD ){
 							$this->contextTable->Add() ;
 							$callback['action'] 	= 'add' ;
+							$callback['id']  			= $this->contextTable->id ; //last inserted id
+							$this->contextTable->initDbData() ; 
+							$callback['tr']  = $this->contextTable->getTableRowById($this->contextTable->id) ;
+					}elseif($this->action 			==	PostAction::DUP){
+							$this->contextTable->Dup() ;
+							$callback['action'] 	= 'dup' ;
 							$callback['id']  			= $this->contextTable->id ; //last inserted id
 							$this->contextTable->initDbData() ; 
 							$callback['tr']  = $this->contextTable->getTableRowById($this->contextTable->id) ;
@@ -140,10 +165,11 @@ class AdminController{
 				}else{ 					
 					$this->contextTable->initData() ;
 					$this->contextTable->initDbData() ;
+					$this->contextTable->initDbRelationData();
 					$this->contextTable->initRelations() ;
 					$this->action	= $this->contextTable->id>0 ? 'mod' : 'add' ;
 					$this->contextTable->initList($ctrl->PAGE_SIZE)  ; // even if it calles by ajax page size limit should not requires a lot of resource 
-					$this->contextTable->setSelectedByValue($this->table->id) ;
+					$this->contextTable->setSelectedByValue($this->table->id) ; 
 				}
 		}
 	}

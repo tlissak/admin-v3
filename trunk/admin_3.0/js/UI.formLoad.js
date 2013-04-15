@@ -2,10 +2,10 @@
 (function(ui){
 	
 	ui.formLoad(function (){
-		if($("#layout-form-controls").find('input[name="id"]').val() == 0){
-			$('#btn-dupp,#btn-del').hide();
+		if($("#main-form").find('input[name="id"]').val() == 0){
+			$('.x-dup,.x-del').hide();
 		}else{
-			$('#btn-dupp,#btn-del').show();
+			$('.x-dup,.x-del').show();
 		}
 	})
 	

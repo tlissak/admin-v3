@@ -1,3 +1,6 @@
+- Live edit sort field 
+- file browser 50%
+
 v4
 - formValidation : spacifique pattern arguments 
 - fields list cache by date inside cookie with file signature
@@ -7,16 +10,16 @@ v4
 - ban bad login
 - log logins attamps ip date 
 - mass photos upload ( auto save )
-- live file editor
-- file browser
-- new UI
-- save state of relation data inside $table->data object 
+- live file editor with ace
 - submit only changed fields and save only changed fields
 - new captcha based image (without font) http://php.net/manual/fr/function.imagecreatetruecolor.php
 - default/state sort for listing 
-- full site restore
+- full site restore from backup
 
 v3
++ save state of relation data inside $table->data object 
++ check bind first when no iframe + optimize rte bindFirst
++ new UI  layout absolute / z index fixes 
 + rte disable french correction
 + rte fullsize issue
 + group-button for rte buttons + select style

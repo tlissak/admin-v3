@@ -5,15 +5,15 @@ class Db{
 	public $last_error =  "" ;
 	private $pdo_type  ;
 	private $pdo_dsn  ;
-	function __construct($f = PDO_DSN){		
-		$this->pdo_type = PDO_TYPE ;
-		$this->pdo_dsn = $f;
-		if (PDO_TYPE == 'sqlite'){
-			$this->db = new PDO( $f);	
+	function __construct($p_dsn = PDO_DSN , $p_type= PDO_TYPE ,$p_user = PDO_USER ,$p_pass = PDO_PASS  ){
+		$this->pdo_type =  $p_type;
+		$this->pdo_dsn = $p_dsn;
+		if ($p_type == 'sqlite'){
+			$this->db = new PDO( $p_dsn);	
 			return ;
 		}
-		if(PDO_TYPE == 'mysql'){
-			$this->db = new PDO( $f,PDO_USER,PDO_PASS);
+		if($p_type == 'mysql'){
+			$this->db = new PDO( $p_dsn,$p_user,$p_pass);
 			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 			$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 			return ;

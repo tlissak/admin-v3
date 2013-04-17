@@ -6,7 +6,7 @@
 			,msg: UI.lang.UNVALID_URL
 		}
 		this._url = {
-			pattern : /(^[-a-z\.]+$)|^$/
+			pattern : /(^[-a-z0-9\.]+$)|^$/
 			,fix:function(v){ return $.trim(v).toLowerCase().replace(/\s/g, '-') ;}
 			,msg: UI.lang.UNVALID_LINK
 		}

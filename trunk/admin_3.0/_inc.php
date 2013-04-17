@@ -9,7 +9,7 @@
 <script src="js/html5slider.js"></script>
 <script src="js/jquery.color.js"></script>
 <script src="js/jquery.rte.js"></script>
-<script src="js/jquery.zebra.datePicker.js"></script>
+<script src="js/jquery.zebra.datepicker.js"></script>
 <script src="js/jquery.filedrop.js"></script>
 <script src="js/jquery.dragEvent.js"></script>
 

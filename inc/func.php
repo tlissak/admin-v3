@@ -8,10 +8,10 @@ function c($_s = '',$o = false){
 	if ($o == 4) echo number_format($_s, 2, ',', ' ')    ;
 	if ($o == 5) echo implode( ', ',$_s)    ;
 	if ($o == 6) for($i=1;$i<=$_s;$i++) echo '*'    ;
-	if ($o == 7) echo strip_tags ($_s )	;
+	if ($o == 7)  echo number_format($_s, 0, ',', ' ')  ;	
 	if ($o == 8)  echo strlen($_s) >100 ? substr($_s,0,100) .'...' :  $_s ;
 	if ($o == 9) {  preg_match('/^.{0,160}(?:.*?)\b/iu', $_s, $matches); echo $matches[0] .'...'; }
-	if ($o == 10)  echo number_format($_s, 0, ',', ' ')  ;
+	if ($o == 10) echo strip_tags ($_s )	;
 	if ($o == 11)  echo number_format($_s, 2, '.', '')  ;
 }
 function l($_s){global $_LNG ; return isset($_LNG[$_s]) ? $_LNG[$_s] : $_s  ;}

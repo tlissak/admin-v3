@@ -209,7 +209,8 @@ class AdminController{
 				$fp = fopen(P_BACKUP . $dst,'a+');
 				fwrite($fp, $backup['msg']);
 				fclose($fp);
-				header('Location: '.U_BACKUP . $dst) ;
+				//the dump file will ziped
+				//header('Location: '.U_BACKUP . $dst) ;
 			} else {
 				echo 'An error has ocurred. '. $backup['msg'];
 			}

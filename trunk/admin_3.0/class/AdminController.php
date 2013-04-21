@@ -226,13 +226,13 @@ class AdminController{
 		$lform .= '<style>* { font-family:Arial, Helvetica, sans-serif; font-size:12px;}';
 		$lform .= '	label,form{ display:block;}';
 		$lform .= '	form{margin:10px auto; width:300px;}';
-		$lform .= '</style></head><body>';
+		$lform .= '</style></head><body  dir="'. Ctrl::$_LANG_PREF['body_dir'] .'">';
 		$lform .= '<form method="post" >';
-		$lform .= '<label>Utilisateur</label>' ;
+		$lform .= '<label>'.l('user name').'</label>' ;
 		$lform .= '<input type="text" name="auth_user" value="'.post('auth_user').'" />';
-		$lform .= '<label>Mot de passe</label>' ;
+		$lform .= '<label>'.l('password').'</label>' ;
 		$lform .= '<input type="password" name="auth_pass" value="'.post('auth_pass').'" />';
-		$lform .= '<p class="submit"><button type="submit" class="btn-blue" name="postback" value="login">Valider';
+		$lform .= '<p class="submit"><button type="submit" class="btn-blue" name="postback" value="login">'.l('login');
 		$lform .= '</button></p>';
 		$lform .= '</form></body></html>';
 		return $lform;

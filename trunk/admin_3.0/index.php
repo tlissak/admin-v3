@@ -37,6 +37,9 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 <script src="js/plugin.3.0.js"></script>
 <script src="js/UI.js"></script>
 <script src="js/UI.lang.js"></script>
+<? $js_l_p = Ctrl::$_LANG_PREF['ui_js_lang'] ; if ($js_l_p){?>
+<script src="js/UI.lang.<? c($js_l_p) ?>.js"></script>
+<? } ?>
 <script src="js/UI.docLoad.js"></script>
 <script src="js/UI.formLoad.js"></script>
 <script src="js/UI.formSubmit.js"></script>
@@ -49,7 +52,7 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 UI.docReady();
 </script>
 </head>
-<body>
+<body dir="<? c(Ctrl::$_LANG_PREF['body_dir'])?>">
 <div class="LAY">
 <div class="LAY-left">
 		<div  id="menu"> 
@@ -60,8 +63,8 @@ UI.docReady();
                 </div>
                 <hr />
                 <div id="basecontrol" >                    
-                    <a href="?backup=1" target="_blank" class="btn-turquise"> <i class="icon-archive" ></i> Sauvgarder</a>
-                    <a href="?logout=1" class="btn-black"> <i class="icon-off"></i>  Deconnexion</a>
+                    <a href="?backup=1" target="_blank" class="btn-turquise"> <i class="icon-archive" ></i> <? c(l('backup')) ; ?></a>
+                    <a href="?logout=1" class="btn-black"> <i class="icon-off"></i>  <? c(l('logout')) ; ?></a>
 					</div>
 </div>
 <div class="LAY-list">	 
@@ -85,15 +88,15 @@ UI.docReady();
 			 				<div class="LAY-message"></div>
 							<div class="LAY-controls">
                             <div class="button-group">
-							  <button type="submit" id="btn-save" name="postback"  class="btn-green"  > <i class="icon-ok"></i> Enregistrer</button>                              
-                              <a class="btn-orange x-new" data-id="0" data-tbl="<? c( $contexttbl ) ;?>"   > <i class="icon-plus"></i> Nouveau</a>
+							  <button type="submit" id="btn-save" name="postback"  class="btn-green"  > <i class="icon-ok"></i> <? c(l('save')) ; ?></button>                              
+                              <a class="btn-orange x-new" data-id="0" data-tbl="<? c( $contexttbl ) ;?>"   > <i class="icon-plus"></i> <? c(l('new')) ; ?></a>
 
                                </div>
                                
                                <? if( $ctrl->contextTable->id  > 0) { ?>
                                <div class="button-group right">
-                            	<a  class="btn-blue x-dup" data-id="<? c( $ctrl->contextTable->id ) ; ?>" data-tbl="<? c( $contexttbl ) ;?>" > <i class="icon-addshape"></i> Dupliquer</a>                           
-                                <a  class="btn-red x-del" data-id="<? c( $ctrl->contextTable->id ) ; ?>" data-tbl="<? c( $contexttbl ) ;?>"  > <i class="icon-trash"></i> Supprimer</a>                                
+                            	<a  class="btn-blue x-dup" data-id="<? c( $ctrl->contextTable->id ) ; ?>" data-tbl="<? c( $contexttbl ) ;?>" > <i class="icon-addshape"></i> <? c(l('duplicate')) ; ?></a>                           
+                                <a  class="btn-red x-del" data-id="<? c( $ctrl->contextTable->id ) ; ?>" data-tbl="<? c( $contexttbl ) ;?>"  > <i class="icon-trash"></i> <? c(l('delete')) ; ?></a>                                
                                 </div>
                                 <? } ?>
                                

@@ -21,7 +21,7 @@ class AdminMvc extends AdminList{
 					data-id="'.$this->id.'" >' ;
 		if (isset($this->keys['name'])){
 			$h .= '<a  class="relation-add btn-orange"  data-id="0" >
-						<i class="icon-plus"></i> Nouvelle '. l($this->keys['name']) .'</a>' ;
+						<i class="icon-plus"></i>'.l('new').' : '. l($this->keys['name']) .'</a>' ;
 		}
 		
 		
@@ -106,8 +106,8 @@ class AdminMvc extends AdminList{
 			
 			$out .= '<select name="order['.$key.']" class="order-sort">
                                 	<option value=""></option>
-                                	<option value="ASC">Par Ordre croissant</option>
-                                    <option value="DESC">Par Ordres décroissant</option>
+                                	<option value="ASC">'.l('sort direction A first').'</option>
+                                    <option value="DESC">'.l('sort direction Z first').'</option>
                                 </select>';
 								
 			$out .= '</th>' ;
@@ -126,7 +126,7 @@ class AdminMvc extends AdminList{
 			return '';
 		
 		$ho = '<div class="paging">' ;		
-		$ho .= 'Resultat :'. $this->results .' sur ' . $this->num_results .' <br />' ;		
+		$ho .= l('results').' :'. $this->results .' '. l('of').' ' . $this->num_results .' <br />' ;		
 		$params = 'tbl='.$this->name  ;         
 		if ($this->show_first){
 			$ho .= '<a class="btn" href="?page=0&'. $params .'" data-page="0" title="First page"> &laquo; </a>';

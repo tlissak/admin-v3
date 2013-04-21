@@ -9,7 +9,7 @@ class AdminForm extends AdminTable{
 		$lb = "\r\n";
 		foreach($this->formFields as $formFld){
 			if ($formFld['type'] == 'file'){
-				$this->formHtml .= '<label for="'.$formFld['name'].'">'.$formFld['title'].' :</label><div class="droparea">'. $lb. $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb . '</div>' .$lb;
+				$this->formHtml .= '<label for="'.$formFld['name'].'">'.$formFld['title'].' :</label> <div class="droparea">'. $lb. $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb . '</div>' .$lb;
 			}elseif($formFld['type'] == 'rte'){ 			
 				$this->formHtml .= '<label for="'.$formFld['name'].'">'.$formFld['title'].' :</label><div class="rte-zone-outer">'. $lb. $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb . '</div>' .$lb ;
 			}else{
@@ -88,7 +88,7 @@ class AdminForm extends AdminTable{
 		}
 		if($type == 'file'){	
 			$h = '<span class="btn btn-mini btn-file"  >';
-			$h .= '<i class="icon-plus"></i>  Sélectionnez ou glissez le fichier ici	';
+			$h .= '<i class="icon-plus"></i>  ' . l('browse or drop file here') ;
 			$h .= '<input  name="'.$fld.'" type="file" data-url="?tbl='.$this->name.'&contexttbl='. get('contexttbl').'&fld='.$fld.'&upload=1" '. $extends.' />'; // add data-path ;
 			$h .= '</span>';			
 			$h .= '<div class="files">';

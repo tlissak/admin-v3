@@ -73,7 +73,9 @@ button.btn,button[class^="btn-"],button[class*=" btn-"]{ padding:0 6px !importan
 .button-group>*{position:relative;border-radius:0;}
 .button-group>*+*{margin-left:-1px;}
 .button-group>*:first-child{margin-left:0;border-bottom-left-radius:4px;border-top-left-radius:4px;}
+body[dir="rtl"] .button-group>*:first-child{border-radius:0 4px 4px 0;}
 .button-group>*:last-child{border-top-right-radius:4px;border-bottom-right-radius:4px;}
+body[dir="rtl"] .button-group>*:last-child{border-radius:4px 0 0 4px;}
 .button-group>*:hover,.button-group>*:focus,.button-group>*:active,.button-group>*.active{z-index:2;}
 
 

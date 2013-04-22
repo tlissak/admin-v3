@@ -33,6 +33,9 @@ class		Cookie{
 			$this->__set('_session_id',  $this->getRandomKey() ) ;
 			$this->newsession = true;
 		}
+		if (!(isset($_COOKIE[$this->_name]))){
+			$this->write();
+		}
 	}
 	private function getDomain(){
 		$r = '!(?:(\w+)://)?(?:(\w+)\:(\w+)@)?([^/:]+)?(?:\:(\d*))?([^#?]+)?(?:\?([^#]+))?(?:#(.+$))?!i';

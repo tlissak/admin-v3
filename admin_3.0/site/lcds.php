@@ -13,6 +13,7 @@ class Ctrl extends  AdminController{
 					'category_category'=>'קטגוריה ראשית','category_slider'=>'מצגת תמונות','product_image'=>'<i class="icon-picture"></i> תמונה',
 					"cubage"=>"נפח מנוע","image_color"=>"תמונה -  צבע","product_image_color"=>"תמונה -  צבע",
 					'category_image'=>'<i class="icon-picture"></i> תמונה','selection'=>'בחירה'
+					 ,'color'=>'צבעים','slider'=>'מצגת תמונות'
 				) ;
 }
 

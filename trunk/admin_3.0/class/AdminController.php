@@ -10,8 +10,18 @@ interface PostAction {
 
 
 class AdminController{	
-	
-	
+	public static $_PREF = array() ;
+	public static $_PREF_DEF = array(	'body_dir'=>'ltr','ui_js_lang' =>''	) ;
+	public static $_LNG = array() ;
+	public static $_LNG_DEF 		= array(
+					'backup'=>'Sauvgarde','logout'=>'Déconnxion','login'=>'Connexion',
+					'save'=>'Enregistrer','new'=>'Nouveau',	'duplicate'=>'Dupliquer','delete'=>'Supprimer',
+					'browse or drop file here'=>'Parcourir ou placer isi une image','user name'=>'Utilisateur','password'=>'Mot de passe',
+					'sort direction A first'=>'Par ordre croisent','sort direction Z first'=>'Par ordre decroisent','results'=>'Resultats','of'=>'sur'
+	);
+	public static function PREF($k){
+		return isset(self::$_PREF[$k]) ? self::$_PREF[$k] : self::$_PREF_DEF[$k] ;
+	}
 	public static $tableInstances = array();		
 
 	public $action 	= PostAction::UNSETD ;	
@@ -226,7 +236,7 @@ class AdminController{
 		$lform .= '<style>* { font-family:Arial, Helvetica, sans-serif; font-size:12px;}';
 		$lform .= '	label,form{ display:block;}';
 		$lform .= '	form{margin:10px auto; width:300px;}';
-		$lform .= '</style></head><body  dir="'. Ctrl::$_LANG_PREF['body_dir'] .'">';
+		$lform .= '</style></head><body  dir="'. self::PREF('body_dir') .'">';
 		$lform .= '<form method="post" >';
 		$lform .= '<label>'.l('user name').'</label>' ;
 		$lform .= '<input type="text" name="auth_user" value="'.post('auth_user').'" />';

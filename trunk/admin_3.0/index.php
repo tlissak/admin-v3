@@ -16,7 +16,8 @@ include('class/AdminLoader.php');
 include('class/AdminController.php');
 
 include(P_SITE) ;
-$_LNG = Ctrl::$_LNG ;
+
+$_LNG = array_merge(Ctrl::$_LNG_DEF,Ctrl::$_LNG) ;
 
 $tbl 				= get('tbl') ;
 $contexttbl 	= get('contexttbl');
@@ -37,8 +38,8 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 <script src="js/plugin.3.0.js"></script>
 <script src="js/UI.js"></script>
 <script src="js/UI.lang.js"></script>
-<? $js_l_p = Ctrl::$_LANG_PREF['ui_js_lang'] ; if ($js_l_p){?>
-<script src="js/UI.lang.<? c($js_l_p) ?>.js"></script>
+<? if (Ctrl::PREF('ui_js_lang')){?>
+<script src="js/UI.lang.<? c(Ctrl::PREF('ui_js_lang')) ?>.js"></script>
 <? } ?>
 <script src="js/UI.docLoad.js"></script>
 <script src="js/UI.formLoad.js"></script>
@@ -52,7 +53,7 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 UI.docReady();
 </script>
 </head>
-<body dir="<? c(Ctrl::$_LANG_PREF['body_dir'])?>">
+<body dir="<? c(Ctrl::PREF('body_dir') )?>">
 <div class="LAY">
 <div class="LAY-left">
 		<div  id="menu"> 

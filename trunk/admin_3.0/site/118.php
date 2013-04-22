@@ -1,13 +1,7 @@
 <? function Loader($x){ 	return new AdminLoader($x);	}
 class Ctrl extends  AdminController{	
 	public static $_USERS 	= array("admin" =>"admin123!" ,"dan" => "people26" ,	"tlissak" => "metallica" , 	"foxdanni" => "metallica" ,"jlc"=>"15lmd56") ;
-	public static $_PREF 	= array( 	'body_dir'=>'rtl','ui_js_lang' => 'he'	) ;
 	public static $_LNG 		= array(					
-					'backup'=>'גבוי','logout'=>'יציאה','login'=>'כניסה',
-					'save'=>'שמירה','new'=>'חדש',	'duplicate'=>'העתק','delete'=>'מחק',
-					'browse or drop file here'=>'חפש או גרור קובץ כאן','user name'=>'משתמש','password'=>'ססמא',
-					'sort direction A first'=>'סדר מלמעלה למטה','sort direction Z first'=>'סדר מלמעלה למטה','results'=>'תוצאות','of'=>'מתוך',
-					
 					'image'	=> '<i class="icon-picture"></i> מדיה',	'marque'=> 'חברה','product'=> 'מוצר','store'=>'לנות','category'=>'קטגוריה',
 					'category_category'=>'קטגוריה ראשית','category_slider'=>'מצגת תמונות','product_image'=>'<i class="icon-picture"></i> תמונה',
 					"cubage"=>"נפח מנוע","image_color"=>"תמונה -  צבע","product_image_color"=>"תמונה -  צבע",

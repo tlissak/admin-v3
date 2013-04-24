@@ -1,7 +1,7 @@
 <?
 class AdminLoader extends AdminForm{
 	
-	function verifyImageInput(){	foreach($this->image as $img){		if (!isset($img['field']) || !isset($img['path'])){	_die('Image input incorrect Table : '. $this->name);}	}}
+	function verifyImageInput(){	foreach($this->image as $img){		if (is_array($img)){	_die('Image as array is depracted Table : '. $this->name);}	}}
 	function verifyRelationInput(){
 		foreach($this->relation as $r){
 			if (!isset($r['name']) || !isset($r['type'] ))	{		_die('Relation input incorrect name or type not seted Table : '. $this->name);	}

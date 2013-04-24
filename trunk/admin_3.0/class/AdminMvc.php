@@ -128,7 +128,7 @@ class AdminMvc extends AdminList{
 		$ho = '<div class="paging">' ;		
 		$ho .= l('results').' :'. $this->results .' '. l('of').' ' . $this->num_results .' <br />' ;		
 		$params = 'tbl='.$this->name  ;         
-		if ($this->show_first){
+		if ($this->pages_show_first){
 			$ho .= '<a class="btn" href="?page=0&'. $params .'" data-page="0" title="First page"> &laquo; </a>';
 			$ho .= '<span class="btn-disable">..</span>';
 		}		
@@ -139,7 +139,7 @@ class AdminMvc extends AdminList{
           	      $ho .= '<a class="btn" href="?page='.$i .'&'.  $params .'" data-page="'.$i.'" title="Page '.  $i .'">'. ($i+1).'</a>';
                } 
         } 
-		if ($this->show_last){
+		if ($this->pages_show_last){
 			$ho .= '<span class="btn-disable">..</span>';
 			$ho .= '<a class="btn" href="?page='. ($this->pages) .'&' . $params. '" data-page="'.$this->pages.'" title="Last page"> &raquo; </a>' ;
 		} 		
@@ -265,8 +265,8 @@ class AdminMvc extends AdminList{
 			if (count($this->image )){
 				foreach($this->image as $img){
 						foreach($this->fields as $field){
-								if ($field == $img['field'])	{
-										$this->_r_imgp[] = $img['field'];	
+								if ($field == $img)	{
+										$this->_r_imgp[] = $img;	
 								}
 						}
 				}

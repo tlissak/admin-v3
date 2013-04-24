@@ -20,6 +20,9 @@ class Db{
 		}
 		_die('PDO TYPE not defined');
 	}
+	function __destruct(){
+		$this->db = null ;	
+	}
 	function fetch($q){	
 		$this->last_error = "" ;
 		DebugSql($q);

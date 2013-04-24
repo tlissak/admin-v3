@@ -63,7 +63,7 @@ UI.docReady();
                    
                 </div>
                 <hr />
-                <div id="basecontrol" >                    
+                <div id="basecontrol" > 
                     <a href="?backup=1" target="_blank" class="btn-turquise"> <i class="icon-archive" ></i> <? c(l('backup')) ; ?></a>
                     <a href="?logout=1" class="btn-black"> <i class="icon-off"></i>  <? c(l('logout')) ; ?></a>
 					</div>

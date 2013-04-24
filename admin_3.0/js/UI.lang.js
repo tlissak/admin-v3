@@ -6,9 +6,9 @@
 			,POST_BACK_DELETED 		:' a été supprimé avec succès'
 			,POST_BACK_ADDED 			:' a été ajouté avec succès'
 			,POST_BACK_DUPLICATED 	:' a été dupliqué avec succès'			
-			,VALIDATION_DATA_REQUIRED:'data required' 
-			,VALIDATION_DATA_LIMIT : 'data limit reached'			
-			,CONFIRM_DATA_LOST:'===========\n -- ATTENTION -- \n inserted data will be lost !\n do you wish to continue ?'
+			,VALIDATION_DATA_REQUIRED:'Champ obligatoire' 
+			,VALIDATION_DATA_LIMIT : 'Max charachters'			
+			,CONFIRM_DATA_LOST:'===========\n -- ATTENTION -- \n donnes inseré vont etre perdu !\n vouliez vous continuer ?'
 			,UNVALID_URL:'Adresse web non valide'
 			,UNVALID_LINK:'Lien non valide'
 			,UNVALID_INTEGER:'Chifre non valide'
@@ -21,7 +21,7 @@
 			,UNVALID_DATE_FORMAT : 'Date none valide (ex: jj/mm/aaaa ou jj-mm-aaaa)'
 			,UNVALID_COLOR_FORMAT : 'Couleur non valide (ex: #AAA ou #A1C1F9)'
 			
-			,ERROR_DELTING_FILE:'ErrorDeletingFile'
+			,ERROR_DELTING_FILE:'Erreur lors de la suppression de fichier'
 			
 			,FILE_UPLOAD:{
 					"BrowserNotSupported" : 'Navigateur non compatible'

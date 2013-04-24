@@ -10,8 +10,9 @@ class AdminForm extends AdminTable{
 		foreach($this->formFields as $formFld){
 			if ($formFld['type'] == 'file'){
 				$this->formHtml .= '<label for="'.$formFld['name'].'">'.$formFld['title'].' :</label> <div class="droparea">'. $lb. $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb . '</div>' .$lb;
+				$this->formHtml .= '<div class="clear"></div>' ;
 			}elseif($formFld['type'] == 'rte'){ 			
-				$this->formHtml .= '<label for="'.$formFld['name'].'">'.$formFld['title'].' :</label><div class="rte-zone-outer">'. $lb. $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb . '</div>' .$lb ;
+				$this->formHtml .= '<label for="'.$formFld['name'].'">'.$formFld['title'].' :</label><div class="rte-zone-outer">'. $lb. $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb . '</div>' .$lb ;				
 			}else{
 				$this->formHtml .= '<p class="text"><label for="fld_'.$formFld['name'].'">'.$formFld['title'].' :</label>' . $lb . $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb. '</p>' .$lb ;
 			}

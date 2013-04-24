@@ -12,17 +12,19 @@ class PagingList {
 	public $page			 		= 0 ;
 	public $offset 					= 0 ;	
 	public $pages , $pages_range_start  ,	$pages_range  ;
-	public $show_first  , $show_last 	;
+	public $pages_show_first  , $pages_show_last 	, $pages_show_next , $pages_show_prev = false;
+	
 	public $results ;
-		
+	public $results_start = 0 ;
+	public $results_end = 0 ;
 	public $sql_fields 	= '';
 	public $sql_extra_fields = '' ;
 	public $sql_tables 	= '' ;
 	public $sql_inner_joins  = '';
 	public $sql_left_joins  = '';
-	public $sql_order	= ' ORDER BY sort ' ;
+	public $sql_order	= '' ;
 	public $sql_param = '';
-	
+	public $sql_limit = '';
 	public $sql_count = '';
 	public $sql_rows = '';
 	
@@ -52,7 +54,8 @@ class PagingList {
 		return $sql_rows ;
 	}
 	
-	public function getListRowsSql($page_size){
+	public function getListRowsSql($page_size){		
+		$this->initOffset($page_size);		
 		 $sql_rows=  'SELECT '
 								. $this->sql_fields 
 								. $this->sql_extra_fields 
@@ -61,11 +64,8 @@ class PagingList {
 								. $this->sql_left_joins
 								. $this->sql_inner_joins
 								. $this->sql_param 
-								. $this->sql_order  ;	
-
-		$this->initOffset($page_size);
-		
-		$sql_rows .= ' LIMIT ' . $this->offset. ','. $page_size ;			
+								. $this->sql_order 
+								. ($this->sql_limit ? $this->sql_limit : ' LIMIT ' . $this->offset. ','. $page_size) ;		
 		return $sql_rows ;
 	}
 	
@@ -109,32 +109,30 @@ class PagingList {
 			$end = $this->num_results;
 		}
 		$this->results =  $start  . ' - '. $end ;
-				
+		$this->results_start = $start ;
+		$this->results_end = $end ;
 				
 		$this->pages_range_start 		= 0 ;
 		$this->pages_range 				= $this->pages ;
-		$this->show_first 					= false;
-		$this->show_last 					= false;
 				
-			if ($this->pages > 7 ){
-				if ($this->page < 7){
-						$this->pages_range 			= $this->page + 4 > 7 ? $this->page + 4 : 7 ;
-						$this->pages_range_start	= $this->page - 3 > -1 ?  $this->page - 3 : 0  ;
-						$this->show_last 					= true;
-				}elseif($this->pages - $this->page > 4 ){
-						$this->pages_range 			= $this->page + 4 ;
-						$this->pages_range_start	= $this->page - 3 ;
-						$this->show_first 					= true;
-						$this->show_last 					= true;
-						
-				}else{
-						$this->show_first 					= true;
-						$this->pages_range 			= $this->pages ;
-						$this->pages_range_start	= $this->page -3 ;
-				}
+		if ($this->pages > 7 ){
+			if ($this->page < 7){
+					$this->pages_range 			= $this->page + 4 > 7 ? $this->page + 4 : 7 ;
+					$this->pages_range_start	= $this->page - 3 > -1 ?  $this->page - 3 : 0  ;
+					$this->pages_show_last 					= true;
+			}elseif($this->pages - $this->page > 4 ){
+					$this->pages_range 			= $this->page + 4 ;
+					$this->pages_range_start	= $this->page - 3 ;
+					$this->pages_show_first 					= true;
+					$this->pages_show_last 					= true;
+			}else{
+					$this->pages_show_first 					= true;
+					$this->pages_range 			= $this->pages ;
+					$this->pages_range_start	= $this->page -3 ;
 			}
-			
-		
+		}
+		$this->pages_show_next =  ! ($this->page+1 >= $this->pages) ;
+		$this->pages_show_prev =  ! ($this->page-1 < 0) ;		
 	}	
 }
 ?>

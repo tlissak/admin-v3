@@ -28,6 +28,7 @@ class PagingList {
 	public $sql_count = '';
 	public $sql_rows = '';
 	
+	
 	public function getPage(){
 			return (int)get("page") ;
 	}
@@ -42,7 +43,7 @@ class PagingList {
 	}
 	
 	public function getRowSql(){
-		 $sql_rows=  'SELECT '
+		 $this->sql_rows=  'SELECT '
 								. $this->sql_fields 
 								. $this->sql_extra_fields 
 								. ' FROM '
@@ -51,12 +52,12 @@ class PagingList {
 								. $this->sql_inner_joins
 								. ' WHERE `'.$this->name.'`.id = '.$this->id
 								. $this->sql_order  ;	
-		return $sql_rows ;
+		return $this->sql_rows ;
 	}
 	
 	public function getListRowsSql($page_size){		
 		$this->initOffset($page_size);		
-		 $sql_rows=  'SELECT '
+		 $this->sql_rows=  'SELECT '
 								. $this->sql_fields 
 								. $this->sql_extra_fields 
 								. ' FROM '
@@ -65,17 +66,18 @@ class PagingList {
 								. $this->sql_inner_joins
 								. $this->sql_param 
 								. $this->sql_order 
-								. ($this->sql_limit ? $this->sql_limit : ' LIMIT ' . $this->offset. ','. $page_size) ;		
-		return $sql_rows ;
+								. ($this->sql_limit ? $this->sql_limit : ' LIMIT ' . $this->offset. ','. $page_size) ;
+		return $this->sql_rows ;
 	}
 	
 	public function getListCountSql(){
-		return 'SELECT COUNT(*) AS cn '
+		$this->sql_count = 'SELECT COUNT(*) AS cn '
 								. $this->sql_extra_fields
 								. ' FROM '
 								. $this->sql_tables 
 								. $this->sql_inner_joins
 								. $this->sql_param  ; 
+		return $this->sql_count ;
 	}	
 	
 	public function getListRows($page_size){

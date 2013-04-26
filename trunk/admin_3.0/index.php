@@ -158,7 +158,7 @@ UI.docReady();
 								if($v->keys['type'] !=  RelationType::Simple){ ?>
                                         <div class="tab-<? c($v->keys['name']) ;?>">                                        
                                         
-                                        	<div class="tab <? echo ($v->keys['type'] == RelationType::ManyToMany || $v->keys['type'] == RelationType::ManyToOne) ? 'relation-tab' :""; ?>">
+                                        	<div class="tab <? echo ($v->keys['type'] == RelationType::ManyToMany || $v->keys['type'] == RelationType::ManyToOne || $v->keys['type'] == RelationType::ManyToOneByKey) ? 'relation-tab' :""; ?>">
 											
                                             <h1 class="title"> <? c(l($v->name)); ?></h1>
                                             

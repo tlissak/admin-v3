@@ -13,7 +13,13 @@ class AdminList  extends PagingList   {
 		
 	public $sqlParam = '' ;
 	
-	public function getPage(){ 		return (int)get('page');		}
+	public function getPage(){		
+		if (get('tbl')==$this->name || get('contexttbl') == $this->name){
+			return (int)get('page');		
+		}else{
+			return 0;
+		}
+	}
 	
 	public function initList(  $PAGE_SIZE_LIMIT  = 0 ){	
 		if ($this->initializedList ) return ;	$this->initializedList = true; //protect		
@@ -27,17 +33,18 @@ class AdminList  extends PagingList   {
 		
 		if ($this->initializedListSql ) return ;	$this->initializedListSql = true; //protect		
 		
-		$this->sql_fields 				=	$this->name .'.* ';
+		$this->sql_fields 				=	'`'.$this->name .'`.* ';
 		$this->sql_extra_fields 	= '' ;
 		$this->sql_tables 			= ' `'.$this->name.'` ' ;		
 		$this->sql_order				= "" ;			
 		$this->sql_param 			= "" ;
 		
-		foreach($this->relations as $rel){			
+		foreach($this->relations as $rel){
 			if($rel->keys['type'] == RelationType::Simple 	|| $rel->keys['type'] == RelationType::InnerSimple ){
-					$inner_sql = ','. $rel->name.'_ljoin.'.$rel-> fld_title .' AS '.$rel->keys['left_key'] . '_inner ' ;
-					$this->sql_left_joins .= ' LEFT JOIN '. $rel->name . ' AS '.$rel->name .'_ljoin ON '.$rel->name .'_ljoin.id = '. $this->name .'.'.  $rel->keys['left_key']  .' ' ;
-					$this->sql_fields .= $inner_sql ;	
+					$inner_sql = ','. $rel->name.$rel->keys['left_key'].'_ljoin.'.$rel-> fld_title .' AS '.$rel->keys['left_key'] . '_inner ' ;
+					$this->sql_left_joins .= ' LEFT JOIN `'. $rel->name . '` AS '.$rel->name .$rel->keys['left_key'].'_ljoin '  ;
+					$this->sql_left_joins .= ' ON '.$rel->name.$rel->keys['left_key'] .'_ljoin.id = `'. $this->name.'`.'.  $rel->keys['left_key']  .' ' ;
+					$this->sql_fields .= $inner_sql ;
 			}
 		}
 		

@@ -18,10 +18,19 @@ class Db{
 			$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 			return ;
 		}
+		if($p_type == 'odbc'){
+			$this->db = new PDO( $p_dsn);
+			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+			$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+			return ;
+		}
 		_die('PDO TYPE not defined');
 	}
 	function __destruct(){
 		$this->db = null ;	
+	}
+	static function iso2utf8(&$value, $key){
+		$value = iconv('ISO-8859-1','UTF-8', $value);
 	}
 	function fetch($q){	
 		$this->last_error = "" ;
@@ -29,7 +38,8 @@ class Db{
 		if ($sth = $this->db->prepare($q) ){
 			$sth->execute();	
 			if ($res =  $sth->fetchall(PDO::FETCH_ASSOC)){
-				return $res ;			
+				if ($this->pdo_type == 'odbc') foreach($res as &$r){	array_walk($r,'Db::iso2utf8' );	}
+				return $res;
 			}else{
 				return array() ;
 			}
@@ -45,6 +55,7 @@ class Db{
 		if ($sth = $this->db->prepare($q)){
 			$sth->execute();	
 			if ($res = $sth->fetch(PDO::FETCH_ASSOC) ){
+				if ($this->pdo_type == 'odbc') array_walk($res,'Db::iso2utf8' );	
 				return $res ;
 			}else{
 				return array() ;	
@@ -70,7 +81,7 @@ class Db{
 	}
 	function ctypes($tbl) {
 		if (PDO_TYPE == 'mysql'){
-			$cols = $this->fetch("SHOW COLUMNS FROM $tbl");
+			$cols = $this->fetch("SHOW COLUMNS FROM `$tbl`");
 			$output = array() ;
 			foreach($cols as $cl) {
 					$output[$cl['Field']] = strtoupper( preg_replace('/\(.+\)/','',$cl['Type'] ) );

@@ -46,6 +46,9 @@ class AdminForm extends AdminTable{
 			if (isset($opt['pattern'])){
 				$extends .= ' data-pattern="'.$opt['pattern'].'" ' ;
 			}
+			if (isset($opt['readonly'])){
+				$extends .= ' readonly="readonly" ' ;
+			}
 		}
 		
 		if($type == 'color'){

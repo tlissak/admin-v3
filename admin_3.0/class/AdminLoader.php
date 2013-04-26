@@ -10,7 +10,7 @@ class AdminLoader extends AdminForm{
 				if ( !isset($r['left_key'])  ){	_die('Relation input incorrect left_key not seted  Table : '. $this->name);	}
 			}elseif($r['type'] == RelationType::ManyToMany || $r['type'] == RelationType::ManyToManySelect){
 				if (!isset($r['by_tbl'] )|| !isset($r['left_key'] )|| !isset($r['right_key'] ))	{	_die('Relation input incorrect bytable,left or right key not seted Table : '. $this->name ); 	}
-			}elseif($r['type'] == RelationType::ManyToOne){	
+			}elseif($r['type'] == RelationType::ManyToOne || $r['type'] == RelationType::ManyToOneByKey){	
 				if ( !isset($r['left_key'] ))	{	_die('Relation input incorrect left_key not seted Table : '. $this->name ); 	}
 			}
 		}
@@ -45,6 +45,7 @@ interface RelationType{
 	const ManyToOne 			= 2; // product.id , product_type(product_id)
 	const ManyToManySelect = 3; //  product.id , type.id , product_type(product_id,type_id) show all type.id to select
 	const InnerSimple 			= 4 ;
+	const ManyToOneByKey 	= 5 ;
 }
 
 

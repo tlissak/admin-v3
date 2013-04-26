@@ -6,14 +6,13 @@ class AdminTable extends AdminRelation {
 	public $name = '';
 	public $fields = array();
 	
-	public $data = array();
-	public $dataRelation = array();
-	
+	public $data = array();	
+	public $post_data = array();	
 	public $initializedList = false;
 
 	
 	function initData(){			foreach($this->fields as $k){	$this->data[$k]	 = '';		}		}	
-	function initPostData(){	foreach($this->fields as $k){	$this->data[$k]	 = post($k);	}	}
+	function initPostData(){	foreach($this->fields as $k){	if (isset($_POST[$k]) /*Apply only the submited data */) { $this->post_data[$k]	 = post($k);	}}} 
 	function initDbData(){	
 		if ($this->id < 1){ return ;}	
 		$this->initListSql();
@@ -21,21 +20,7 @@ class AdminTable extends AdminRelation {
 		$res = $this->db->fetchRow($sql);
 		if(count($res)){$this->data = $res; }else{	$this->id = 0; fb('unable to get object row data'); }
 	}	
-	function initDbRelationData(){
-		foreach ($this->relation as $k=>$v ) {
-			$k_ids = array() ;
-			if ($v['type'] ==  RelationType::ManyToMany ||  $v['type'] ==  RelationType::ManyToManySelect){
-				$sql = 'SELECT `'.$v['left_key'] .'` AS k_id FROM `'. $v['by_tbl'] . '` WHERE `'.$v['right_key'].'` = ' . $this->id  ;
-				$keys = $this->db->fetch($sql);
-				foreach($keys as $k){	$k_ids[] = $k['k_id'] ;		}
-			}elseif ($v['type'] ==  RelationType::ManyToOne ){
-				$sql = 'SELECT id AS k_id FROM `'.$v['tbl'] .'` WHERE `'. $v['left_key'] .'` =  ' . $this->id ;
-				$keys = $this->db->fetch($sql);
-				foreach($keys as $k){	$k_ids[] = $k['k_id'] ;		}
-			}
-			$this->dataRelation[$v['tbl']]	 = $k_ids  ;
-		}
-	}
+
 	public function __construct($name){
 		global $db;
 		$this->db = $db ;
@@ -45,7 +30,7 @@ class AdminTable extends AdminRelation {
 	}		
 	public function Add(){
 		$this->initPostData() ;	
-		$this->db->q(SQL::build('INSERT',$this->name,$this->data) ) ;
+		$this->db->q(SQL::build('INSERT',$this->name,$this->post_data) ) ;
 		$this->id = $this->db->last_id() ;
 		$this->deleteRelations() ;
 		$this->addRelations() ;	
@@ -57,10 +42,10 @@ class AdminTable extends AdminRelation {
 		$this->id = $this->db->last_id() ;		
 		$this->addRelations( true ) ;
 	}		
-	public function Edit(){		
+	public function Edit(){	
 		$this->initPostData() ;	
 		if ($this->id < 0) return ; 
-		$this->db->q(SQL::build('UPDATE',$this->name,$this->data,$this->id)) ; 	
+		$this->db->q(SQL::build('UPDATE',$this->name,$this->post_data,$this->id)) ; 	
 		$this->deleteRelations() ;
 		$this->addRelations() ;
 	}	

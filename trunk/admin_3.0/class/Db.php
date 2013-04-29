@@ -8,6 +8,7 @@ class Db{
 	function __construct($p_dsn = PDO_DSN , $p_type= PDO_TYPE ,$p_user = PDO_USER ,$p_pass = PDO_PASS  ){
 		$this->pdo_type =  $p_type;
 		$this->pdo_dsn = $p_dsn;
+		try {
 		if ($p_type == 'sqlite'){
 			$this->db = new PDO( $p_dsn);	
 			return ;
@@ -23,6 +24,9 @@ class Db{
 			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 			$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 			return ;
+		}
+		}catch (PDOException $err) {
+			die('Unable to connect to database');
 		}
 		_die('PDO TYPE not defined');
 	}

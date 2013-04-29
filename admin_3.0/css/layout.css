@@ -28,7 +28,7 @@ body[dir="rtl"] .LAY-tabs{ margin-left:0; margin-right:5px; right:0; left:1px;}
 .LAY-controls{ position:absolute; left:0; z-index:9; padding:10px 10px 18px 10px; top:0; right:0; background-color:#F1F1F1;}
 .LAY-center{ position:absolute; top:54px; left:0; bottom:1px; background:#FFF; right:5px;margin-left:5px ; overflow:auto ; z-index:9}
 body[dir="rtl"] .LAY-center{ left:5px; margin-left:0; margin-right:5px; right:5px}
-.LAY-message{ position:absolute; height:30px;top:7px; left:40%; margin-left:230px; z-index:10}
+.LAY-message{ position:absolute; height:30px;top:7px; left:30%;z-index:10}
 body[dir="rtl"] .LAY-message{ left:0 ; right:40% ; margin-left:0; margin-right:230px;}
 .LAY-message > div{ color:#060; float:left; padding:3px 20px; margin:3px; border:#060 1px solid; border-radius:3px; background:rgba(0,204,0,0.3);}
 

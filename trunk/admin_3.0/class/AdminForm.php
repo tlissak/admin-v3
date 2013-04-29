@@ -12,13 +12,16 @@ class AdminForm extends AdminTable{
 				$this->formHtml .= '<label for="'.$formFld['name'].'">'.$formFld['title'].' :</label> <div class="droparea">'. $lb. $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb . '</div>' .$lb;
 				$this->formHtml .= '<div class="clear"></div>' ;
 			}elseif($formFld['type'] == 'rte'){ 			
-				$this->formHtml .= '<label for="'.$formFld['name'].'">'.$formFld['title'].' :</label><div class="rte-zone-outer">'. $lb. $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb . '</div>' .$lb ;				
+				$this->formHtml .= '<label for="'.$formFld['name'].'">'.$formFld['title'].' :</label><div class="rte-zone-outer">'. $lb. $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb . '</div>' .$lb ;	
+			}elseif($formFld['type'] == 'html'){
+				$this->formHtml .= $formFld['html'] ;
 			}else{
 				$this->formHtml .= '<p class="text"><label for="fld_'.$formFld['name'].'">'.$formFld['title'].' :</label>' . $lb . $this->getSimpleField($formFld['name'],$formFld['type'],$formFld['opt']) .$lb. '</p>' .$lb ;
 			}
 		}		
 		return $this->formHtml;
 	}
+	
 	public function _Zipcode($fld,$title,$opt=array()){ 	$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'zipcode') ;return $this; }	
 	public function _Color($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'color') ;return $this; }	
 	public function _Phone($fld,$title,$opt=array()){ 	$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'phone') ;return $this; }	
@@ -32,7 +35,8 @@ class AdminForm extends AdminTable{
 	public function _Check($fld,$title,$opt=array()){ 	$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'checkbox') ;return $this; }	
 	public function _Textarea($fld,$title,$opt=array()){$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'textarea') ;return $this; }	
 	public function _Rte($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'rte') ;return $this; }		
-	public function _File($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'file') ;return $this; }	
+	public function _File($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'file') ;return $this; }		
+	public function _Html($html,$opt=array()){ 			$this->formFields[] = array('opt'=>$opt,'type'=>'html','html'=>$html) ;return $this; }	
 	
 	private function getSimpleField($fld,$type,$opt){
 		$d = $this->data ? $this->data : array($fld=>post($fld) );

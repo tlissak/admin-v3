@@ -50,8 +50,7 @@ class PagingList {
 								. $this->sql_tables 
 								. $this->sql_left_joins
 								. $this->sql_inner_joins
-								. ' WHERE `'.$this->name.'`.id = '.$this->id
-								. $this->sql_order  ;	
+								. ' WHERE `'.$this->name.'`.id = '.$this->id  ;	
 		return $this->sql_rows ;
 	}
 	

@@ -92,7 +92,8 @@ class AdminForm extends AdminTable{
 			return '<textarea name="'.$fld.'" id="fld_'.$fld.'" spellcheck="false" '. $extends.'>'. $d[$fld]  . '</textarea>' ;
 		}
 		if($type == 'rte'){
-			return '<textarea name="'.$fld.'" id="fld_'.$fld.'" spellcheck="false" style="width:100%;height:350px;" class="rte" '. $extends.'>' . coded($d[$fld]  ). '</textarea>' ; ;
+			return '<textarea name="'.$fld.'" id="fld_'.$fld.'" spellcheck="false" style="width:100%;height:350px;" class="rte" '. $extends.'>' 
+				. htmlentities($d[$fld], ENT_QUOTES , "UTF-8"). '</textarea>' ; 
 		}
 		if($type == 'file'){	
 			$h = '<span class="btn btn-mini btn-file"  >';

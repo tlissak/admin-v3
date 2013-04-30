@@ -11,16 +11,17 @@ interface PostAction {
 
 class AdminController{	
 	public static $_PREF = array() ;
-	public static $_PREF_DEF = array(	'body_dir'=>'ltr','ui_js_lang' =>''	) ;
+	public static $_PREF_DEF = array(	'body_dir'=>'ltr' ) ;
 	public static $_LNG = array() ;
 	public static $_LNG_DEF 		= array(
 					'backup'=>'Sauvgarde','logout'=>'Déconnxion','login'=>'Connexion',
 					'save'=>'Enregistrer','new'=>'Nouveau',	'duplicate'=>'Dupliquer','delete'=>'Supprimer',
 					'browse or drop file here'=>'Parcourir ou placer isi une image','user name'=>'Utilisateur','password'=>'Mot de passe',
-					'sort direction A first'=>'Par ordre croisent','sort direction Z first'=>'Par ordre decroisent','results'=>'Resultats','of'=>'sur'
+					'sort direction A first'=>'Par ordre croisent','sort direction Z first'=>'Par ordre decroisent','results'=>'Resultats',' of '=>' sur '
+					,'page'=>'Page','pages'=>'pages' , 'prev'=>'Précédente' ,'next'=>'Suivante'
 	);
 	public static function PREF($k){
-		return isset(self::$_PREF[$k]) ? self::$_PREF[$k] : self::$_PREF_DEF[$k] ;
+		return  (isset(static::$_PREF[$k]) ? static::$_PREF[$k] : (isset(static::$_PREF_DEF[$k]) ? static::$_PREF_DEF[$k] : '' ) );
 	}
 	public static $tableInstances = array();		
 

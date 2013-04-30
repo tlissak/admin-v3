@@ -16,7 +16,7 @@ function c($_s = '',$o = false){
 }
 function l($_s){global $_LNG ; return isset($_LNG[$_s]) ? $_LNG[$_s] : $_s  ;}
 function p($o){ echo '<pre style="font:11px/14px verdana;  z-index:999; ">' ; var_dump($o) ; echo '</pre><hr />'; } ;
-function coded($str){ 	return htmlentities($str, ENT_QUOTES , "UTF-8");} 
+function coded($str){ 	return htmlentities($str, ENT_QUOTES , "UTF-8"); }  // depracted
 function strtoidate($str){	return date("d/m/Y",$str) ;}
 function redirect($uri){ header('Location: '.$uri);}
 function get($v){ 	return isset($_GET[$v]) ? $_GET[$v] : '' ;}

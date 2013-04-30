@@ -138,11 +138,11 @@ class AdminRelation extends AdminMvc {
 					if ($this->id < 1) {continue ; }
 					
 					$obj->selected = $this->dataRelation[$obj->keys['tbl']] ;
-
-					$obj->sqlParam  = ' WHERE id IN( '. implode( ',',$obj->selected ) .' ) ' ;
-					$obj->initList() ;
-
-					$obj->setSelected(1);
+					if (count($obj->selected) > 0){
+						$obj->sqlParam  = ' WHERE `'.$obj->name.'`.id IN( '. implode( ',',$obj->selected ) .' ) ' ;
+						$obj->initList() ;
+						$obj->setSelected(1);
+					}
 				}
 				
 				// Selectable list

@@ -38,9 +38,6 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 <script src="js/plugin.3.0.js"></script>
 <script src="js/UI.js"></script>
 <script src="js/UI.lang.js"></script>
-<? if (Ctrl::PREF('ui_js_lang')){?>
-<script src="js/UI.lang.<? c(Ctrl::PREF('ui_js_lang')) ?>.js"></script>
-<? } ?>
 <script src="js/UI.docLoad.js"></script>
 <script src="js/UI.formLoad.js"></script>
 <script src="js/UI.formSubmit.js"></script>
@@ -49,6 +46,11 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 <!--<script src="js/UI.sqler.js"></script>
 <script src="js/UI.fileBrowser.js"></script>-->
 <script src="js/UI.pagingFilterState.js"></script>
+<?
+if (Ctrl::PREF('ui_js')){	
+	foreach(Ctrl::PREF('ui_js') as $ui_js) { c('<script src="' .$ui_js .'"></script>') ; }
+}
+?>
 <script>
 UI.docReady();
 </script>

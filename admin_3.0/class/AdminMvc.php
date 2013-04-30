@@ -24,6 +24,7 @@ class AdminMvc extends AdminList{
 						<i class="icon-plus"></i>'.l('new').' : '. l($this->keys['name']) .'</a>' ;
 		}
 		
+		$h .= $this->getTablePaging() ;
 		
 		//print state data
         if ($this->viewtype == "SELECT-EDIT" || $this->viewtype == "SELECT-ONE-EDIT"){	
@@ -117,21 +118,25 @@ class AdminMvc extends AdminList{
 			$out .= '<th style="width:4%">&nbsp;</th>';
 		}
 		
-        $out .= '</tr>';
+		$out .= '</tr>';
 		return $out;
 	}
 	
 	function getTablePaging(){
-		if ($this->pages == 1)
+		if ($this->pages == 1 || $this->num_results == 0)
 			return '';
+
+		$ho = '<div class="paging">' ;
+		$params = 'tbl='.$this->name  ; 
 		
-		$ho = '<div class="paging">' ;		
-		$ho .= l('results').' :'. $this->results .' '. l('of').' ' . $this->num_results .' <br />' ;		
-		$params = 'tbl='.$this->name  ;         
 		if ($this->pages_show_first){
 			$ho .= '<a class="btn" href="?page=0&'. $params .'" data-page="0" title="First page"> &laquo; </a>';
 			$ho .= '<span class="btn-disable">..</span>';
-		}		
+		}
+		if ($this->pages_show_prev){
+            $ho .= '<a class="btn" href="?page='. ($this->page-1) .'&'.$params .'" data-page="'.($this->page-1).'"  title="Prev page">&laquo; '.l('prev').'</a>' ;
+        }
+		
 		for($i=$this->pages_range_start ;$i<$this->pages_range ; $i++ ){ 
                if ($i == $this->page){
             	    $ho .= '<span class="btn-disable">'. ($i+1) .'</span>';
@@ -139,10 +144,15 @@ class AdminMvc extends AdminList{
           	      $ho .= '<a class="btn" href="?page='.$i .'&'.  $params .'" data-page="'.$i.'" title="Page '.  $i .'">'. ($i+1).'</a>';
                } 
         } 
+		if ($this->pages_show_next){
+            $ho .= '<a class="btn" href="?page='. ($this->page+1) .'&'.$params .'" data-page="'.($this->page+1).'"  title="Next page"> '.l('next').' &raquo;</a>' ;
+        }
 		if ($this->pages_show_last){
 			$ho .= '<span class="btn-disable">..</span>';
-			$ho .= '<a class="btn" href="?page='. ($this->pages) .'&' . $params. '" data-page="'.$this->pages.'" title="Last page"> &raquo; </a>' ;
-		} 		
+			$ho .= '<a class="btn" href="?page='. ($this->pages-1) .'&' . $params. '" data-page="'.($this->pages-1).'" title="Last page"> &raquo; </a>' ;
+		} 
+		$ho .= '<br />' ;
+		$ho .= l('results').' :'. $this->results  . l(' of ') . $this->num_results .' - '.  l('page').' '.($this->page+1) .l(' of '). $this->pages ." " .l('pages')  ;
         $ho .= '</div>' ;		
 		return $ho ;
 	}

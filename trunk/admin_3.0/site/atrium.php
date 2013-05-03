@@ -36,7 +36,7 @@ Loader('category')
 
 Loader("image")->FieldTitle('path')->View(array('path'=>'Image'))
 ->Show(0)
-->Image(array('field'=>'path','path'=>'photos/' ) )
+->Image('path' )
 ->_File('path','Fichier')
 ->_Url('url','(Ou) Liens URL de la vidéo')
 ->Load();

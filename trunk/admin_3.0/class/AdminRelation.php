@@ -69,7 +69,7 @@ class AdminRelation extends AdminMvc {
 				
 				$obj							= clone Ctrl::$tableInstances[$v['tbl']]; // allways clone 
 				
-				if ($v['type'] == RelationType::Simple){							$obj->viewtype = 'EDIT' ;			}
+				if ($v['type'] == RelationType::Simple){							$obj->viewtype = 'SELECT-EDIT' ;			}
 				if ($v['type'] == RelationType::InnerSimple){					$obj->viewtype = 'SELECT-ONE-EDIT' ;			}
 				if ($v['type'] == RelationType::ManyToMany){					$obj->viewtype = 'SELECT-EDIT' ;			}
 				if ($v['type'] == RelationType::ManyToOne){					$obj->viewtype = 'SELECT-EDIT' ;			}
@@ -95,9 +95,24 @@ class AdminRelation extends AdminMvc {
 		
 		foreach($this->relations as &$obj){
 				
+				//Simple
 				if ($obj->keys['type'] == RelationType::Simple){	
-					Debug(' RelationType::Simple not supported yet :: shult set state $this->selected = data["key"] ??');
-				}				
+					if (!$IS_CALLED_BY_ME_RECURSION_PROTECTION){ 	// ive disabled the protection because off  same table (as parent tree) list not loaded !
+						$obj->initializedRelationsObject = false;
+						$obj->initInnerRelations( true );
+						
+						if ($this->id>0)
+							$obj->selected = array($this->data[$obj->keys['left_key']]) ;					
+						if(count($obj->selected)){
+							$obj->sqlParam  = ' WHERE `'.$obj->name.'`.id IN( '. implode( ',',$obj->selected ) .' ) ' ;
+							$obj->initList();
+							$obj->setSelected(1);	
+						}else{
+							$obj->initList() ;
+							$obj->setSelected(0);	
+						}						
+					}
+				}
 							
 				// Simple Inner
 				if ($obj->keys['type'] == RelationType::InnerSimple){					

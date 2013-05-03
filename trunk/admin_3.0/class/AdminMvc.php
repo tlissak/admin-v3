@@ -189,12 +189,6 @@ class AdminMvc extends AdminList{
 		}		
 	}
 	
-	function array_keys_exist($keys,$array) {
-		if (count (array_intersect($keys,array_keys($array))) == count($keys)) {
-			return true;
-		}
-	}
-	
 	function getTableRow($dt = array()){
 		
 			$this->initViewList();
@@ -225,11 +219,14 @@ class AdminMvc extends AdminList{
 				$tr .= '<td><input class="relation-cb" type="radio" name="__'.$this->keys['left_key'].'"  id="_fld_'.$this->name.'_'.$id .'" value="'.$id .'"   '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
 			}
 			
-		
-			if ($this->array_keys_exist($this->_r_imgp,$this->view)){
-					foreach($this->_r_imgp as $img_k){
-						$dt[$img_k] = $this->thumb($dt[$img_k]) ; 
+			if( count($this->_r_imgp )){
+				foreach($this->_r_imgp as $img_k){
+					foreach($this->view as $vw_k=>$vw_v){
+						if ($vw_k == $img_k){
+							$dt[$img_k] = $this->thumb($dt[$img_k]) ; 
+						}
 					}
+				}
 			}
 
 			foreach ($this->view as $k=>$v){
@@ -272,15 +269,7 @@ class AdminMvc extends AdminList{
 	
 	function initViewList(){ 
 			if ($this->initializedViewList) return ; 	$this->initializedViewList = true ; //protect
-			if (count($this->image )){
-				foreach($this->image as $img){
-						foreach($this->fields as $field){
-								if ($field == $img)	{
-										$this->_r_imgp[] = $img;	
-								}
-						}
-				}
-			}	
+			if (count($this->image )){ $this->_r_imgp = $this->image  ; }
 	}
 	
 	

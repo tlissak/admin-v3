@@ -120,10 +120,9 @@ UI.docReady();
            						<div class="LAY-tabs">
                                  	<ul class="tabrow">
                                  	<li><a href=".tab-main-<? c($ctrl->contextTable->name) ; ?>"><? c(l($ctrl->contextTable->name)) ; ?></a></li>
-                               <? foreach($ctrl->contextTable->relations as $v){  
-										if( $v->keys['type'] != RelationType::Simple ){?>                                    
+                               <? foreach($ctrl->contextTable->relations as $v){ ?>
                                     	<li><a href=".tab-<? c($v->keys['name']) ; ?>"><? c(l($v->keys['name'])) ; ?></a></li>                                        
-                                    <? }} ?>
+                                    <? } ?>
 
                                  </ul>
                                  </div>
@@ -156,8 +155,7 @@ UI.docReady();
                                   
      							</div>
   							  <? if (count($ctrl->contextTable->relations)){ ?>  								
-                                <? foreach($ctrl->contextTable->relations as $v){ 
-								if($v->keys['type'] !=  RelationType::Simple){ ?>
+                                <? foreach($ctrl->contextTable->relations as $v){ ?>
                                         <div class="tab-<? c($v->keys['name']) ;?>">                                        
                                         
                                         	<div class="tab <? echo ($v->keys['type'] == RelationType::ManyToMany || $v->keys['type'] == RelationType::ManyToOne || $v->keys['type'] == RelationType::ManyToOneByKey) ? 'relation-tab' :""; ?>">
@@ -170,7 +168,7 @@ UI.docReady();
 										
                                         </div>
                              		</div>
-                          <? }}} ?>
+                          <? } ?>
                               
                                 
                                

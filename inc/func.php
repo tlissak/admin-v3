@@ -13,6 +13,7 @@ function c($_s = '',$o = false){
 	if ($o == 9) {  preg_match('/^.{0,160}(?:.*?)\b/iu', $_s, $matches); echo $matches[0] .'...'; }
 	if ($o == 10) echo strip_tags ($_s )	;
 	if ($o == 11)  echo number_format($_s, 2, '.', '')  ;
+	if ($o == 13) echo ucwords(strtolower($_s) ) ;
 }
 function l($_s){global $_LNG ; return isset($_LNG[$_s]) ? $_LNG[$_s] : $_s  ;}
 function p($o){ echo '<pre style="font:11px/14px verdana;  z-index:999; ">' ; var_dump($o) ; echo '</pre><hr />'; } ;

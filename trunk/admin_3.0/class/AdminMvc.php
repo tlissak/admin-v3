@@ -26,25 +26,9 @@ class AdminMvc extends AdminList{
 		
 		$h .= $this->getTablePaging() ;
 		
-		//print state data
-        if ($this->viewtype == "SELECT-EDIT" || $this->viewtype == "SELECT-ONE-EDIT"){	
+		$h .= $this->getTableState();
 		
-			$h .= '<div class="list-state" data-viewtype="'.$this->viewtype.'" data-cache="'.implode(',',$this->selected).'">';
-			if (count($this->selected ) == 0 && $this->viewtype == "SELECT-ONE-EDIT"){
-				$h .= '<input type="hidden" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name .'" value="0"   checked="checked" />'  ;
-			}
-			
-			foreach($this->selected as $id){
-				if ($this->viewtype == "SELECT-EDIT"){
-					$h .= '<input type="hidden" name="'.$this->name.'[]" value="'.$id .'"    />'  ;
-				}
-				if ($this->viewtype == "SELECT-ONE-EDIT"){
-					$h .= '<input type="hidden" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name .'" value="'.$id .'" />'  ;
-				}
-			}
-			
-			$h .= '</div>' ;
-		} 
+		
 		
 		
 		$h .= '<table class="tbl">';
@@ -72,6 +56,36 @@ class AdminMvc extends AdminList{
 		$h .= $this->getTablePaging() ;
 		
 		$h .= "</div>" ;		
+		return $h ;
+	}
+	
+	public function getTableState(){
+		$h = '';
+        if ($this->viewtype == "SELECT-EDIT" || $this->viewtype == "SELECT-ONE-EDIT"){		
+			$h .= '<div class="list-state" data-viewtype="'.$this->viewtype.'" data-cache="'.implode(',',$this->selected).'"  ';
+			if ($this->viewtype == "SELECT-EDIT"){
+				$h .= '	data-fieldname="'.$this->name.'[]" '  ;
+			}
+			if ($this->viewtype == "SELECT-ONE-EDIT"){
+				$h .= '	data-fieldname="'.$this->keys['left_key'].'" '  ;
+			}
+			$h .= '>';
+			
+			if (count($this->selected ) == 0 && $this->viewtype == "SELECT-ONE-EDIT"){
+				$h .= '<input type="hidden" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name .'" value="0"   checked="checked" />'  ;
+			}
+			
+			foreach($this->selected as $id){
+				if ($this->viewtype == "SELECT-EDIT"){
+					$h .= '<input type="hidden" name="'.$this->name.'[]" value="'.$id .'"    />'  ;
+				}
+				if ($this->viewtype == "SELECT-ONE-EDIT"){
+					$h .= '<input type="hidden" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name .'" value="'.$id .'" />'  ;
+				}
+			}
+			
+			$h .= '</div>' ;
+		} 
 		return $h ;
 	}
 	
@@ -213,10 +227,10 @@ class AdminMvc extends AdminList{
 			$tr .=  '" >' ;
 			
 			if ($this->viewtype == "SELECT-EDIT"){
-				$tr .= '<td><input class="relation-cb" type="checkbox" name="__'.$this->name.'[]" id="_fld_'.$this->name.'_'.$id .'" value="'.$id .'"  '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
+				$tr .= '<td><input class="relation-cb relation-cbx" type="checkbox"  id="_fld_'.$this->name.'_'.$id .'" value="'.$id .'"  '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
 			}
 			if ($this->viewtype == "SELECT-ONE-EDIT"){
-				$tr .= '<td><input class="relation-cb" type="radio" name="__'.$this->keys['left_key'].'"  id="_fld_'.$this->name.'_'.$id .'" value="'.$id .'"   '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
+				$tr .= '<td><input class="relation-cb" type="radio"   id="_fld_'.$this->name.'_'.$id .'" value="'.$id .'"   '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
 			}
 			
 			if( count($this->_r_imgp )){

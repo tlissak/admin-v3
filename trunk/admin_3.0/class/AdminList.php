@@ -13,8 +13,8 @@ class AdminList  extends PagingList   {
 		
 	public $sqlParam = '' ;
 	
-	public function getPage(){		
-		if (get('tbl')==$this->name || get('contexttbl') == $this->name){
+	public function getPage(){
+		if (get('tbl')==$this->name /*|| get('contexttbl') == $this->name */ || $this->keys['name'] == get('contexttbl')){			
 			return (int)get('page');		
 		}else{
 			return 0;
@@ -24,7 +24,7 @@ class AdminList  extends PagingList   {
 	public function initList(  $PAGE_SIZE_LIMIT  = 0 ){	
 		if ($this->initializedList ) return ;	$this->initializedList = true; //protect		
 		$this->initListSql();		
-		if ($PAGE_SIZE_LIMIT  == 0){ $PAGE_SIZE_LIMIT = 100 ; } 
+		if ($PAGE_SIZE_LIMIT  == 0){ $PAGE_SIZE_LIMIT = 50 ; }  //changes
 		$this->_list = $this->getListRows($PAGE_SIZE_LIMIT);
 		$this->initListPaging($PAGE_SIZE_LIMIT); 
 	}

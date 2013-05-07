@@ -28,16 +28,17 @@
 			$(document).on('click',".callback_message",function(){	$(this).remove();	}) ;	
 		
 			$(document).on('click','.relation-add,.relation-mod',function(){			
-					context 	= $(this).closest(".context").data()
-					context.id = $(this).data('id') ; //override the tbl.id val ;
 					
+					var context 	= $.extend({},$(this).closest(".context").data()); //http://stackoverflow.com/questions/16428385
+					context.id = $(this).data('id') ; //override the tbl.id val ;
+										
 					$.ajax('?get_relation_form=1&'+$.param(context)  ,{
 						context:this  
 						,success: function(rs){
 							
 							$.box($(this).closest('.context').data('contexttbl') +'_' + $(this).data('id') , ui.parseAjaxForm(rs) , this ,	function(inner){	
-								oContext = $(this).closest(".context").data()
-								oContext.id = $(this).data('id') ; //override the tbl.id val ;						
+								oContext = $.extend({},$(this).closest(".context").data() );
+								oContext.id = $(this).data('id') ; //override the tbl.id val ;									
 								var form = inner.find('form') ;
 								form.data('context',$(this).closest('.context'))
 									.ajaxSubmit(ui.formSubmit)

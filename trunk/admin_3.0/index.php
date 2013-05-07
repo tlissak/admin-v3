@@ -50,6 +50,10 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 if (Ctrl::PREF('ui_js')){	
 	foreach(Ctrl::PREF('ui_js') as $ui_js) { c('<script src="' .$ui_js .'"></script>') ; }
 }
+if (Ctrl::PREF('ui_css')){	
+	foreach(Ctrl::PREF('ui_css') as $ui_css) { c('<link rel="stylesheet" type="text/css" href="' .$ui_css .'" >') ; }
+}
+
 ?>
 <script>
 UI.docReady();

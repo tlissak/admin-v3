@@ -18,7 +18,7 @@ class AdminTable extends AdminRelation {
 		$this->initListSql();
 		$sql = $this->getRowSql()  ;
 		$res = $this->db->fetchRow($sql);
-		if(count($res)){$this->data = $res; }else{	$this->id = 0; fb('unable to get object row data'); }
+		if(count($res)){$this->data = $res; }else{	fb('unable to get object row data ' . $this->id . ' '. $this->name .' '. $sql ); $this->id = 0; }
 	}	
 
 	public function __construct($name){

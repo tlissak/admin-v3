@@ -22,14 +22,16 @@
 				}
 				
 				if (callback.action == 'mod'){
-					$('.row-'+ callback.tbl +"-" +callback.id,context)
-					.replaceWith($(callback.tr))
+					$('.row-'+ callback.tbl +"-" +callback.id,context).replaceWith($(callback.tr))
+					
 				}else if( callback.action == 'add' || callback.action == 'dup'){	
 					$(".list-"+callback.tbl+" tr.selected",context).removeClass('selected')
 					$(".list-"+callback.tbl,context).append($(callback.tr))
+					
 				}else if(callback.action == 'del'){
 					// all not in context only
 					$('.row-'+ callback.tbl +"-" +callback.id).remove();
+					
 				}
 				
 				if (callback.action == 'mod' || callback.action == 'add' || callback.action == 'dup'){
@@ -55,7 +57,11 @@
 	
 				$('.relation-tab tbody input:not(:checked)').parents("tr").remove();
 				
-			},onsubmit:function(){
+				 if(! form.is('#main-form')){ // relation form data changed
+				 	ui.stateChanged.call( context , callback ) ;
+				 }
+				 
+			},onsubmit:function(){	
 				$('<div class="progress" />').appendTo(this).fadeIn(100);
 			},onsubmit_done:function(){
 				$(".progress",this).stop().fadeOut(500,function(){ 	$(this)	.remove();	});

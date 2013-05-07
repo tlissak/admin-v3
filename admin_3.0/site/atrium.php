@@ -1,12 +1,12 @@
 <? function Loader($x){ 	return new AdminLoader($x);	}
 class Ctrl extends  AdminController{	
 	public static $_USERS 	= array("admin" =>"admin123!" ,"dan" => "people26" ,	"tlissak" => "metallica" , 	"foxdanni" => "metallica" ,"jlc"=>"15lmd56") ;
-	public static $_LNG 		= 
-	array(
+	public static $_LNG 		=  	array(
 		'image'	=> '<i class="icon-picture"></i> Image / Video'
 		,'page'=> 'Pages'
 		,'category'=>'Categorie'
 		,'page_image'=>'Image') ;
+	public static $_PREF = array('ui_css'=>array('site/ui.atrium.css'));
 }
 
 Loader('page')

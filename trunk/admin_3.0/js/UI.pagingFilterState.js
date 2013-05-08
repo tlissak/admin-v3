@@ -51,9 +51,13 @@
 				input = $('#_fld_'+callback.tbl+'_'+ callback.id).get(0);
 				ui.applyState(this,input);
 			}else{// remove the value callback.id from state ;
-				var state_values =  $liststate.find(':input').get() ;
-				for (var i=0;i<state_values.length ; i++){
-						if (state_values[i].value == callback.id )	{ 	$(state_values[i]).remove() ; }
+				if ($liststate.data('viewtype') == 'SELECT-ONE-EDIT' ){
+					$liststate.find(':input').get(0).value = 0 ;
+				}else if ($liststate.data('viewtype') == 'SELECT-EDIT' ){	
+					var state_values =  $liststate.find(':input').get() ;
+					for (var i=0;i<state_values.length ; i++){
+							if (state_values[i].value == callback.id )	{ 	$(state_values[i]).remove() ; }
+					}
 				}				
 			}
 		}		

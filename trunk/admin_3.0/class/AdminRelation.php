@@ -97,7 +97,7 @@ class AdminRelation extends AdminMvc {
 				
 				//Simple
 				if ($obj->keys['type'] == RelationType::Simple){	
-					if (!$IS_CALLED_BY_ME_RECURSION_PROTECTION){ 	// ive disabled the protection because off  same table (as parent tree) list not loaded !
+					if (!$IS_CALLED_BY_ME_RECURSION_PROTECTION){ 	// ive disabled the protection because of  same table (as parent tree) list not loaded !
 						$obj->initializedRelationsObject = false;
 						$obj->initInnerRelations( true );
 						
@@ -117,7 +117,7 @@ class AdminRelation extends AdminMvc {
 				// Simple Inner
 				if ($obj->keys['type'] == RelationType::InnerSimple){					
 					
-					if (!$IS_CALLED_BY_ME_RECURSION_PROTECTION){ 	// ive disabled the protection because off  same table (as parent tree) list not loaded !
+					if (!$IS_CALLED_BY_ME_RECURSION_PROTECTION){ 	// ive disabled the protection because of  same table (as parent tree) list not loaded !
 						$obj->initializedRelationsObject = false;
 						$obj->initInnerRelations( true );
 						$obj->initList() ;

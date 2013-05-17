@@ -3,7 +3,7 @@
 interface PostAction {
 	  const UNSETD 	= 0	;
 	  const ADD 			= 1	;
-	  const MOD 			= 2	;
+	  const MOD 		= 2	;
 	  const DEL 			= 3	;
 	  const DUP 			= 4	;
 }
@@ -20,6 +20,11 @@ class AdminController{
 					'sort direction A first'=>'Par ordre croisent','sort direction Z first'=>'Par ordre decroisent','results'=>'Resultats',' of '=>' sur '
 					,'page'=>'Page','pages'=>'pages' , 'prev'=>'Précédente' ,'next'=>'Suivante'
 	);
+	/**
+	 * return Global Preferences 
+	 * @param $k key
+	 * @return multiple (int, string, array, object)
+	 */
 	public static function PREF($k){
 		return  (isset(static::$_PREF[$k]) ? static::$_PREF[$k] : (isset(static::$_PREF_DEF[$k]) ? static::$_PREF_DEF[$k] : '' ) );
 	}
@@ -27,14 +32,29 @@ class AdminController{
 
 	public $action 	= PostAction::UNSETD ;	
 	
+	/**
+	 * $PAGE_SIZE to be override  to give per site configuration
+	 * @var mixed
+	 */
 	public $PAGE_SIZE = 30 ;
 	
-	public $callback = array();
+	//no usage to be removed ?	
+	//public $callback = array();
 	
 	private $table ; 	
-	public $contextTable = false; 
 	
+	/**
+	 * $contextTable == new Table(global $contextTable = get('contexttbl'))
+	 * @var Table
+	 */
+	public $contextTable = null ;  
+	
+	/**
+	 * The Main function 
+	 * Dispatch all uri / post requests to his propose handler
+	 */
 	function dispacher(){
+		
 		global $tbl ;
 		global $ctrl ;
 		global $contexttbl  ;
@@ -186,6 +206,12 @@ class AdminController{
 	}
 	
 	
+	/**
+	 * match user/pass pairs against the users lists 
+	 * @param $username
+	 * @param $password
+	 * @return true / false
+	 */	
 	public function login($username,$password){
 		foreach(Ctrl::$_USERS as $user=>$pass){
 			if ($username == $user && $password == $pass){	return true ;		}
@@ -193,9 +219,14 @@ class AdminController{
 		return false ;	
 	}
 	
+	//TODO  add bans ips system
+	/**
+	 * Login requests handler
+	 * will set the $cookie->auth or will show the login form
+	 */
 	public function initAuth(){		
 		global $cookie ;
-		if (get('logout') == '1'){		
+		if (get('logout') == '1'){
 			$cookie->auth = false ;
 			header('Location: index.php?is_logout=1');
 			die;	
@@ -206,6 +237,9 @@ class AdminController{
 		if ($cookie->auth != true){ 	echo $this->getFormLogin(); 	die ; }
 	}
 	
+	/**
+	 * Backup requests handler
+	 */
 	public function backup(){
 		
 		ini_set('max_execution_time', 100);
@@ -219,9 +253,7 @@ class AdminController{
 				$dst =  time() . "_". PDO_DB.".sql"   ;
 				$fp = fopen(P_BACKUP . $dst,'a+');
 				fwrite($fp, $backup['msg']);
-				fclose($fp);
-				//the dump file will ziped
-				//header('Location: '.U_BACKUP . $dst) ;
+				fclose($fp); 				//the dump file will ziped				//header('Location: '.U_BACKUP . $dst) ;
 			} else {
 				echo 'An error has ocurred. '. $backup['msg'];
 			}
@@ -231,21 +263,23 @@ class AdminController{
 		header('Location: '.U_BACKUP . $dst) ;
 	}
 	
+	/**
+	 * @return Html string of the user form
+	 */
 	function getFormLogin(){
-		$lform = '<!doctype html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />';
-		$lform .= '<title>Admin Login</title>';
-		$lform .= '<style>* { font-family:Arial, Helvetica, sans-serif; font-size:12px;}';
-		$lform .= '	label,form{ display:block;}';
-		$lform .= '	form{margin:10px auto; width:300px;}';
-		$lform .= '</style></head><body  dir="'. self::PREF('body_dir') .'">';
-		$lform .= '<form method="post" >';
-		$lform .= '<label>'.l('user name').'</label>' ;
-		$lform .= '<input type="text" name="auth_user" value="'.post('auth_user').'" />';
-		$lform .= '<label>'.l('password').'</label>' ;
-		$lform .= '<input type="password" name="auth_pass" value="'.post('auth_pass').'" />';
-		$lform .= '<p class="submit"><button type="submit" class="btn-blue" name="postback" value="login">'.l('login');
-		$lform .= '</button></p>';
-		$lform .= '</form></body></html>';
+		$lform = '<!doctype html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Admin Login</title>
+		<style>* { font-family:Arial, Helvetica, sans-serif; font-size:12px;}
+		label,form{ display:block;}
+		form{margin:10px auto; width:300px;}
+		</style></head><body  dir="'. self::PREF('body_dir') .'">
+		<form method="post" >
+		<label>'.l('user name').'</label>
+		<input type="text" name="auth_user" value="'.post('auth_user').'" />
+		<label>'.l('password').'</label>
+		<input type="password" name="auth_pass" value="'.post('auth_pass').'" />
+		<p class="submit"><button type="submit" class="btn-blue" name="postback" value="login">'.l('login') .'</button></p>
+		</form></body></html>';
 		return $lform;
     }
 }

@@ -1,4 +1,4 @@
-<? // v3
+<?php // v3
 include('../inc/config.php') ;
 require_once('inc/fb.php');
 include('../inc/func.php') ;
@@ -7,7 +7,7 @@ $debug  	= new Debug() ;
 $db 			= new Db() ;
 $cookie 	= new Cookie('x_admin_user') ;
 
-include('class/AdminList.php');
+include('class/AdminList.php'); // Dreamweaver 
 include('class/AdminMvc.php');
 include('class/AdminRelation.php');
 include('class/AdminTable.php');
@@ -17,17 +17,15 @@ include('class/AdminController.php');
 
 include(P_SITE) ;
 
-$_LNG = array_merge(Ctrl::$_LNG_DEF,Ctrl::$_LNG) ;
-
+$_LNG			= array_merge(Ctrl::$_LNG_DEF,Ctrl::$_LNG) ;
 $tbl 				= get('tbl') ;
 $contexttbl 	= get('contexttbl');
+$ctrl				= new Ctrl() ;
 
-$ctrl = new Ctrl() ;
 $ctrl->initAuth();
 $ctrl->dispacher() ;
 
 if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->name ; }
-
 
 ?><!doctype html>
 <html lang="fr">
@@ -112,9 +110,6 @@ UI.docReady();
                     </div>
                     	<? }?>
                     
-                    
-                    
-                    
                     <? if ($contexttbl) { ?>
                     
                     <input type="hidden" name="id" class="form-id" value="<? c( $ctrl->contextTable->id ) ; ?>" />
@@ -131,21 +126,9 @@ UI.docReady();
                                  </ul>
                                  </div>
             
-					
-                             
-                       
-   						
                         <div class="LAY-center " id="layout-form-controls"> 
                  
                         <div class="AJAX_CONT">
-                        	
-                            
-                           
-                                
-                                 
-                                 
-                                 
-                                 
                                  
                                  <div class="tab-main-<? c($ctrl->contextTable->name) ; ?> context">
                                  
@@ -177,15 +160,13 @@ UI.docReady();
                                 
                                
 <div class="debug"  style="display:none;"><?  Debug::p()	?></div>
-<script>
-	
+<script type="text/javascript">
 	if ($('.debug').html() && 1==2){
 		dp = window.open('','debug '+ Math.random(),'width=1200,height=500,fullscreen=0,toolbar=1,resizable=1,scrollbars=1,top=200,left=1500',false) ;
 		dp.document.body.innerHTML = $('.debug').html();
 		$(dp.document.body).dblclick(function() { dp.close();     });
 	}
 </script>
-
 
   </div>
 				

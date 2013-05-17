@@ -3,7 +3,6 @@ class AdminForm extends AdminTable{
 
 	public $formHtml = ""; 
 	public $formFields = array() ;	
-	public $formLoaded = false; 
 	
 	function getForm(){
 		$lb = "\r\n";

@@ -58,8 +58,7 @@ class AdminList  extends PagingList   {
 		if ($this->sqlParam ){
 			$this->sql_param .= $this->sqlParam ;
 		}
-	}
-	
+	}	
 	
 	function getListSqlFilter(){		
 		$out = '' ;
@@ -76,6 +75,7 @@ class AdminList  extends PagingList   {
 		}	
 		return $out;
 	}
+	
 	function getListSqlOrder(){
 		$ha1 = ' ORDER BY ';
 		$found = false ;

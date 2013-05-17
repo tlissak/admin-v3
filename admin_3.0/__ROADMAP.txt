@@ -1,24 +1,27 @@
-- Live edit sort field 
-- file browser 50%
-- fields list cache by date with db->cache with file signature
-- auth token (for cron back) check ps
+- _SORT field will Live edit sort field in list 
 
 v4
-- backup transfer to ftp
+MO
+- file browser (40%)
+- mass photos upload ( auto save )
+- live file editor with ace
+CORE
+- better modulable controller with before/after event hooks
+- backup will transfer to predefined ftp
 - formValidation : spacifique pattern arguments 
-- diffrents form view selection
+- diffrents form view user selection 
 - add unload event when changes mades in form (fields change event)
+- submit only changed fields and save only changed fields
 - email notification on logins/errors
 - ban bad login
 - log logins attamps ip date 
-- mass photos upload ( auto save )
-- live file editor with ace
-- submit only changed fields and save only changed fields
 - new captcha based image (without font) http://php.net/manual/fr/function.imagecreatetruecolor.php
 - default/state sort for listing 
 - full site restore from backup
+- auth token (for cron requests for back) check ps token system
 
 v3
+* fields list cache by date with db->cache with file signature
 + UI.js lang 
 + save state of relation data inside $table->data object 
 + check bind first when no iframe + optimize rte bindFirst

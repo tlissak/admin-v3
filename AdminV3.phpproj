@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>AdminV3</Name>
+    <ProjectGuid>{0d0661af-619d-4d0a-b1d0-624c0dfdc7f0}</ProjectGuid>
+    <RootNamespace>AdminV3</RootNamespace>
+    <OutputType>Library</OutputType>
+    <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
+    <IISProjectUrl>http://localhost:14061/</IISProjectUrl>
+    <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+    <Server>Custom</Server>
+    <PublishEvent>BeforeRun</PublishEvent>
+    <PHPDevAutoPort>True</PHPDevAutoPort>
+    <PHPDevPort>771</PHPDevPort>
+    <CustomServerUrl>http://l/_ADMIN/V3.9/</CustomServerUrl>
+    <PublishBeforeDebugProfile>on wamp</PublishBeforeDebugProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <IncludeDebugInformation>true</IncludeDebugInformation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeDebugInformation>false</IncludeDebugInformation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="admin_3.0\index.php" />
+    <Compile Include="admin_3.0\__ROADMAP.txt" />
+    <Compile Include="admin_3.0\_inc.php" />
+    <Compile Include="admin_3.0\class\AdminController.php" />
+    <Compile Include="admin_3.0\class\AdminForm.php" />
+    <Compile Include="admin_3.0\class\AdminList.php" />
+    <Compile Include="admin_3.0\class\AdminLoader.php" />
+    <Compile Include="admin_3.0\class\AdminMvc.php" />
+    <Compile Include="admin_3.0\class\AdminRelation.php" />
+    <Compile Include="admin_3.0\class\AdminTable.php" />
+    <Compile Include="admin_3.0\class\Blowfish.php" />
+    <Compile Include="admin_3.0\class\Cookie.php" />
+    <Compile Include="admin_3.0\class\Db.php" />
+    <Compile Include="admin_3.0\class\DbBackup.php" />
+    <Compile Include="admin_3.0\class\Debug.php" />
+    <Compile Include="admin_3.0\class\FileBackup.php" />
+    <Compile Include="admin_3.0\class\FileBrowser.php" />
+    <Compile Include="admin_3.0\class\FirePHP.php" />
+    <Compile Include="admin_3.0\class\ImageResize.php" />
+    <Compile Include="admin_3.0\class\PagingList.php" />
+    <Compile Include="admin_3.0\class\Rijndael.php" />
+    <Compile Include="admin_3.0\class\SQL.php" />
+    <Compile Include="admin_3.0\class\Upload.php" />
+    <Compile Include="admin_3.0\css\btn.css" />
+    <Compile Include="admin_3.0\css\example.html" />
+    <Compile Include="admin_3.0\css\form.css" />
+    <Compile Include="admin_3.0\css\jquery.datePicker.css" />
+    <Compile Include="admin_3.0\css\jquery.fileupload-ui.css" />
+    <Compile Include="admin_3.0\css\jquery.popup.css" />
+    <Compile Include="admin_3.0\css\jquery.rte.css" />
+    <Compile Include="admin_3.0\css\jquery.swfupload.css" />
+    <Compile Include="admin_3.0\css\jquery.zebra.datepicker.css" />
+    <Compile Include="admin_3.0\css\jquery.zebra.datePicker_metallic.css" />
+    <Compile Include="admin_3.0\css\layout.css" />
+    <Compile Include="admin_3.0\css\whhg.css" />
+    <Compile Include="admin_3.0\css\font\webhostinghub-glyphs.eot" />
+    <Compile Include="admin_3.0\css\font\webhostinghub-glyphs.svg" />
+    <Compile Include="admin_3.0\css\font\webhostinghub-glyphs.ttf" />
+    <Compile Include="admin_3.0\img\ajax-loader.gif" />
+    <Compile Include="admin_3.0\img\ajax-loader1.gif" />
+    <Compile Include="admin_3.0\img\ajax-loader2.gif" />
+    <Compile Include="admin_3.0\img\ajax-loader3.gif" />
+    <Compile Include="admin_3.0\img\dropdown-arrow.png" />
+    <Compile Include="admin_3.0\img\color_picker\color.png" />
+    <Compile Include="admin_3.0\img\color_picker\colorpicker.png" />
+    <Compile Include="admin_3.0\img\color_picker\graybar.jpg" />
+    <Compile Include="admin_3.0\img\color_picker\grid.gif" />
+    <Compile Include="admin_3.0\img\color_picker\meta100.png" />
+    <Compile Include="admin_3.0\img\color_picker\transparentpixel.gif" />
+    <Compile Include="admin_3.0\img\date_picker\calendar-disabled.png" />
+    <Compile Include="admin_3.0\img\date_picker\calendar.png" />
+    <Compile Include="admin_3.0\img\date_picker\metallic\default-date.png" />
+    <Compile Include="admin_3.0\img\date_picker\metallic\disabled-date.png" />
+    <Compile Include="admin_3.0\img\date_picker\metallic\header.png" />
+    <Compile Include="admin_3.0\img\date_picker\metallic\selected-date.png" />
+    <Compile Include="admin_3.0\inc\fb.php" />
+    <Compile Include="admin_3.0\inc\func.php" />
+    <Compile Include="admin_3.0\inc\image.php" />
+    <Compile Include="admin_3.0\inc\init.php" />
+    <Compile Include="admin_3.0\js\cssParser.js" />
+    <Compile Include="admin_3.0\js\html5slider.js" />
+    <Compile Include="admin_3.0\js\jquery.color.js" />
+    <Compile Include="admin_3.0\js\jquery.datePicker.js" />
+    <Compile Include="admin_3.0\js\jquery.dragEvent.js" />
+    <Compile Include="admin_3.0\js\jquery.filedrop.js" />
+    <Compile Include="admin_3.0\js\jquery.js" />
+    <Compile Include="admin_3.0\js\jquery.rte.js" />
+    <Compile Include="admin_3.0\js\jquery.zebra.datepicker.js" />
+    <Compile Include="admin_3.0\js\plugin.3.0.js" />
+    <Compile Include="admin_3.0\js\UI.docLoad.js" />
+    <Compile Include="admin_3.0\js\UI.fileBrowser.js" />
+    <Compile Include="admin_3.0\js\UI.formLoad.js" />
+    <Compile Include="admin_3.0\js\UI.formSubmit.js" />
+    <Compile Include="admin_3.0\js\UI.formValidate.js" />
+    <Compile Include="admin_3.0\js\UI.inputValidation.js" />
+    <Compile Include="admin_3.0\js\UI.js" />
+    <Compile Include="admin_3.0\js\UI.lang.he.js" />
+    <Compile Include="admin_3.0\js\UI.lang.js" />
+    <Compile Include="admin_3.0\js\UI.pagingFilterState.js" />
+    <Compile Include="admin_3.0\js\UI.sqler.js" />
+    <Compile Include="admin_3.0\site\118.php" />
+    <Compile Include="admin_3.0\site\atrium.php" />
+    <Compile Include="admin_3.0\site\jlc.php" />
+    <Compile Include="admin_3.0\site\lcds.php" />
+    <Compile Include="admin_3.0\site\ui.atrium.css" />
+    <Compile Include="admin_3.0\tests\ace_test.html" />
+    <Compile Include="admin_3.0\tests\jquery_data.html" />
+    <Compile Include="admin_3.0\tests\upload_test.html" />
+    <Compile Include="class\Captcha.php" />
+    <Compile Include="class\RssFeed.php" />
+    <Compile Include="db\jlc.s3db" />
+    <Compile Include="inc\captcha.php" />
+    <Compile Include="inc\config.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="inc\func.php" />
+    <Compile Include="inc\image.php" />
+    <Compile Include="inc\monofont.ttf" />
+    <Compile Include="inc\fb\base_facebook.php" />
+    <Compile Include="inc\fb\facebook.php" />
+    <Compile Include="inc\fb\fb_ca_chain_bundle.crt" />
+    <Compile Include="photos\.htaccess" />
+    <Compile Include="TestClass1.php">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="admin_3.0" />
+    <Folder Include="class" />
+    <Folder Include="db" />
+    <Folder Include="inc" />
+    <Folder Include="photos" />
+    <Folder Include="admin_3.0\class" />
+    <Folder Include="admin_3.0\css" />
+    <Folder Include="admin_3.0\img" />
+    <Folder Include="admin_3.0\inc" />
+    <Folder Include="admin_3.0\js" />
+    <Folder Include="admin_3.0\site" />
+    <Folder Include="admin_3.0\tests" />
+    <Folder Include="admin_3.0\css\font" />
+    <Folder Include="admin_3.0\img\color_picker" />
+    <Folder Include="admin_3.0\img\date_picker" />
+    <Folder Include="admin_3.0\img\date_picker\metallic" />
+    <Folder Include="inc\fb" />
+  </ItemGroup>
+</Project>

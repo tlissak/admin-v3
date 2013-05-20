@@ -70,12 +70,11 @@ hr{clear: both; border: 0; height: 1px; color:#ddd /*IE7*/;background: #ddd; bac
 /*Listing Order/Filter*/
 
 .form-filter .filter-select{width:78%; padding:3px 0 !important;  height:24px; margin-bottom:0; float:; margin:1px;}
-.form-filter .filter-search{width:78%; height:18px; padding:2px 0; margin:1px;}
-.form-filter .order-sort{ width:16% !important; padding:3px 0; height:24px;margin:-1px 1px 0 0;  border-top:none; background:#e8e8e8; border-radius:0 0 3px 3px; }
-.form-filter th{ padding:0 0 3px !important; white-space:nowrap;} 
+.form-filter .filter-search{width:70%; height:18px; padding:2px 0; margin:1px;}
+.form-filter .order-sort{ width:16% !important; padding:3px 0; height:24px;margin:-1px 1px 0 0;  border-top:none; background:#e8e8e8; border-radius:0 0 3px 3px; float:right; }
+.form-filter th{ padding:0 0 3px !important; } 
 
-#list{ margin:10px;} 
-
+#list{ margin:10px;}
 .tbl {    *border-collapse: collapse;  border-spacing: 0; width:100%; border-radius: 4px;  box-shadow: 0 1px 1px #EAEAEA; border:1px solid #bbbbbb;*border:0;border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);border-color:#e6e6e6 #e6e6e6 #bfbfbf;border-bottom-color:#a2a2a2;}
 .tbl td,.tbl th {border-left: 1px solid #ccc;    border-top: 1px solid #ccc;    text-align: left;  }
 .tbl th{    padding:8px 10px; text-align:left;background-color:#f5f5f5;*background-color:#e6e6e6;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));background-image:-webkit-linear-gradient(top, #ffffff, #e6e6e6);background-image:-o-linear-gradient(top, #ffffff, #e6e6e6);background-image:linear-gradient(to bottom, #ffffff, #e6e6e6);background-image:-moz-linear-gradient(top, #ffffff, #e6e6e6);background-repeat:repeat-x;  box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; border-top: none;  text-shadow: 0 1px 0 rgba(255,255,255,.5); }

@@ -24,8 +24,8 @@ function get($v){ 	return isset($_GET[$v]) ? $_GET[$v] : '' ;}
 function post($v){return isset($_POST[$v]) ? $_POST[$v] : '' ;}
 function file_extension($filename){ $path_info = pathinfo($filename); return $path_info['extension'];}
 function is_email($s) {return preg_match('/^([a-z0-9_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,7}$/',$s);}
-function is_tel($s){ return strlen($s) > 9;}
-function is_data($s){ return strlen($s) > 2;}
+function is_tel($s){ return preg_match('/(^[0-9\-\(\)\.]{9,15}$)/',$s);}
+function is_data($s){ return strlen(trim($s)) > 2;}
 function is_image($simg){	return (is_file($simg) && (in_array(strtolower(file_extension($simg)),array("jpg","png","jpeg","gif")))) ;}
 function is_pdf($simg){	return (is_file($simg) && (in_array(strtolower(file_extension($simg)),array("pdf")))) ;}
 function ip2int($_ip){$p=explode(".",$_ip);if (count($p)!=4) return 0; return 16777216*(int)($p[0])+65536 *(int)($p[1])+256*(int)($p[2])+(int)($p[3]) ;}

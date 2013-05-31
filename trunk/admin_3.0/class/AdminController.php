@@ -3,7 +3,7 @@
 interface PostAction {
 	  const UNSETD 	= 0	;
 	  const ADD 			= 1	;
-	  const MOD 		= 2	;
+	  const MOD 			= 2	;
 	  const DEL 			= 3	;
 	  const DUP 			= 4	;
 }
@@ -14,10 +14,10 @@ class AdminController{
 	public static $_PREF_DEF = array(	'body_dir'=>'ltr' ) ;
 	public static $_LNG = array() ;
 	public static $_LNG_DEF 		= array(
-					'backup'=>'Sauvgarde','logout'=>'Déconnxion','login'=>'Connexion',
+					'backup'=>'Sauvgarde','logout'=>'Déconnection','login'=>'Connexion',
 					'save'=>'Enregistrer','new'=>'Nouveau',	'duplicate'=>'Dupliquer','delete'=>'Supprimer',
-					'browse or drop file here'=>'Parcourir ou placer isi une image','user name'=>'Utilisateur','password'=>'Mot de passe',
-					'sort direction A first'=>'Par ordre croisent','sort direction Z first'=>'Par ordre decroisent','results'=>'Resultats',' of '=>' sur '
+					'browse or drop file here'=>'Parcourir ou placer ici une image','user name'=>'Utilisateur','password'=>'Mot de passe',
+					'sort direction A first'=>'Par ordre croissant','sort direction Z first'=>'Par ordre décroissant','results'=>'Resultats',' of '=>' sur '
 					,'page'=>'Page','pages'=>'pages' , 'prev'=>'Précédente' ,'next'=>'Suivante'
 	);
 	/**

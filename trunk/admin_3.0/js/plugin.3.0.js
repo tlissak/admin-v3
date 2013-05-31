@@ -8,7 +8,7 @@ if (window.console){	c = console.log ;	}
 					if (! o.validation(this)){		return false;	}
 				}
 				var f 		= $(this)
-				var data = f.serialize()
+				var data = o.serializeForm && o.serializeForm instanceof Function? o.serializeForm(f) : f.serialize() ;
 				var uri 	= f.attr('action') ? f.attr('action') : '' ;
 				var type = f.attr('method') ? f.attr('method').toUpperCase() : 'GET' ;
 				var uri = uri+(uri.indexOf('?')>-1 ? '&' : '?') +  'ajaxSubmit=1' ;

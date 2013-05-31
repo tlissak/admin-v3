@@ -1,5 +1,6 @@
 var UI = {
-	version:1	
+	version:1.1
+	,log:function(x){ if (window.console && console.log) console.log(x) ; }
 	,docLoad : function(func){	UI._doc_load.push(func) ;	} ,_doc_load :[]	
 	,formLoad:function(func){	UI._form_load.push(func) ;	},_form_load :[]	
 	,formReady:function(form){

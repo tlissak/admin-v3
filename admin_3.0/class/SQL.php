@@ -14,7 +14,7 @@ class SQL{
 			/* \' */	$out = str_replace("\\'","'",$out) ;
 			/* \  */	$out = str_replace("\\","",$out) ;	
 			/* "  */ $out = str_replace('""','"',$out) ;
-			$out =sqlite_escape_string($out) ;			
+			$out =SQLite3::escapeString($out) ;			
 			$out =  "'". $out ."'" ;
 			return $out;
 	}

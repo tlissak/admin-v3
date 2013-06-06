@@ -1,17 +1,17 @@
 <?
 class AdminRelation extends AdminMvc {
 	
-	public $relation = array(); // Arrays
+	public $dataRelation = array();
+	public $dataRelationSql = array();
 	
+	public $relation = array(); // Arrays	
 	public $relations = array(); // Object
 	
 	public $keys  ;
 	
-	public $initializedRelationsObject= false;
-	
+	public $initializedRelationsObject= false;	
 	public $initializedOuterRelations = false;
-	public $initializedInnerRelations = false;
-	
+	public $initializedInnerRelations = false;	
 	public $initializedRelations = false; // both outer and inner relations
 	
 	public $selected = array() ;
@@ -23,15 +23,11 @@ class AdminRelation extends AdminMvc {
 		foreach($this->_list as &$r){ $r['_selected']	= $selectedValue ;		}	unset($r);
 	}
 	
-	public function initRelations(){ // init both inner and outer relations		
-		if ($this->initializedRelations ) return ;	$this->initializedRelations = true; 	//protect
-		
+	public function initRelations(){ // init both inner and outer relations
+		if ($this->initializedRelations ) return ;	$this->initializedRelations = true; 	//protect		
 		$this->initInnerRelations();
-		$this->initOuterRelations();	
+		$this->initOuterRelations();			
 	}
-	
-	public $dataRelation = array();
-	public $dataRelationSql = array();
 	
 	public function initDbRelationData(){
 		foreach ($this->relation as $k=>$v ) {
@@ -54,12 +50,11 @@ class AdminRelation extends AdminMvc {
 				foreach($keys as $k){	$k_ids[] = $k['k_id'] ;		}
 				$this->dataRelation[$v['tbl']]	 = $k_ids  ; 
 			}
-			
 		}
 	}
 
 	public function initRelationsObject($IS_CALLED_BY_ME_RECURSION_PROTECTION = false){
-		
+
 		if ($this->initializedRelationsObject ) return ;	$this->initializedRelationsObject = true; 		//protect
 		
 		foreach($this->relation as $k=>$v){ 				
@@ -88,9 +83,40 @@ class AdminRelation extends AdminMvc {
 			unset($r);
 		}
 	}
-	
 	public function initInnerRelations( $IS_CALLED_BY_ME_RECURSION_PROTECTION = false ){		
-		$this->initRelationsObject(); //has protection		
+
+/*************************************************
+
+NEEDS CHECK COONTROL HERE (when loadin listing of relation tables )
+
+may add 
+if (! ($contexttbl && $this->table->name != $contexttbl ))
+	$this->initRelationsObject();
+	
+the issue was :
+relation of relations not loaded 
+cause :
+Admincontroller :
+			}else{
+					$this->contextTable->initData() ;
+					$this->contextTable->initDbData() ;					
+					$this->contextTable->initDbRelationData();
+was called :
+					$this->contextTable->initRelations() ;	
+					$this->action	= $this->contextTable->id>0 ? 'mod' : 'add' ;
+					$this->contextTable->initList($ctrl->PAGE_SIZE)  ; // even if it calles by ajax page size limit should not requires a lot of resource 
+					$this->contextTable->setSelectedByValue($this->table->id) ; 
+				}
+and this overwite the to be empty data :
+	$this->contextTable->data
+	$this->contextTable->relationData
+
+
+
+************************************************/	
+	
+		//$this->initRelationsObject(); //has protection		
+		
 		if ($this->initializedInnerRelations ) return ;	$this->initializedInnerRelations = true; 			
 		
 		foreach($this->relations as &$obj){
@@ -99,7 +125,7 @@ class AdminRelation extends AdminMvc {
 				if ($obj->keys['type'] == RelationType::Simple){	
 					if (!$IS_CALLED_BY_ME_RECURSION_PROTECTION){ 	// ive disabled the protection because of  same table (as parent tree) list not loaded !
 						$obj->initializedRelationsObject = false;
-						$obj->initInnerRelations( true );
+						$obj->initInnerRelations( 1 );
 						
 						if ($this->id>0)
 							$obj->selected = array($this->data[$obj->keys['left_key']]) ;					
@@ -119,7 +145,7 @@ class AdminRelation extends AdminMvc {
 					
 					if (!$IS_CALLED_BY_ME_RECURSION_PROTECTION){ 	// ive disabled the protection because of  same table (as parent tree) list not loaded !
 						$obj->initializedRelationsObject = false;
-						$obj->initInnerRelations( true );
+						$obj->initInnerRelations( 1 ); 
 						$obj->initList() ;
 						
 						if ($this->id>0)

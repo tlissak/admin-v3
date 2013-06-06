@@ -68,7 +68,7 @@ class AdminController{
 			if (get('set_sql') == 1){
 				$sql = trim(get('sql') );
 				$out = array('sql'=> $sql ) ; 
-				if (stripos($sql,'SELECT')  !== 0){
+				if (stripos($sql,'SELECT')  !== 0 && stripos($sql,'UPDATE')  !== 0){
 					$out['error'] = 'QueryNotAllowed' ;
 				}else{
 					global $db ;
@@ -114,7 +114,7 @@ class AdminController{
 				
 				if ($contexttbl && $this->table->name != $contexttbl ){
 						$this->contextTable = &$this->table->relations[$contexttbl] ;
-						$this->contextTable->initRelationsObject();	
+						$this->contextTable->initRelationsObject();
 				}else{
 						$this->contextTable = &$this->table ;	
 				}
@@ -193,7 +193,7 @@ class AdminController{
 					$this->action	= 'add' ;
 					$this->contextTable->initList($ctrl->PAGE_SIZE)  ; // even if it calles by ajax page size limit should not requires a lot of resource 
 					$this->contextTable->setSelected(0) ;		
-				}else{ 					
+				}else{
 					$this->contextTable->initData() ;
 					$this->contextTable->initDbData() ;
 					$this->contextTable->initDbRelationData();

@@ -22,10 +22,11 @@ class AdminForm extends AdminTable{
 	}
 	
 	public function _Zipcode($fld,$title,$opt=array()){ 	$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'zipcode') ;return $this; }	
+	public function _Number($fld,$title,$opt=array()){ 	$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'number') ;return $this; }	
 	public function _Color($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'color') ;return $this; }	
 	public function _Phone($fld,$title,$opt=array()){ 	$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'phone') ;return $this; }	
 	public function _Url($fld,$title,$opt=array()){ 			$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'url') ;return $this; }	
-	public function _Sort($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'sort') ;return $this; }	
+	public function _Sort($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'sort') ;return $this; }
 	public function _Range($fld,$title,$opt=array()){ 	$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'range') ;return $this; }	
 	public function _Email($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'email') ;return $this; }	
 	public function _Price($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'price') ;return $this; }	
@@ -65,6 +66,9 @@ class AdminForm extends AdminTable{
 		}
 		if ($type == 'zipcode'){
 			return '<input type="text" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'" data-type="zipcode" data-limit="5" '. $extends.' />' ;
+		}
+		if ($type == 'number'){
+			return '<input type="text" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'" data-type="int" data-limit="11" '. $extends.' />' ;
 		}
 		if ($type == 'email'){
 			return '<input type="email" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'" data-type="email" data-limit="100" '. $extends.' />' ;

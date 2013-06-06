@@ -62,7 +62,7 @@ class Upload{
 		if ( ! isset($img['type']) || !isset($img['size']) || ! isset($img['name'])){ return false ;}
 		if ( $img['size'] == 0) return false ;
 		if ( $ext = $this->get_ext( $img['name']) ){
-			if(!in_array($ext, array('jpg', 'jpeg', 'png', 'gif','bmp','doc','docx','pdf'))){
+			if(!in_array($ext, array('jpg', 'jpeg', 'png', 'gif','bmp','doc','docx','pdf','xls','xlsx','zip' ,'avi','mpeg','mp3','csv','txt'))){
 					return false ; 
 			}
 			// verify mime type ;

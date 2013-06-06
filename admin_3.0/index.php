@@ -41,8 +41,8 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 <script src="js/UI.formSubmit.js"></script>
 <script src="js/UI.inputValidation.js"></script>
 <script src="js/UI.formValidate.js"></script>
-<!--<script src="js/UI.sqler.js"></script>
-<script src="js/UI.fileBrowser.js"></script>-->
+<script src="js/UI.sqler.js"></script>
+<!--<script src="js/UI.fileBrowser.js"></script>-->
 <script src="js/UI.pagingFilterState.js"></script>
 <?
 if (Ctrl::PREF('ui_js')){	

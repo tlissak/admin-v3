@@ -8,14 +8,12 @@
 			$('.x-dup,.x-del').show();
 		}
 	})
-	
-	ui.formLoad(function (){	
-	
+		
+	ui.formLoad(function (){
 		$('.tabs',this).tabsLite()
-		$('textarea.rte',this).rte({ content_css_url:'../css/style.css',	width:'80%',	height:350
-		,fullsize:function(){ 
-			$(this).closest('.LAY-center').toggleClass('fullsize') ; 
-			$(this).closest('.rte-zone-outer ').toggleClass('fullsize')}
+		$('textarea.rte',this).rte({ content_css_url:'../css/style.css',	width:'80%',	height:350,fullsize:function(){ 
+				$(this).closest('.LAY-center').toggleClass('fullsize') ; 
+				$(this).closest('.rte-zone-outer ').toggleClass('fullsize')}
 		});
 		$('.color_picker',this).mColorPicker({imageFolder:'img/color_picker/'});
 		$('.date_picker',this).Zebra_DatePicker({format:"d/m/Y"});	
@@ -32,7 +30,13 @@
 						f = this.droparea.find("."+file.name.replace(/[^a-zA-Z0-9]+/g,'-'));
 						f.find('.speed').html( speed.toFixed(2) + ' KB/s');
 					}
-					,allowedfiletypes:['image/jpeg','image/png','image/gif','application/x-zip']
+					,allowedfiletypes:['image/jpeg','image/png','image/gif','application/x-zip','application/download',"application/zip"
+						,"application/x-compressed-zip","application/pdf","text/plain","text/csv"
+						//media
+						,"video/msvideo", "video/avi","video/x-msvideo","audio/mpeg","video/mpeg","audio/vorbis","application/ogg"
+						//word,xls
+						,"application/msword",	"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+						"application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
 					,dragOver:function(e){ //c('dragOver',this,e)	
 						$(this).addClass('dragover') ;
 					}
@@ -68,8 +72,9 @@
 							}
 						}
 					}
-					,error:function(err,file, i){
-						alert(UI.lang.FILE_UPLOAD[err]);//c('error',this,err,file,i)  
+					,error:function(err,file, i){						
+						alert(UI.lang.FILE_UPLOAD[err]);
+						ui.log(['UI.formLoad.js.fileupload.error',this,err,file,i])  
 					}
 			});
 	});

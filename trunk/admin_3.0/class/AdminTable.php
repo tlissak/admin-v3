@@ -57,11 +57,12 @@ class AdminTable extends AdminRelation {
 	 */
 	public function Add(){
 		$this->initPostData() ;	
-		$this->db->q(SQL::build('INSERT',$this->name,$this->post_data) ) ;
-		if(count($this->db->errors)){ fb('Post add db error ', $this->db->last_error);}
-		$this->id = $this->db->last_id() ;
-		$this->deleteRelations() ;
-		$this->addRelations() ;	
+		if ($this->id = $this->db->query(SQL::build('INSERT',$this->name,$this->post_data) ) ){
+			$this->deleteRelations() ;
+			$this->addRelations() ;
+		}else{
+			fb('Post add db error ', $this->db->last_error);
+		}
 	}
 	/**
 	 * Will duplicate database row by id
@@ -70,10 +71,11 @@ class AdminTable extends AdminRelation {
 	public function Dup(){
 		$this->initData(); //empty for fields keys only
 		$this->initDbRelationData() ;
-		$this->db->q(SQL::build('DUPLICATE',$this->name,$this->data,$this->id) ) ;
-		if(count($this->db->errors)){ fb('Post duplicate db error ', $this->db->last_error);}
-		$this->id = $this->db->last_id() ;		
-		$this->addRelations( true ) ;
+		if ($this->id = $this->db->query(SQL::build('DUPLICATE',$this->name,$this->data,$this->id) ) ){
+			$this->addRelations( true ) ;	
+		}else{
+			 fb('Post duplicate db error ', $this->db->last_error);
+		}		
 	}
 	/**
 	 * Will save submited data to database row 
@@ -83,19 +85,23 @@ class AdminTable extends AdminRelation {
 	public function Edit(){	
 		$this->initPostData() ;	
 		if ($this->id < 0) return ; 
-		$this->db->q(SQL::build('UPDATE',$this->name,$this->post_data,$this->id)) ; 	
-		if(count($this->db->errors)){ fb('Post edit db error ', $this->db->last_error);}
-		$this->deleteRelations() ;
-		$this->addRelations() ;
+		if ($this->db->query(SQL::build('UPDATE',$this->name,$this->post_data,$this->id)) ){
+			$this->deleteRelations() ;
+			$this->addRelations() ;	
+		} else{
+			 fb('Post edit db error ', $this->db->last_error);
+		}
 	}	
 	/**
 	 * Will remove permently the row from the database also will delete  relations data
 	 */
 	public function Delete(){
-		$this->db->q('DELETE  FROM `'.$this->name.'` WHERE id = '. $this->id) ;
-		if(count($this->db->errors)){ fb('Post delete db error ', $this->db->last_error);}
-		$this->deleteRelations() ; 
-		$this->id =  0 ; 
+		if ($this->db->query('DELETE  FROM `'.$this->name.'` WHERE id = '. $this->id) ){
+			$this->deleteRelations() ; 	
+		}else{
+			 fb('Post delete db error ', $this->db->last_error);
+		}
+		$this->id =  0;
 	}
 }
 ?>

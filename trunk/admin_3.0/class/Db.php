@@ -5,30 +5,19 @@ class Db{
 	public $last_error =  "" ;
 	private $pdo_type  ;
 	private $pdo_dsn  ;
-	function __construct($p_dsn = PDO_DSN , $p_type= PDO_TYPE ,$p_user = PDO_USER ,$p_pass = PDO_PASS  ){
-		$this->pdo_type =  $p_type;
-		$this->pdo_dsn = $p_dsn;
+	function __construct($p_dsn = PDO_DSN , $p_type= PDO_TYPE ){
+		$this->pdo_type 	= $p_type;
+		$this->pdo_dsn 	= $p_dsn;
 		try {
-		if ($p_type == 'sqlite'){
-			$this->db = new PDO( $p_dsn);	
-			return ;
-		}
-		if($p_type == 'mysql'){
-			$this->db = new PDO( $p_dsn,$p_user,$p_pass);
+			$p_user = defined("PDO_USER") ? PDO_USER : "" ;
+			$p_pass = defined("PDO_PASS") ? PDO_PASS : "" ;
+			$this->db = new PDO( $p_dsn,$p_user,$p_pass);	
 			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 			$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-			return ;
-		}
-		if($p_type == 'odbc'){
-			$this->db = new PDO( $p_dsn);
-			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
-			$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-			return ;
-		}
+			return ;	
 		}catch (PDOException $err) {
 			die('Unable to connect to database');
 		}
-		_die('PDO TYPE not defined');
 	}
 	function __destruct(){
 		$this->db = null ;	
@@ -36,8 +25,13 @@ class Db{
 	static function iso2utf8(&$value, $key){
 		$value = iconv('ISO-8859-1','UTF-8', $value);
 	}
-	function fetch($q){	
-		$this->last_error = "" ;
+	function error($e,$q){
+			$er  = (implode(', ',$e) .' :: '. $q );
+			$this->last_error = $er ;	
+			$this->errors[] = $er;
+			DebugError('Db', $er ) ;
+	}
+	function fetch($q){
 		DebugSql($q);
 		if ($sth = $this->db->prepare($q) ){
 			$sth->execute();	
@@ -48,9 +42,7 @@ class Db{
 				return array() ;
 			}
 		}else{
-			$error =  implode($this->db->errorInfo(),', ') .' : '.  $q ;
-			$this->last_error = $error ;	
-			$this->errors[] = $error;
+			$this->error($this->db->errorInfo() , $q) ;
 			return array() ;	
 		}
 	}
@@ -65,23 +57,21 @@ class Db{
 				return array() ;	
 			}
 		}else{
-			DebugError('Db', join($this->db->errorInfo(),', ') ) ;
+			$this->error($this->db->errorInfo() , $q) ;
 			return array() ;	
 		}
 	}
-	function q($q){
-		DebugSql($q);
-		$this->db->exec($q);
-	}
 	function query($q){
 		DebugSql($q);
-		$this->db->exec($q) ;
-		if (strrpos($q,'INSERT' ) > -1)
-			return 	$this->last_id() ;			
-		return true ;		
-	}
-	function fields($tbl) {
-		return $this->ctypes($tbl);
+		if ($sth = $this->db->prepare($q)){
+			$sth->execute();	
+			if (strrpos($q,'INSERT' ) > -1)
+				return $this->db->lastInsertId() ;
+			return true ;	
+		}else{
+			$this->error($this->db->errorInfo() , $q) ;
+			return false;	
+		}		
 	}
 	function ctypes($tbl) {
 		if (PDO_TYPE == 'mysql'){
@@ -106,8 +96,8 @@ class Db{
 			}
 			return $sres ;
 		}
+		die("Db::ctypes($tbl) : db pdo type get fields not handled ". PSO_TYPE );
 	}
-	function last_id(){		return $this->db->lastInsertId() ;	}
 }
 
 

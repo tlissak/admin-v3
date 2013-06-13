@@ -76,7 +76,7 @@ UI.docReady();
        <div id="list">
                 <!--AJAX_LIST-->
                 <? if ($contexttbl){?>	
-            	    <? echo $ctrl->contextTable->getTableHtml(); ?>
+            	    <?=  $ctrl->contextTable->getTableHtml(); ?>
 				<? } ?>
                 <!--/AJAX_LIST-->
        </div>
@@ -135,7 +135,7 @@ UI.docReady();
                                  <div class="tab">
                                  <h1 class="title"> <? c(l($ctrl->contextTable->name)); ?></h1>
                                  
-                                <? echo $ctrl->contextTable->getForm() ; ?> 
+                                <?=  $ctrl->contextTable->getForm() ; ?> 
                                 
                                 <p>&nbsp;</p>
                           		</div>
@@ -145,7 +145,7 @@ UI.docReady();
                                 <? foreach($ctrl->contextTable->relations as $v){ ?>
                                         <div class="tab-<? c($v->keys['name']) ;?>">                                        
                                         
-                                        	<div class="tab <? echo ($v->keys['type'] == RelationType::ManyToMany || $v->keys['type'] == RelationType::ManyToOne || $v->keys['type'] == RelationType::ManyToOneByKey) ? 'relation-tab' :""; ?>">
+                                        	<div class="tab <?=  ($v->keys['type'] == RelationType::ManyToMany || $v->keys['type'] == RelationType::ManyToOne || $v->keys['type'] == RelationType::ManyToOneByKey) ? 'relation-tab' :""; ?>">
 											
                                             <h1 class="title"> <? c(l($v->name)); ?></h1>
                                             

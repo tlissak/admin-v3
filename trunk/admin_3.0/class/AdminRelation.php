@@ -240,13 +240,13 @@ and this overwite the to be empty data :
 		foreach ($this->relation as $k=>$v ) {
 			if ($v['type'] == RelationType::ManyToMany ||
 				$v['type'] == RelationType::ManyToManySelect){
-				$this->db->q('DELETE  FROM `'. $v['by_tbl']. '` WHERE `' . $v['right_key']. '` = ' . $this->id );				
+				$this->db->query('DELETE  FROM `'. $v['by_tbl']. '` WHERE `' . $v['right_key']. '` = ' . $this->id );				
 			}
 			if ($v['type'] == RelationType::ManyToOne){
-				$this->db->q( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = 0 WHERE `' . $v['left_key']. '` = ' . $this->id );	
+				$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = 0 WHERE `' . $v['left_key']. '` = ' . $this->id );	
 			}
 			if ($v['type'] == RelationType::ManyToOneByKey){	
-				$this->db->q( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key']  . '` = 0 WHERE  `'. $v['tbl'] .'`.`'. $v['left_key'] .'` =  ' . ($this->post_data[ $v['right_key'] ] ?  $this->post_data[ $v['right_key'] ] : '0' ) ); 
+				$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key']  . '` = 0 WHERE  `'. $v['tbl'] .'`.`'. $v['left_key'] .'` =  ' . ($this->post_data[ $v['right_key'] ] ?  $this->post_data[ $v['right_key'] ] : '0' ) ); 
 			}
 		}
 	}	
@@ -271,9 +271,9 @@ and this overwite the to be empty data :
 			
 			if ($v['type'] ==  RelationType::ManyToOneByKey ){
 					if (count($k_ids)>0)
-						$this->db->q( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = ' . 
+						$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = ' . 
 							($this->post_data[ $v['right_key'] ] ?  $this->post_data[ $v['right_key'] ] : '0' )  . ' WHERE id IN(' . join($k_ids,",") . ') ' );
-					$this->db->q( 'DELETE  FROM `'. $v['tbl']. '` WHERE `' . $v['left_key']. '` =  0 '  );						
+					$this->db->query( 'DELETE  FROM `'. $v['tbl']. '` WHERE `' . $v['left_key']. '` =  0 '  );						
 			}
 			
 			if ($v['type'] ==  RelationType::ManyToMany || $v['type'] == RelationType::ManyToManySelect){		
@@ -295,14 +295,14 @@ and this overwite the to be empty data :
 						$bulided = true ;
 					}
 					if ($bulided){
-						$this->db->q($insert_sql );
+						$this->db->query($insert_sql );
 					}
 			}
 			
 			if ($v['type'] ==  RelationType::ManyToOne){
 					if (count($k_ids)>0)
-						$this->db->q( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = ' . $this->id . ' WHERE id IN(' . join($k_ids,",") . ') '  );
-					$this->db->q( 'DELETE  FROM `'. $v['tbl']. '` WHERE `' . $v['left_key']. '` =  0 '  );	
+						$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = ' . $this->id . ' WHERE id IN(' . join($k_ids,",") . ') '  );
+					$this->db->query( 'DELETE  FROM `'. $v['tbl']. '` WHERE `' . $v['left_key']. '` =  0 '  );	
 			}
 			
 

@@ -16,6 +16,7 @@ Loader('page')
 ->Relation( 	array( 'name'=>'page_image','tbl'=>'image'	,'type'=>RelationType::ManyToOne,'left_key'=>'id_page','fld'=>'title'))
 ->_Text('title','Titre',array('required'=>1))
 ->_Text('link_title','Text liens',array('required'=>1))
+->_Url('tpl','Template') 
 ->_Sort('sort','Ordre d\'affichage',array('min'=>1,'max'=>100)) 
 ->_Check('valid','En-ligne')
 ->_Check('in_footer','En Pied de page ?','checkbox') 
@@ -38,7 +39,7 @@ Loader("image")->FieldTitle('path')->View(array('path'=>'Image'))
 ->Show(0)
 ->Image('path' )
 ->_File('path','Fichier')
-->_Url('url','(Ou) Liens URL de la vidéo')
+->_Text('url','Description (SEO)')
 ->Load();
 
 ?>

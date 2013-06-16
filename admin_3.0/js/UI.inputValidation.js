@@ -1,4 +1,5 @@
 (function(ui){
+	
 	ui.inputValidation = function(){
 		this._link = {
 			pattern :/([-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?)|^$/gi
@@ -7,7 +8,8 @@
 		}
 		this._url = {
 			pattern : /(^[-a-z0-9\.]+$)|^$/
-			,fix:function(v){ return $.trim(v).toLowerCase().replace(/\s/g, '-') ;}
+			,fix:function(v){ return $.trim(v).toLowerCase().replace(/[àáâä]/g,"a")
+			.replace(/æ/g,"ae").replace(/ç/g,"c").replace(/[èéêë]/g,"e").replace(/[ìíîï]/g,"i").replace(/[òóôö]/g,"o").replace(/œ/g,"oe").replace(/[ùúûü]/g,"u").replace(/\W/g,"-") ;}
 			,msg: UI.lang.UNVALID_LINK
 		}
 		this._int = {

@@ -6,8 +6,8 @@ MO
 - mass photos upload ( auto save )
 - live file editor with ace
 CORE
-- better modulable controller with before/after event hooks
-- backup will transfer to predefined ftp
+- better modulable controller with before/after events hooks
+- backups should include option of what who and where to backup ( transfer to pre-defined ftp )
 - formValidation : spacifique pattern arguments 
 - diffrents form view user selection 
 - add unload event when changes mades in form (fields change event)
@@ -15,12 +15,15 @@ CORE
 - email notification on logins/errors
 - ban bad login
 - log logins attamps ip date 
+- log activity
+- log sql querys
 - new captcha based image (without font) http://php.net/manual/fr/function.imagecreatetruecolor.php
 - default/state sort for listing 
 - full site restore from backup
-- auth token (for cron requests for back) check ps token system
+- auth token (for cron requests for backups) check ps token system
 
 v3
++ replace other '#é for URL  pattern fix
 * fields list cache by date with db->cache with file signature
 + UI.js lang 
 + save state of relation data inside $table->data object 

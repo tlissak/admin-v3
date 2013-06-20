@@ -1,18 +1,17 @@
-- _SORT field will Live edit sort field in list 
+- email notification on logins/errors
+- better modulable controller with before/after events hooks
+- file browser (40%)
 
 v4
 MO
-- file browser (40%)
 - mass photos upload ( auto save )
 - live file editor with ace
 CORE
-- better modulable controller with before/after events hooks
 - backups should include option of what who and where to backup ( transfer to pre-defined ftp )
 - formValidation : spacifique pattern arguments 
 - diffrents form view user selection 
 - add unload event when changes mades in form (fields change event)
 - submit only changed fields and save only changed fields
-- email notification on logins/errors
 - ban bad login
 - log logins attamps ip date 
 - log activity
@@ -23,6 +22,7 @@ CORE
 - auth token (for cron requests for backups) check ps token system
 
 v3
++ _SORT field will Live edit sort field in list 
 + replace other '#é for URL  pattern fix
 * fields list cache by date with db->cache with file signature
 + UI.js lang 

@@ -4,7 +4,8 @@ class AdminMvc extends AdminList{
 	
 	public $viewtype = 'SIMPLE'; 
 	
-	public $image  ;
+	public $image  =array();
+	public $_sort =array();
 	
 	public $initializedViewList = false ;
 	
@@ -242,6 +243,16 @@ class AdminMvc extends AdminList{
 					}
 				}
 			}
+			
+			if( count($this->_sort )){
+				foreach($this->_sort as $sort_k){
+					foreach($this->view as $vw_k=>$vw_v){
+						if ($vw_k == $sort_k){
+							$dt[$sort_k] = $this->sortable($sort_k,$dt[$sort_k]) ; 
+						}
+					}
+				}
+			}
 
 			foreach ($this->view as $k=>$v){
 				if ( ! array_key_exists ($k,$dt)){
@@ -280,10 +291,18 @@ class AdminMvc extends AdminList{
 			return '<i class="icon-picture" title="'.$img.'"></i>';
 		}
 	}
-	
+	function sortable($k,$v){
+		return 	'<input type="number" data-name="'. $k .'" value="'.$v.'" style="width:50px;" class="sortable_field" />'; 
+	}
 	function initViewList(){ 
 			if ($this->initializedViewList) return ; 	$this->initializedViewList = true ; //protect
 			if (count($this->image )){ $this->_r_imgp = $this->image  ; }
+			
+			foreach($this->formFields as $fld){
+				if ($fld['type']=='sort')	{
+					$this->_sort[] = 	$fld['name'] ;
+				}
+			}
 	}
 	
 	

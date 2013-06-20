@@ -1,4 +1,7 @@
 (function(ui){
+	ui.log('UI.filebrower return ;');
+	return ;
+	
 	
 	ui.docLoad(function(){		
 		var $elms =  $('<div class="filebrowser_workspace context">\

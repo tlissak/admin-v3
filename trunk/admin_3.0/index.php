@@ -14,14 +14,16 @@ include('class/AdminTable.php');
 include('class/AdminForm.php');
 include('class/AdminLoader.php');
 include('class/AdminController.php');
+include('class/AdminModule.php');
 
 include(P_SITE) ;
 
 $_LNG			= array_merge(Ctrl::$_LNG_DEF,Ctrl::$_LNG) ;
 $tbl 				= get('tbl') ;
 $contexttbl 	= get('contexttbl');
-$ctrl				= new Ctrl() ;
 
+$module 		= new AdminModule();
+$ctrl				= new Ctrl() ;
 $ctrl->initAuth();
 $ctrl->dispacher() ;
 
@@ -33,18 +35,9 @@ if ($tbl && $ctrl && $ctrl->contextTable){  $contexttbl = $ctrl->contextTable->n
 <title>Admin</title>
 <? include('_inc.php') ; ?>
 <link rel="stylesheet" type="text/css" href="css/layout.css">
-<script src="js/plugin.3.0.js"></script>
-<script src="js/UI.js"></script>
-<script src="js/UI.lang.js"></script>
-<script src="js/UI.docLoad.js"></script>
-<script src="js/UI.formLoad.js"></script>
-<script src="js/UI.formSubmit.js"></script>
-<script src="js/UI.inputValidation.js"></script>
-<script src="js/UI.formValidate.js"></script>
-<script src="js/UI.sqler.js"></script>
-<!--<script src="js/UI.fileBrowser.js"></script>-->
-<script src="js/UI.pagingFilterState.js"></script>
 <?
+$module->includers();
+
 if (Ctrl::PREF('ui_js')){	
 	foreach(Ctrl::PREF('ui_js') as $ui_js) { c('<script src="' .$ui_js .'"></script>') ; }
 }

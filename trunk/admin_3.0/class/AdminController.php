@@ -58,27 +58,10 @@ class AdminController{
 		global $tbl ;
 		global $ctrl ;
 		global $contexttbl  ;
+		global $module;	
 			
-			if (get('browse') == 1){
-				$out = new FileBrowser( get('path') );
-				header('Content-type: application/json');
-				echo json_encode($out) ;
-				die ;
-			}
-			if (get('set_sql') == 1){
-				$sql = trim(get('sql') );
-				$out = array('sql'=> $sql ) ; 
-				if (stripos($sql,'SELECT')  !== 0 && stripos($sql,'UPDATE')  !== 0){
-					$out['error'] = 'QueryNotAllowed' ;
-				}else{
-					global $db ;
-					$out['list'] = $db->fetch($sql)	 ;
-					$out['error'] = $db->last_error ;
-				}
-				header('Content-type: application/json');
-				echo json_encode($out) ;
-				die; 	
-			}
+			$module->dispachers();
+			
 
 			if (get('delete_file')==1){
 				header('Content-type: application/json');
@@ -100,10 +83,6 @@ class AdminController{
 				die ;
 			}
 			
-			if (get('backup')==1){
-				$this->backup();
-				die ;
-			}
 			
 			// form + ajax + relations
 			
@@ -236,32 +215,7 @@ class AdminController{
 		}
 		if ($cookie->auth != true){ 	echo $this->getFormLogin(); 	die ; }
 	}
-	
-	/**
-	 * Backup requests handler
-	 */
-	public function backup(){
-		
-		ini_set('max_execution_time', 100);
-		set_time_limit(100);	
-		
-		// other database type that based file wil be zipped 
-		if (PDO_TYPE == 'mysql'){ 
-			$db_back = new DbBackup(PDO_DSN,PDO_DB,PDO_USER,PDO_PASS) ;
-			$backup = $db_back->backup();
-			if(!$backup['error']){
-				$dst =  time() . "_". PDO_DB.".sql"   ;
-				$fp = fopen(P_BACKUP . $dst,'a+');
-				fwrite($fp, $backup['msg']);
-				fclose($fp); 				//the dump file will ziped				//header('Location: '.U_BACKUP . $dst) ;
-			} else {
-				echo 'An error has ocurred. '. $backup['msg'];
-			}
-		}
-		$dst =  time() . "_". basename('site_backup.zip')  ;
-		new FileBackup(P_BASE, P_BACKUP . $dst ) ;
-		header('Location: '.U_BACKUP . $dst) ;
-	}
+
 	
 	/**
 	 * @return Html string of the user form

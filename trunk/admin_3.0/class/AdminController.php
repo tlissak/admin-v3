@@ -74,10 +74,12 @@ class AdminController{
 			if (get('upload')==1){
 				header('Content-type: application/json');
 				$fld = get('fld') ;
-				if ($contexttbl && $tbl != $contexttbl)
+				if ($contexttbl && $tbl  && $tbl != $contexttbl)
 					$p_surfix = $tbl . '_' . $contexttbl .'_'.  $fld . DS ;
-				else
+				elseif ($tbl && $fld)
 					$p_surfix = $tbl .'_'. $fld. DS ;
+				else 
+					$p_surfix = $fld. DS ;
 				if (! is_dir(P_PHOTO . $p_surfix)){ 		mkdir(P_PHOTO . $p_surfix); }				
 				echo json_encode( new Upload($p_surfix) ) ;
 				die ;

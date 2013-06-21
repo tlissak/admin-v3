@@ -13,28 +13,28 @@ p{ margin:3px 0;}
 
 .LAY{ padding:0; background:#f1f1f1; height:100%}
 .LAY>div{ overflow:auto;}
-
 .LAY-left{  position:absolute; top:1px; bottom:1px; background-color:#FFF; margin-right:5px; z-index:9; right:90%; left:1px; }
-body[dir="rtl"] .LAY-left{margin-right:0;margin-left:5px; right:1px; left:90%; }
+.LAY-leftcol{position:absolute; top:1px;  left:2px; bottom:1px; width:30%; background:#FFF; overflow:auto; }
 .LAY-list{ position:absolute; top:1px;  left:10%; bottom:1px; width:30%; background:#FFF; overflow:auto;  }
-body[dir="rtl"] .LAY-list{ left:5px; right:10%;}
 .LAY-main{ position:absolute; top:0; left:40%; bottom:1px; background:#FFF; right:5px;margin-left:5px ; overflow:auto ; z-index:9 } /* form */
-body[dir="rtl"] .LAY-main{ right:40%; left:5px; margin-left:0; margin-right:5px;}
-
 .LAY-north{ position:absolute; height:50px; left:0; top:1px; background:#FFF; right:1px; margin-left:1px; overflow:hidden;}
-body[dir="rtl"] .LAY-north{ left:1px ; right:0;}
 .LAY-tabs{  position:absolute; left:0; margin-left:5px; z-index:10; right:1px; top:54px; height:35px;}
-body[dir="rtl"] .LAY-tabs{ margin-left:0; margin-right:5px; right:0; left:1px;}
 .LAY-controls{ position:absolute; left:0; z-index:9; padding:10px 10px 18px 10px; top:0; right:0; background-color:#F1F1F1;}
 .LAY-center{ position:absolute; top:54px; left:0; bottom:1px; background:#FFF; right:5px;margin-left:5px ; overflow:auto ; z-index:9}
-body[dir="rtl"] .LAY-center{ left:5px; margin-left:0; margin-right:5px; right:5px}
-.LAY-message{ position:absolute; height:30px;top:7px; left:30%;z-index:10}
-body[dir="rtl"] .LAY-message{ left:0 ; right:40% ; margin-left:0; margin-right:230px;}
+.LAY-message{ position:absolute; height:30px;top:7px; left:30%;z-index:10; right:0;}
 .LAY-message > div{ color:#060; float:left; padding:3px 20px; margin:3px; border:#060 1px solid; border-radius:3px; background:rgba(0,204,0,0.3);}
 
 .sql_workspace .LAY-controls{ left:0;}
 .sql_workspace .LAY-center{ left:0; height:200px; position:absolute;}
 .sql_workspace .LAY-list{ top:255px; width:auto; right:1px; bottom:0; background-color:#FFC; left:0;}
+
+body[dir="rtl"] .LAY-left{margin-right:0;margin-left:5px; right:1px; left:90%; }
+body[dir="rtl"] .LAY-list{ left:5px; right:10%;}
+body[dir="rtl"] .LAY-main{ right:40%; left:5px; margin-left:0; margin-right:5px;}
+body[dir="rtl"] .LAY-north{ left:1px ; right:0;}
+body[dir="rtl"] .LAY-tabs{ margin-left:0; margin-right:5px; right:0; left:1px;}
+body[dir="rtl"] .LAY-center{ left:5px; margin-left:0; margin-right:5px; right:5px}
+body[dir="rtl"] .LAY-message{ left:0 ; right:40% ; margin-left:0; margin-right:230px;}
 
 
 #menu a{ display:block; margin:10px; padding:10px 0;}
@@ -120,9 +120,14 @@ body.dragover .droparea{ padding:30px; background:#FFC}
 .rte-zone-outer{margin:0 0 0 3px;padding:1px;border:1px #DDD solid; border-top-color:#f1f1f1; display:inline-block; width:80%; border-radius:4px;}
 .fullsize{ overflow:visible !important;}
 
+.filebrowser_overlay ,.filebrowser_workspace { display:;}
+.filebrowser_overlay{ position:fixed; top:0; left:0; right:0; bottom:0; background-color:#000; z-index:10; opacity:0.5; cursor:move;}
+.filebrowser_workspace{ z-index:10; background-color:#FFF; height:90%; top:5%; left:5%; width:90%; position:absolute; border:#DDD 1px solid;}
 
-.filebrowser_workspace .LAY-list a{ color:#333}
-.filebrowser_workspace .LAY-list .list{ margin:10px;}
-.filebrowser_workspace .LAY-list .list td a{ display:block; text-align:left;}
-#file_preview a{ height:90px; width:90px; float:left; margin:10px; display:block; padding:10px; background-color:#f1f1f1; border:#EEE 1px solid; text-align:center}
-#file_preview a img{ max-height:90px; max-width:90px;}
+.filebrowser_workspace .LAY-leftcol { background-color:#F1F1F1; }
+.filebrowser_workspace .btn-file,.filebrowser_workspace .droparea{ display:block; float:none;}
+.filebrowser_workspace .LAY-leftcol a{ color:#333}
+.filebrowser_workspace .directories a{ display:block; text-align:left;}
+.filebrowser_workspace .LAY-center{ left:30%; top:1px;}
+.filebrowser_workspace .LAY-center a{ height:90px; width:90px; float:left; margin:10px; display:block; padding:10px; background-color:#f1f1f1; border:#EEE 1px solid; text-align:center}
+.filebrowser_workspace .LAY-center a img{ max-height:90px; max-width:90px;}

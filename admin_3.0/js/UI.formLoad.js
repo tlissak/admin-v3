@@ -1,23 +1,7 @@
 
 (function(ui){
 	
-	ui.formLoad(function (){
-		if($("#main-form").find('input[name="id"]').val() == 0){
-			$('.x-dup,.x-del').hide();
-		}else{
-			$('.x-dup,.x-del').show();
-		}
-	})
-		
-	ui.formLoad(function (){
-		$('.tabs',this).tabsLite()
-		$('textarea.rte',this).rte({ content_css_url:'../css/style.css',	width:'80%',	height:350,fullsize:function(){ 
-				$(this).closest('.LAY-center').toggleClass('fullsize') ; 
-				$(this).closest('.rte-zone-outer ').toggleClass('fullsize')}
-		});
-		$('.color_picker',this).mColorPicker({imageFolder:'img/color_picker/'});
-		$('.date_picker',this).Zebra_DatePicker({format:"d/m/Y"});	
-		$(".droparea",this ).fileupload({
+	ui.file_upload_shared_settings = {
 					maxfiles: 1
 					,maxfilesize:1000
 					,queuefiles:0	
@@ -76,6 +60,24 @@
 						alert(UI.lang.FILE_UPLOAD[err]);
 						ui.log(['UI.formLoad.js.fileupload.error',this,err,file,i])  
 					}
-			});
+			}
+	
+	ui.formLoad(function (){
+		if($("#main-form").find('input[name="id"]').val() == 0){
+			$('.x-dup,.x-del').hide();
+		}else{
+			$('.x-dup,.x-del').show();
+		}
+	})
+		
+	ui.formLoad(function (){
+		$('.tabs',this).tabsLite()
+		$('textarea.rte',this).rte({ content_css_url:'../css/style.css',	width:'80%',	height:350,fullsize:function(){ 
+				$(this).closest('.LAY-center').toggleClass('fullsize') ; 
+				$(this).closest('.rte-zone-outer ').toggleClass('fullsize')}
+		});
+		$('.color_picker',this).mColorPicker({imageFolder:'img/color_picker/'});
+		$('.date_picker',this).Zebra_DatePicker({format:"d/m/Y"});	
+		$(".droparea",this ).fileupload(ui.file_upload_shared_settings);
 	});
 }(UI))

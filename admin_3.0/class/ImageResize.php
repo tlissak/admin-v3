@@ -17,13 +17,16 @@ class ImageResize{
 		$this->input['type']			= $info[2];
 		$this->input['mime'] 		= $info['mime'] ;
 		$this->input['length']		= (string)(filesize($file));
-		
 		if ($dims['width'] == 0) $factor = $dims['height']/$this->input['height'];
 		elseif ($dims['height'] == 0) $factor = $dims['width']/$this->input['width'];
-		else $factor 		= min ( $dims['width'] / $this->input['width'], $dims['height'] / $this->input['height']);  		
-		$this->output['width'] 		= round ($this->input['width'] * $factor);
-		$this->output['height'] 	= round ($this->input['height'] * $factor);
-		
+		else $factor 		= min ( $dims['width'] / $this->input['width'], $dims['height'] / $this->input['height']);  
+		if (($this->input['width'] * $factor)> $this->input['width'] && ($this->input['height'] * $factor) > $this->input['height']){
+			$this->output['width'] 		= $this->input['width'] *1.3 ;
+			$this->output['height'] 	= $this->input['height'] * 1.3;
+		}else{
+			$this->output['width'] 		= round ($this->input['width'] * $factor);
+			$this->output['height'] 	= round ($this->input['height'] * $factor);
+		}
 		$output_file_name = preg_replace('/\.(.+)$/','_'. $this->output['width'].'x'.$this->output['height'] .'.\\1' , basename($this->input['path'] ) ) ;		
 		$base = dirname($this->input['path'] ) . DS ;		
 		if ( ! is_dir($base . 'thumb' ))	{	mkdir($base . 'thumb' . DS) ; }

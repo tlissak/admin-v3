@@ -120,7 +120,7 @@ body.dragover .droparea{ padding:30px; background:#FFC}
 .rte-zone-outer{margin:0 0 0 3px;padding:1px;border:1px #DDD solid; border-top-color:#f1f1f1; display:inline-block; width:80%; border-radius:4px;}
 .fullsize{ overflow:visible !important;}
 
-.filebrowser_overlay ,.filebrowser_workspace { display:;}
+.filebrowser_overlay ,.filebrowser_workspace { display:none;}
 .filebrowser_overlay{ position:fixed; top:0; left:0; right:0; bottom:0; background-color:#000; z-index:10; opacity:0.5; cursor:move;}
 .filebrowser_workspace{ z-index:10; background-color:#FFF; height:90%; top:5%; left:5%; width:90%; position:absolute; border:#DDD 1px solid;}
 

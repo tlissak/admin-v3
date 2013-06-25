@@ -21,7 +21,7 @@ p{ margin:3px 0;}
 .LAY-tabs{  position:absolute; left:0; margin-left:5px; z-index:10; right:1px; top:54px; height:35px;}
 .LAY-controls{ position:absolute; left:0; z-index:9; padding:10px 10px 18px 10px; top:0; right:0; background-color:#F1F1F1;}
 .LAY-center{ position:absolute; top:54px; left:0; bottom:1px; background:#FFF; right:5px;margin-left:5px ; overflow:auto ; z-index:9}
-.LAY-message{ position:absolute; height:30px;top:7px; left:30%;z-index:10; right:0;}
+.LAY-message{ position:absolute; height:30px;top:7px; left:190px;z-index:10; right:180px;}
 .LAY-message > div{ color:#060; float:left; padding:3px 20px; margin:3px; border:#060 1px solid; border-radius:3px; background:rgba(0,204,0,0.3);}
 
 .sql_workspace .LAY-controls{ left:0;}

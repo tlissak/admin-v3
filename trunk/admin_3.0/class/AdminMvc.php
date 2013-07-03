@@ -256,7 +256,8 @@ class AdminMvc extends AdminList{
 
 			foreach ($this->view as $k=>$v){
 				if ( ! array_key_exists ($k,$dt)){
-					Debug (' Check The row dosent contains key ' . $k);
+					if (DEV_MODE)
+						Debug (' Check The row dosent contains key ' . $k);
 					$tr .= '<td>'.$id .'!</td>' ;
 				}else{
 					if ($dt[$k] != null){

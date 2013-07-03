@@ -14,6 +14,7 @@ class Db{
 			$this->db = new PDO( $p_dsn,$p_user,$p_pass);	
 			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 			$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+			if ($this->pdo_type == 'mysql'){	$this->db->query("SET NAMES 'utf8'");} //$this->db->exec("set names utf8");
 			return ;	
 		}catch (PDOException $err) {
 			die('Unable to connect to database');

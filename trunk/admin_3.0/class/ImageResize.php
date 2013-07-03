@@ -33,9 +33,9 @@ class ImageResize{
 		$this->output['path'] =   $base .'thumb'.DS. $output_file_name ;
 		
 		if (! is_file($this->output['path'])){			
-			if ($this->input['type'] == IMAGETYPE_GIF)
-			$this->input['file'] = imagecreatefromgif($this->input['path']);
-			elseif ($this->input['type'] == IMAGETYPE_JPEG)
+			if ($this->input['type'] == IMAGETYPE_GIF){
+			$this->input['file'] = imagecreatefromgif($this->input['path']);			
+			}elseif ($this->input['type'] == IMAGETYPE_JPEG)
 			$this->input['file'] = imagecreatefromjpeg($this->input['path']);
 			elseif ($this->input['type'] == IMAGETYPE_PNG)
 			$this->input['file'] = imagecreatefrompng($this->input['path']);			
@@ -43,7 +43,7 @@ class ImageResize{
 			if ( $this->input['type'] == IMAGETYPE_GIF)     {
 				$trnprt_indx = imagecolortransparent($this->input['file']);
 				if ($trnprt_indx >= 0) {
-						$trnprt_color    = imagecolorsforindex($this->input['type'], $trnprt_indx);
+						$trnprt_color    = @imagecolorsforindex($this->input['file'], $trnprt_indx);
 						$trnprt_indx    	= imagecolorallocate($this->output['file'], $trnprt_color['red'], $trnprt_color['green'], $trnprt_color['blue']);
 						imagefill($this->output['file'], 0, 0, $trnprt_indx);
 						imagecolortransparent($this->output['file'], $trnprt_indx);

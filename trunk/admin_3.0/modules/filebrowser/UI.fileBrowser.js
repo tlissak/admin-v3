@@ -15,9 +15,10 @@
 			<div class="LAY-center files"></div>\
 		</div>' );
 		
-		//Add upload handler
-		filebrowser_upload_settings = ui.file_upload_shared_settings ;
+		//Add upload handler		
+		filebrowser_upload_settings =  $.extend({},ui.file_upload_shared_settings);
 		filebrowser_upload_settings.uploadFinished = function(i,ofile,res){	UI.browseFiles("?path=filebrowser") ;}		
+		
 		$(".droparea",ui.filebrowser ).fileupload(filebrowser_upload_settings);
 
 		//a links
@@ -51,7 +52,8 @@
 	}	
 	
 	ui.browseFiles = function(path){
-			$.ajax(path + '&browse=1',{dataType:"json",success: function(o){				
+
+			$.ajax(path + '&browse=1&callme=1',{dataType:"json",success: function(o){				
 				for(var i=0 , tbl = '<table class="tbl"><tbody>'; i<o.dirs.length;i++){
 						tbl += '<tr><td><a href="?path='+o.dirs[i].relative+'">'+o.dirs[i].name+'</a></td></tr>'; 
 				}				

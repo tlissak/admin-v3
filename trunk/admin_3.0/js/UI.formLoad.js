@@ -14,7 +14,7 @@
 						f = this.droparea.find("."+file.name.replace(/[^a-zA-Z0-9]+/g,'-'));
 						f.find('.speed').html( speed.toFixed(2) + ' KB/s');
 					}
-					,allowedfiletypes:['image/jpeg','image/png','image/gif','application/x-zip','application/download',"application/zip"
+					,allowedfiletypes:['image/jpeg','image/png','image/gif','application/x-zip','application/x-download','application/download',"application/zip"
 						,"application/x-compressed-zip","application/pdf","text/plain","text/csv"
 						//media
 						,"video/msvideo", "video/avi","video/x-msvideo","audio/mpeg","video/mpeg","audio/vorbis","application/ogg"

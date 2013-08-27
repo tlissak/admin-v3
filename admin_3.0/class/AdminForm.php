@@ -30,6 +30,7 @@ class AdminForm extends AdminTable{
 	public function _Range($fld,$title,$opt=array()){ 	$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'range') ;return $this; }	
 	public function _Email($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'email') ;return $this; }	
 	public function _Price($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'price') ;return $this; }	
+	public function _Float($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'float') ;return $this; }	
 	public function _Text($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'text') ;return $this; }	
 	public function _Date($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'date') ;return $this; }	
 	public function _Check($fld,$title,$opt=array()){ 	$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'checkbox') ;return $this; }	
@@ -68,16 +69,19 @@ class AdminForm extends AdminTable{
 			return '<input type="text" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'" data-type="zipcode" data-limit="5" '. $extends.' />' ;
 		}
 		if ($type == 'number'){
-			return '<input type="text" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'" data-type="int" data-limit="11" '. $extends.' />' ;
+			return '<input type="number" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'" data-type="int" data-limit="11" '. $extends.' />' ;
 		}
 		if ($type == 'email'){
 			return '<input type="email" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'" data-type="email" data-limit="100" '. $extends.' />' ;
 		}
+		if ($type == 'float'){
+			return '<input type="text" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'"  data-type="float"  '. $extends.' />' ;
+		}
 		if ($type == 'price'){
-			return '<input type="text" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'"  data-type="price" data-limit="10" '. $extends.' />' ;
+			return '<input type="number" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'"  data-type="price" '. $extends.' />' ;
 		}
 		if ($type == 'sort'){
-			return '<input type="text" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'"  data-type="int" data-limit="5" '. $extends.' />' ;
+			return '<input type="number" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'"  data-type="int" data-limit="5" '. $extends.' />' ;
 		}
 		if ($type == 'url'){
 			return '<input type="text" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'"  data-type="url" data-limit="255" '. $extends.' />' ;

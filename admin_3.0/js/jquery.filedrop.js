@@ -75,7 +75,9 @@
   
   $.fn.filedrop = function(options) {
     var opts = $.extend({}, default_opts, options), global_progress = [];
-
+	
+	this.data('opts',opts); //used to change on live settings .data('opts').url = 'changed_url'
+	
     this.on('drop', drop).on('dragstart', opts.dragStart).on('dragenter', dragEnter).on('dragover', dragOver).on('dragleave', dragLeave);
     $(document).on('drop', docDrop).on('dragenter', docEnter).on('dragover', docOver).on('dragleave', docLeave);
 

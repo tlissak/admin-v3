@@ -13,6 +13,7 @@
 			,UNVALID_LINK:'Lien non valide'
 			,UNVALID_INTEGER:'Chiffre non valide'
 			,UNVALID_FLOAT:'Chiffre avec fraction non valide'
+			,UNVALID_PRICE:'Prix non valide'
 			,UNVALID_TEXT:'Caractère non valide'
 			,UNVALID_ZIPCODE : 'Code postal non valide'
 			,UNVALID_EMAIL :'E-Mail non valide'

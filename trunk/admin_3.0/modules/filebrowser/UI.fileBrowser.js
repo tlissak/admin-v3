@@ -1,10 +1,14 @@
 (function(ui){	
 	ui.filebrowser = '.filebrowser_workspace' ;
 	ui.current_iframe = null ;
+	ui.filebrowser_upload_settings = {}; 
+	
+	ui.filebrowser_current_path = '';
+	ui.browseFiles_initialize = false ;
 	
 	ui.docLoad(function(){		
 		//CREATE
-		var BTN = '<span class="btn-file btn-green"><input type="file" name="filebrowser" data-url="?fld=filebrowser&upload=1" /><i class="icon-plus"></i>   Parcourir ou placer ici une image</span>';
+		var BTN = '<span class="btn-file btn-green"><input type="file" name="filebrowser" data-url="?fld=&upload=1" /><i class="icon-plus"></i>   Parcourir ou placer ici une image</span>';
 		$("body",document).append('<div class="filebrowser_overlay"></div>\
 		<div class="'+ ui.filebrowser.replace('.','')+' LAY">\
 			<div class="LAY-leftcol">\
@@ -16,19 +20,17 @@
 		</div>' );
 		
 		//Add upload handler		
-		filebrowser_upload_settings =  $.extend({},ui.file_upload_shared_settings);
-		filebrowser_upload_settings.uploadFinished = function(i,ofile,res){	UI.browseFiles("?path=filebrowser") ;}		
+		UI.filebrowser_upload_settings =  $.extend({},ui.file_upload_shared_settings);
+		UI.filebrowser_upload_settings.uploadFinished = function(i,ofile,res){	UI.browseFiles("?path="+ui.filebrowser_current_path) ;}		
 		
-		$(".droparea",ui.filebrowser ).fileupload(filebrowser_upload_settings);
-
+		ui.filebrowser_upload = $(".droparea",ui.filebrowser ).fileupload(UI.filebrowser_upload_settings);
+				
 		//a links
 		$(document).on("click",ui.filebrowser+' .directories a,'+ui.filebrowser+' .breadcrumb a'	,function(){	
 			UI.browseFiles($(this).attr('href')) ;		
 			return false ;	
 		})
-		
-		//load list ction
-		UI.browseFiles('?path=') ;		
+				
 		$('.filebrowser_overlay').click(ui.closeFileBrowser)			
 	})
 	
@@ -40,7 +42,7 @@
 		})
 	})
 	
-	ui.openFileBrowser = function(){		$('.filebrowser_overlay').fadeIn(100).next().fadeIn(100) ;	}	
+	ui.openFileBrowser = function(){		$('.filebrowser_overlay').fadeIn(100).next().fadeIn(100) ; if (! UI.browseFiles_initialize) { UI.browseFiles('?path=') }	}
 	ui.closeFileBrowser = function(){ 		$(".filebrowser_overlay").fadeOut(100).next().fadeOut(100) ;	}	
 	
 	ui.insertBrowserImage = function(URI){
@@ -52,7 +54,13 @@
 	}	
 	
 	ui.browseFiles = function(path){
-
+			
+			UI.browseFiles_initialize = true ;
+			
+			UI.filebrowser_current_path = path.replace('?path=',"");
+			$(".droparea",UI.filebrowser ).data('opts').url = '?fld='+UI.filebrowser_current_path+'&upload=1'  ;
+			
+			
 			$.ajax(path + '&browse=1&callme=1',{dataType:"json",success: function(o){				
 				for(var i=0 , tbl = '<table class="tbl"><tbody>'; i<o.dirs.length;i++){
 						tbl += '<tr><td><a href="?path='+o.dirs[i].relative+'">'+o.dirs[i].name+'</a></td></tr>'; 
@@ -78,4 +86,14 @@
 				})
 			} ,type:'GET' }) ;
 	};
+	
+	
+	ui.docLoad(function(){		
+		
+		$("#basecontrol").after('<a href="#browse_files" id="browse_files" class="btn-orange browse" style="display:block;margin:10px;" > <i class="icon-file"></i>  Browse files</a>')
+		$('#browse_files').click(function(){ 	UI.openFileBrowser();		});
+		
+	})
+	
+	
 }(UI));

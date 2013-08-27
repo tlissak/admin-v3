@@ -201,24 +201,36 @@ class AdminController{
 	}
 	
 	//TODO  add bans ips system
+	//TODO token check
 	/**
 	 * Login requests handler
 	 * will set the $cookie->auth or will show the login form
 	 */
-	public function initAuth(){		
+	static function generate_token(){ 	return hash('sha256',_RIJNDAEL_KEY_ .P_SCRIPT);	}
+	static function validate_token($_token){	return ( strcmp($_token, self::generate_token())==0)  ;	}
+	
+	public function initAuth(){
+		
 		global $cookie ;
+		
+		if (get('_token')){
+			if (AdminController::validate_token(get('_token'))){
+				return true ;
+			}
+		}		
 		if (get('logout') == '1'){
 			$cookie->auth = false ;
 			header('Location: index.php?is_logout=1');
 			die;	
 		}
 		if (post("postback") == "login" && $this->login(post('auth_user') , post("auth_pass") )  ){	
+			$cookie->auth_user = post('auth_user') .'-' . time() .'-' .Ctrl::$_USERS[post('auth_user')]  ;
 		 	$cookie->auth = true ;
 		}
 		if ($cookie->auth != true){ 	echo $this->getFormLogin(); 	die ; }
 	}
-
 	
+
 	/**
 	 * @return Html string of the user form
 	 */

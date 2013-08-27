@@ -1,27 +1,36 @@
-- email notification on logins/errors
-- better modulable controller with before/after events hooks
-- file browser (40%)
-
 v4
+-------
 MO
+- better modulable controller with before/after events hooks
 - mass photos upload ( auto save )
 - live file editor with ace
+- file browser add/fix styles
 CORE
+- add unload event when changes mades in form (fields change event) var MutationObserver 
+BACKUP
 - backups should include option of what who and where to backup ( transfer to pre-defined ftp )
-- formValidation : spacifique pattern arguments 
-- diffrents form view user selection 
-- add unload event when changes mades in form (fields change event)
-- submit only changed fields and save only changed fields
-- ban bad login
-- log logins attamps ip date 
-- log activity
-- log sql querys
-- new captcha based image (without font) http://php.net/manual/fr/function.imagecreatetruecolor.php
-- default/state sort for listing 
 - full site restore from backup
-- auth token (for cron requests for backups) check ps token system
+- db backup class add native dump if exists
+- formValidation : spacifique pattern arguments 
+- diffrents form view by user selection 
+- submit only changed fields and save only changed fields
+SECURITY
+- ban bad login ip to a ban ip's for an 24h
+- log logins attamps ip date 
+- users should have ID and may be in databse 
+- log activity by user ID
+- log sql querys by user ID
+- email notification on logins/errors
+- auth token should add feature to "expire" token and should limited for spacifique "user ID" for futured log's
+IMPROVE
+- new captcha based image (without font) http://php.net/manual/fr/function.imagecreatetruecolor.php
+- keep state in cookie of latest user listing sort order and filter
+
 
 v3
+--------
++ file browser (file browser upload should be in the same path ; dont load images at load (lazy load issue) )
++ auth token (for cron requests for backups) 
 + _SORT field will Live edit sort field in list 
 + replace other '#é for URL  pattern fix
 * fields list cache by date with db->cache with file signature

@@ -18,6 +18,11 @@
 			,msg: UI.lang.UNVALID_INTEGER
 		}
 		this._price = {
+			pattern : /(^\d*(\.\d*)?$)|^$/
+			,fix:function(v){ return $.trim(v).replace(/[^0-9.]/g, '') ;}
+			,msg: UI.lang.UNVALID_PRICE
+		}
+		this._float = {
 			pattern : /(^\d*(\.\d*)$)|^$/
 			,fix:function(v){ return $.trim(v).replace(/[^0-9.]/g, '') ;}
 			,msg: UI.lang.UNVALID_FLOAT

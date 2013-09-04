@@ -61,7 +61,7 @@ class AdminTable extends AdminRelation {
 			$this->deleteRelations() ;
 			$this->addRelations() ;
 		}else{
-			fb('Post add db error ', $this->db->last_error);
+			Debug('Post add db error '. $this->db->last_error);
 		}
 	}
 	/**
@@ -74,7 +74,7 @@ class AdminTable extends AdminRelation {
 		if ($this->id = $this->db->query(SQL::build('DUPLICATE',$this->name,$this->data,$this->id) ) ){
 			$this->addRelations( true ) ;	
 		}else{
-			 fb('Post duplicate db error ', $this->db->last_error);
+			 Debug('Post duplicate db error '. $this->db->last_error);
 		}		
 	}
 	/**
@@ -85,11 +85,11 @@ class AdminTable extends AdminRelation {
 	public function Edit(){	
 		$this->initPostData() ;	
 		if ($this->id < 0) return ; 
-		if ($this->db->query(SQL::build('UPDATE',$this->name,$this->post_data,$this->id)) ){
+		if ($this->db->query(SQL::build('UPDATE',$this->name,$this->post_data,$this->id) ) ){
 			$this->deleteRelations() ;
 			$this->addRelations() ;	
 		} else{
-			 fb('Post edit db error ', $this->db->last_error);
+			 Debug('Post edit db error '. $this->db->last_error);
 		}
 	}	
 	/**
@@ -99,7 +99,7 @@ class AdminTable extends AdminRelation {
 		if ($this->db->query('DELETE  FROM `'.$this->name.'` WHERE id = '. $this->id) ){
 			$this->deleteRelations() ; 	
 		}else{
-			 fb('Post delete db error ', $this->db->last_error);
+			 Debug('Post delete db error '. $this->db->last_error);
 		}
 		$this->id =  0;
 	}

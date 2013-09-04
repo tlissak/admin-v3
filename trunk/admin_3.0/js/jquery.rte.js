@@ -169,6 +169,7 @@ if(typeof $.fn.rte === "undefined") {
                     <a href='#' class='btn link'><i class='icon-link'></i></a>\
 					<a href='#' class='btn unlink'><i class='icon-silverstripe'></i></a>\
                     <a href='#' class='btn image'><i class='icon-images-gallery'></i></a>\
+					<a href='#' class='btn code'><i class='icon-chevrons'></i></a>\
                   	</span>\
 					<span class='button-group'>\
 					<a href='#' class='btn justifyLeft'><i class='icon-align-left'></i></a>\
@@ -241,6 +242,8 @@ if(typeof $.fn.rte === "undefined") {
 				return false; 
 			});
 			
+			
+			
 			$('.cssstyle', tb).change(function(){
                 var index = this.selectedIndex;
                 if( index!=0 ) {
@@ -250,6 +253,41 @@ if(typeof $.fn.rte === "undefined") {
 					setSelectionReplaceWith(html);
                 }
             });
+			
+	
+			$('.code', tb).click(function(e){
+				manipulateSelection(function(str){return  '<pre>' + ( str.replace(/\</g,'&lt;').replace(/\>/g,'&gt;') )+ '</pre>' ;} );
+				return false;				
+            });
+			
+			function manipulateSelection(manip){
+				var txt
+				if(iframe.contentWindow.getSelection)﻿  
+		﻿  ﻿  		txt =  iframe.contentWindow.getSelection().toString();
+			﻿	else txt = iframe.contentWindow.document.selection.createRange().text;				
+				var html = manip(txt);
+				var rng﻿  = null;
+				iframe.focus();			﻿  
+				if(iframe.contentWindow.getSelection) {
+				﻿  ﻿  rng = iframe.contentWindow.getSelection().getRangeAt(0);				
+				﻿﻿	var s = rng.startContainer;				
+				﻿	if(s.nodeType === Node.TEXT_NODE){
+						$(s).wrap('<p />');
+				﻿  ﻿  ﻿  ﻿  rng.setStartBefore(s.parentNode);
+					}				
+				} else {
+				﻿  ﻿  rng = iframe.contentWindow.document.selection.createRange();
+				}					
+				if(iframe.contentWindow.getSelection) {					
+				﻿  ﻿  rng.deleteContents();
+					formatText('delete');
+				﻿  ﻿  rng.insertNode(rng.createContextualFragment(html));
+				} else {
+				﻿  ﻿  formatText('delete');
+				﻿  ﻿  rng.pasteHTML(html);
+				}				
+			}			
+			
 			$(".fullscreen",tb).click(function(){
 				$(iframe).closest(".rte-zone").toggleClass('fullsize')
 				$(iframe).closest("form").toggleClass('fullsize')
@@ -260,14 +298,8 @@ if(typeof $.fn.rte === "undefined") {
 				$('body', iframeDoc).html(cleanupWord($(iframe).contents().find("body").html()));
 				return false;	
 			})			
-            $('.formatblock', tb).change(function(){
-                var index = this.selectedIndex;
-                if( index!=0 ) {  formatText("formatblock", '<'+this.options[index].value+'>');  }
-            });			
-			$('.fontsize', tb).change(function(){
-                var index = this.selectedIndex;
-                if( index!=0 ) { formatText("fontsize", this.options[index].value); }
-            });
+            $('.formatblock', tb).change(function(){ if( this.selectedIndex!=0 ) {  formatText("formatblock", '<'+this.options[this.selectedIndex].value+'>');  }  });			
+			$('.fontsize', tb).change(function(){ if( this.selectedIndex!=0 ) { formatText("fontsize", this.options[this.selectedIndex].value); } });			
             $('.bold', tb).click(function(){ formatText('bold');return false; });
             $('.italic', tb).click(function(){ formatText('italic');return false; });
             $('.orderedlist', tb).click(function(){ formatText('insertorderedlist');return false; });			

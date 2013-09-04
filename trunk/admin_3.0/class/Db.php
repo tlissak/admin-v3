@@ -65,8 +65,8 @@ class Db{
 	function query($q){
 		DebugSql($q);
 		if ($sth = $this->db->prepare($q)){
-			$sth->execute();	
-			if (strrpos($q,'INSERT' ) == 0)
+			$sth->execute();
+			if (strrpos($q,'INSERT' ) === 0)
 				return $this->db->lastInsertId() ;
 			return true ;	
 		}else{

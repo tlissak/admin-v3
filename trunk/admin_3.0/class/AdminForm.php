@@ -54,6 +54,9 @@ class AdminForm extends AdminTable{
 			if (isset($opt['readonly'])){
 				$extends .= ' readonly="readonly" ' ;
 			}
+			if (isset($opt['extends'])){
+				$extends .= $opt['extends'] ;
+			}
 		}
 		
 		if($type == 'color'){
@@ -115,7 +118,8 @@ class AdminForm extends AdminTable{
 			}elseif(is_file(P_PHOTO .$d[$fld])){//current state ;
 				$h .= '<input type="hidden" name="'.$fld.'" id="fld_fld_'.$fld.'" value="'.$d[$fld] . '" />' ;
 				if (is_image( P_PHOTO .$d[$fld]) ){  	$h .= '<img src="' .U_PHOTO . $d[$fld] .'?width=200" style="max-height:100px; max-width:100px;"  />' ;	}
-				if (is_pdf(P_PHOTO .$d[$fld])){  			$h .= '<a href="'.U_PHOTO .$d[$fld].'" target="_blank"><img src="img/pdf.jpg"  /></a>' ; 	}
+				elseif (is_pdf(P_PHOTO .$d[$fld])){  			$h .= '<a href="'.U_PHOTO .$d[$fld].'" target="_blank"><img src="img/pdf.jpg"  /></a>' ; 	}
+				else{$h .=  $d[$fld];	}
 				$h .= '<a href="javascript:" class="btn link-delete-file" data-path="'.urlencode($d[$fld]).'" ><i class="icon-trash"></i></a>' ;	
 			}
 			$h .= '</div>';

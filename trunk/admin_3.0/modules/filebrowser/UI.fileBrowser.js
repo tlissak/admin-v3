@@ -21,7 +21,7 @@
 		
 		//Add upload handler		
 		UI.filebrowser_upload_settings =  $.extend({},ui.file_upload_shared_settings);
-		UI.filebrowser_upload_settings.uploadFinished = function(i,ofile,res){	UI.browseFiles("?path="+ui.filebrowser_current_path) ;}		
+		UI.filebrowser_upload_settings.uploadFinished = function(i,ofile,res){	UI.browseFiles("?path="+ui.filebrowser_current_path) ;}
 		
 		ui.filebrowser_upload = $(".droparea",ui.filebrowser ).fileupload(UI.filebrowser_upload_settings);
 				
@@ -31,27 +31,55 @@
 			return false ;	
 		})
 				
-		$('.filebrowser_overlay').click(ui.closeFileBrowser)			
-	})
-	
-	ui.formLoad(function(){
-		$('.rte-zone .rte-toolbar .image').unbind('click').bind('click',function(e){
-			ui.openFileBrowser() ;		
-			ui.current_iframe = $(this).closest('.rte-zone').find('>iframe')[0] ;			
+		$('.filebrowser_overlay').click(ui.closeFileBrowser)	
+		
+		$("#basecontrol").after('<a href="#browse_files" id="browse_files" class="btn-orange browse" style="display:block;margin:10px;" > <i class="icon-file"></i>  Browse files</a>')
+		$('#browse_files').click(function(){ 	UI.openFileBrowser(); ui.browseFilesCallback = null		});
+		
+		$(document).on("click",UI.filebrowser +" .files a",function(){
+			if (UI.browseFilesCallback)
+				return UI.browseFilesCallback.call(this);
 			return false
 		})
 	})
 	
-	ui.openFileBrowser = function(){		$('.filebrowser_overlay').fadeIn(100).next().fadeIn(100) ; if (! UI.browseFiles_initialize) { UI.browseFiles('?path=') }	}
-	ui.closeFileBrowser = function(){ 		$(".filebrowser_overlay").fadeOut(100).next().fadeOut(100) ;	}	
+	ui.formLoad(function(){
+		
+		$('.rte-zone .rte-toolbar .image').unbind('click').bind('click',function(e){
+			UI.current_iframe = $(this).closest('.rte-zone').find('>iframe')[0] ;
+			UI.browseFilesCallback = function(a){				
+					var URI = $(this).attr('href').replace('#',"");
+					if (!ui.current_iframe)	return ;
+					ui.current_iframe.contentWindow.focus();
+					try{  ui.current_iframe.contentWindow.document.execCommand("InsertImage", false, URI);   }catch(e){  }
+					ui.current_iframe.contentWindow.focus();
+					ui.closeFileBrowser() ;			
+					return false;
+				
+			}
+			UI.openFileBrowser() ;	
+			return false
+		})
+		
+		$('.droparea .files img').css('cursor','pointer').click(function(){
+				UI.fallbackImage = this;
+				UI.browseFilesCallback = function(){
+					$(ui.fallbackImage).attr('src',$(this).attr('href').replace('#',""))
+					$(ui.fallbackImage).prev().val($(this).data('relative'))
+					$(ui.fallbackImage).next().data('path',$(this).data('relative'))
+						
+					UI.closeFileBrowser() ;	
+					return false;
+				}
+				UI.openFileBrowser() ;	
+		})
+	})
 	
-	ui.insertBrowserImage = function(URI){
-			if (!ui.current_iframe)	return ;
-			ui.current_iframe.contentWindow.focus();
-            try{  ui.current_iframe.contentWindow.document.execCommand("InsertImage", false, URI);   }catch(e){  }
-            ui.current_iframe.contentWindow.focus();
-			ui.closeFileBrowser() ;
-	}	
+	ui.openFileBrowser = function(){			 $('.filebrowser_overlay').fadeIn(100).next().fadeIn(100) ; if (! UI.browseFiles_initialize) { UI.browseFiles('?path=') }	}
+	ui.closeFileBrowser = function(){ 						$(".filebrowser_overlay").fadeOut(100).next().fadeOut(100) ;	}	
+	
+	
+	ui.browseFilesCallback = null ;
 	
 	ui.browseFiles = function(path){
 			
@@ -59,7 +87,6 @@
 			
 			UI.filebrowser_current_path = path.replace('?path=',"");
 			$(".droparea",UI.filebrowser ).data('opts').url = '?fld='+UI.filebrowser_current_path+'&upload=1'  ;
-			
 			
 			$.ajax(path + '&browse=1&callme=1',{dataType:"json",success: function(o){				
 				for(var i=0 , tbl = '<table class="tbl"><tbody>'; i<o.dirs.length;i++){
@@ -69,7 +96,7 @@
 				for(var i=0,list = '';i< o.files.length;i++){
 					if ((/.*?(\.jpg|\.png|\.gif)$/i).test(o.files[i].uri))
 						o.files[i].name = '<img src="'+o.files[i].uri+'" />' ;						
-					list +='<a href="#'+o.files[i].uri+'">'+o.files[i].name+'</a>' ;
+					list +='<a href="#'+o.files[i].uri+'" data-relative="'+o.files[i].relative+'">'+o.files[i].name+'</a>' ;
 				}
 
 				for(var i=0,bc = '<div>';i<o.bc.length;i++){
@@ -79,21 +106,13 @@
 				bc +='</div>'
 				
 				$('.breadcrumb',ui.filebrowser).html(bc);
-				$('.directories',ui.filebrowser).html( tbl)
-				$(".files",ui.filebrowser).html(list).find('a').click(function(){
-					ui.insertBrowserImage($(this).attr('href').replace('#',""));
-					return false;
-				})
+				$('.directories',ui.filebrowser).html( tbl) ;
+				$(".files",ui.filebrowser).html(list) ;
+				
 			} ,type:'GET' }) ;
-	};
+	}
 	
-	
-	ui.docLoad(function(){		
-		
-		$("#basecontrol").after('<a href="#browse_files" id="browse_files" class="btn-orange browse" style="display:block;margin:10px;" > <i class="icon-file"></i>  Browse files</a>')
-		$('#browse_files').click(function(){ 	UI.openFileBrowser();		});
-		
-	})
+
 	
 	
 }(UI));

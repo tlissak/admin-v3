@@ -105,18 +105,19 @@ class AdminForm extends AdminTable{
 			return '<textarea name="'.$fld.'" id="fld_'.$fld.'" spellcheck="false" style="width:100%;height:350px;" class="rte" '. $extends.'>' 
 				. htmlentities($d[$fld], ENT_QUOTES , "UTF-8"). '</textarea>' ; 
 		}
-		if($type == 'file'){	
+		if($type == 'file'){
+			
 			$h = '<span class="btn btn-mini btn-file"  >';
 			$h .= '<i class="icon-plus"></i>  ' . l('browse or drop file here') ;
-			$h .= '<input  name="'.$fld.'" type="file" data-url="?tbl='.$this->name.'&contexttbl='. get('contexttbl').'&fld='.$fld.'&upload=1" '. $extends.' />'; // add data-path ;
-			$h .= '</span>';			
+			$h .= '<input  name="'.$fld.'" type="file" data-url="?tbl='.$this->name.'&contexttbl='. get('contexttbl').'&fld='.$fld.'&upload=1"  />'; // add data-path ;
+			$h .= '</span>';
 			$h .= '<div class="files">';
 			if (V2_IMG){
-				$h .= '<input type="hidden" name="'.$fld.'" id="fld_fld_'.$fld.'" value="'.$d[$fld] . '" />' ;
+				$h .= '<input type="hidden" name="'.$fld.'" id="fld_fld_'.$fld.'" value="'.$d[$fld] . '" '. $extends.' />' ;
 				if (is_image( '../'.$d[$fld]) ){  	$h .= '<img src="../'  . $d[$fld] .'?width=200" style="max-height:100px; max-width:100px;"  />' ;	}
 				$h .= '<a href="javascript:" class="btn link-delete-file" data-path="'.urlencode($d[$fld]).'" ><i class="icon-trash"></i></a>' ;	
 			}elseif(is_file(P_PHOTO .$d[$fld])){//current state ;
-				$h .= '<input type="hidden" name="'.$fld.'" id="fld_fld_'.$fld.'" value="'.$d[$fld] . '" />' ;
+				$h .= '<input type="hidden" name="'.$fld.'" id="fld_fld_'.$fld.'" value="'.$d[$fld] . '" '. $extends.' />' ;
 				if (is_image( P_PHOTO .$d[$fld]) ){  	$h .= '<img src="' .U_PHOTO . $d[$fld] .'?width=200" style="max-height:100px; max-width:100px;"  />' ;	}
 				elseif (is_pdf(P_PHOTO .$d[$fld])){  			$h .= '<a href="'.U_PHOTO .$d[$fld].'" target="_blank"><img src="img/pdf.jpg"  /></a>' ; 	}
 				else{$h .=  $d[$fld];	}

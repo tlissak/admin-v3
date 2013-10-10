@@ -1,6 +1,6 @@
 <?php
-/*From @prestashop */
-class		Cookie{	
+/*Source @prestashop */
+class Cookie{	
 	private $_content;
 	private $_name;
 	private $_expire;
@@ -20,7 +20,7 @@ class		Cookie{
 		$this->_path = rawurlencode($this->_path);
 		$this->_path = str_replace('%2F', '/', $this->_path);
 		$this->_path = str_replace('%7E', '~', $this->_path);		
-		$this->_domain = $this->getDomain();
+		$this->_domain = $this->getDomain(true);
 		if (_CIPHER_ALGORITHM_){
 			$this->_iv = _RIJNDAEL_IV_ ;
 			$this->_cipherTool = new Rijndael(_RIJNDAEL_KEY_, _RIJNDAEL_IV_);
@@ -37,7 +37,10 @@ class		Cookie{
 			$this->write();
 		}
 	}
-	private function getDomain(){
+	private function getDomain($shared_urls = null){
+		if ($shared_urls) {
+			return strpos(U_HOST,'www.') === 0 ? '.' .substr_replace(U_HOST,'',0,strlen('www.')) : '.' .U_HOST ;
+		}
 		$r = '!(?:(\w+)://)?(?:(\w+)\:(\w+)@)?([^/:]+)?(?:\:(\d*))?([^#?]+)?(?:\?([^#]+))?(?:#(.+$))?!i';
 	    preg_match ($r, U_HOST, $out);
 		if (preg_match('/^(((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]{1}[0-9]|[1-9]).)'. 

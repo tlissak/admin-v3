@@ -37,7 +37,9 @@ class Upload{
 					}
 					unset($photo['tmp_name']) ;
 				}else{
+					$photo['error'] = '997- May php upload size limit' ;
 					$photo['error_msg'] = 'UploadError' ;
+					
 				}
 			}
 		}
@@ -73,7 +75,7 @@ class Upload{
 	}
 	
 	public function files_identical($fn1 , $fn2){
-		if(filetype($fn1) !== filetype($fn2)){	return FALSE;		}
+		if(@filetype($fn1) !== @filetype($fn2)){	return FALSE;		}
 		if(filesize($fn1) !== filesize($fn2)){		return FALSE;		}
 		return true;
 	}

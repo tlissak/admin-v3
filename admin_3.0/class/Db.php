@@ -85,13 +85,28 @@ class Db{
 		}
 		if (PDO_TYPE == 'sqlite'){
 			$sql = $this->fetchRow("SELECT sql FROM sqlite_master WHERE type='table' AND tbl_name='$tbl'") ;
-					$_matches = false;
-			preg_match_all("/\[(.+)\] (\w+)?/", $sql['sql'], $_matches, PREG_SET_ORDER);
+			$sql = $sql['sql'] ;
+			$sql = str_replace("  "," ",str_replace("  "," ",$sql)); //
+			$sql = str_replace("\r\n","",$sql);
+			$sql = str_replace(',',"\r\n,",$sql);
+			$sql = str_replace('(',"\r\n(\r\n",$sql);
+			$sql = str_replace(')',"\r\n)",$sql);			
+			$_matches = false;
+			if (strpos($sql,'[') > 0) {
+				preg_match_all("/\[(.+)\] (\w+)?/", $sql  , $_matches, PREG_SET_ORDER);
+			}elseif (strpos($sql,'"') > 0){
+				preg_match_all("/\"(.+)\" (\w+)?/", $sql  , $_matches, PREG_SET_ORDER); 
+			}else{
+				p('Error parsing fields from table see $db->ctypes');	
+				p($_matches);
+				p($sql);
+				die();
+			}			
 			$sres = array();
 			if ($_matches){
 				foreach($_matches as $m){
 					if (count($m) == 3){
-						$sres[$m[1]] = $m[2]  ;
+						$sres[trim($m[1])] = trim($m[2] );
 					}
 				}	
 			}

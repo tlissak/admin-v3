@@ -7,7 +7,8 @@ $debug  	= new Debug() ;
 $db 			= new Db() ;
 $cookie 	= new Cookie('x_admin_user') ;
 
-include('class/AdminList.php'); // Dreamweaver 
+/*// Dreamweaver keep this comment !
+include('class/AdminList.php'); 
 include('class/AdminMvc.php');
 include('class/AdminRelation.php');
 include('class/AdminTable.php');
@@ -15,7 +16,7 @@ include('class/AdminForm.php');
 include('class/AdminLoader.php');
 include('class/AdminController.php');
 include('class/AdminModule.php');
-
+*/
 include(P_SITE) ;
 
 $_LNG			= array_merge(Ctrl::$_LNG_DEF,Ctrl::$_LNG) ;

@@ -21,6 +21,11 @@ class AdminTable extends AdminRelation {
 	 * Important !!! will initialise only the submited data
 	 */
 	function initPostData(){ 
+		if (count($this->fields) == 0 ) {
+			fb('Error retriving fields list from the database DB :');
+			fb('checkup for db->ctypes() for table '. $this->name) ;
+			die ; 	
+		}
 		foreach($this->fields as $k){	if (isset($_POST[$k])) { $this->post_data[$k]	 = post($k);	}}
 		//Observe to check more unsbmited data !
 		if ($this->debug) { fb('fields , fields_pairs, post data   , post_data  :');fb($this->fields); fb($this->fields_pairs); fb($_POST); fb($this->post_data) ; }} 

@@ -56,10 +56,10 @@ function FullTrace(){
 
 class Debug{
 	
-	public static $debug_time 			= false ;	
+	public static $debug_time 			= true ;	
 	public static $debug_info		 		= true ;
 	public static $debug_todo	 		= true ;	
-	public static $debug_sql		 		= false ;
+	public static $debug_sql		 		= true ;
 	public static $debug_error	 		= true ;
 	
 	public static $column_count  ;

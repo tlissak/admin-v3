@@ -28,6 +28,7 @@ class AdminLoader extends AdminForm{
 	public function Show($x ){		$this->show = $x 	; 		return $this ; }
 	public function FieldTitle($x){  $this->fld_title = $x ; 		return $this; }
 	public function Relation($x ){	$this->relation[$x['name']] = $x 	; return $this ; }
+	public function Add($x , $y){ $this->{$x} = $y; return $this; }
 	public function Load(){		
 		if (! $this->name) {				_die("Table name not seted", E_USER_WARNING); return false;}
 		if ( ! $this->view){			trigger_error("view not seted table ". $this->name . ' not loaded !', E_USER_WARNING);	return false; }		

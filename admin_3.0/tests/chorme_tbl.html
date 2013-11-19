@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style>
+
+.LAY{ padding:0; background:#f1f1f1; height:100%}
+.LAY>div{ overflow:auto;}
+
+.LAY-left{  position:absolute; top:1px; bottom:1px; background-color:#FFF; margin-right:5px; z-index:9; right:90%; left:1px; }
+body[dir="rtl"] .LAY-left{margin-right:0;margin-left:5px; right:1px; left:90%; }
+.LAY-list{ position:absolute; top:1px;  left:10%; bottom:1px; width:30%; background:#FFF; overflow:auto;  }
+body[dir="rtl"] .LAY-list{ left:5px; right:10%;}
+.LAY-main{ position:absolute; top:0; left:40%; bottom:1px; background:#FFF; right:5px;margin-left:5px ; overflow:auto ; z-index:9 } /* form */
+body[dir="rtl"] .LAY-main{ right:40%; left:5px; margin-left:0; margin-right:5px;}
+
+
+#list{ margin:10px;}
+.tbl{ position:relative;}
+.tbl {    *border-collapse: collapse;  border-spacing: 0; width:100%; border-radius: 4px;  box-shadow: 0 1px 1px #EAEAEA; border:1px solid #bbbbbb;*border:0;border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);border-color:#e6e6e6 #e6e6e6 #bfbfbf;border-bottom-color:#a2a2a2;}
+.tbl td,.tbl th {border-left: 1px solid #ccc;    border-top: 1px solid #ccc;    text-align: left;  }
+.tbl th{    padding:8px 10px; text-align:left;background-color:#f5f5f5;*background-color:#e6e6e6;background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));background-image:-webkit-linear-gradient(top, #ffffff, #e6e6e6);background-image:-o-linear-gradient(top, #ffffff, #e6e6e6);background-image:linear-gradient(to bottom, #ffffff, #e6e6e6);background-image:-moz-linear-gradient(top, #ffffff, #e6e6e6);background-repeat:repeat-x;  box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; border-top: none;  text-shadow: 0 1px 0 rgba(255,255,255,.5); }
+.tbl td{ padding:3px 10px; font-size:10.5px; line-height:18px; }
+.tbl tbody tr{background:#FFF; -o-transition: all 0.2s ease-in-out;  -webkit-transition: all 0.2s ease-in-out;  -moz-transition: all 0.2s ease-in-out;  -ms-transition: all 0.2s ease-in-out;  transition: all 0.2s ease-in-out; cursor:pointer;}
+.tbl tr td:first-child,.tbl tr th:first-child{ text-align:center; width:12%}
+.tbl tr:nth-child(even){ background:rgba(249, 249, 249, 0.3);}
+.tbl td:first-child, .tbl th:first-child {    border-left: none;}
+.tbl th:first-child {   border-radius: 3px 0 0 0;}
+.tbl th:last-child {   border-radius: 0 3px 0 0;}
+.tbl th:only-child{    border-radius: 3px 3px 0 0;}
+.tbl tr:last-child td:first-child {    border-radius: 0 0 0 3px;}
+.tbl tr:last-child td:last-child {    border-radius: 0 0 3px 0;}
+.tbl tr:hover{  background: #f1f1f1;     } 
+.tbl tr.selected{ background-color:#e6e6e6;background-color:#d9d9d9 \9;background-image:none;outline:0;box-shadow:inset 0 2px 4px rgba(0, 0, 0, 0.15),0 1px 2px rgba(0, 0, 0, 0.05);}
+
+.form-filter .filter-select{width:78%;  height:24px; margin-bottom:0; float:left; }
+.form-filter .filter-search{width:75%; height:18px; }
+.form-filter .order-sort{ width:16%;  height:24px;  border-top:none; background:#e8e8e8; border-radius:0 0 3px 3px; }
+.form-filter th{ padding:0 !important; } 
+
+</style>
+</head>
+
+<body>
+<div class="LAY-list">	 
+       <div id="list">
+                <!--AJAX_LIST-->
+                	
+            	    <div class="context" data-tbl="product" data-contexttbl="product" data-id="0"><div class="paging"><span class="btn-disable">1</span><a class="btn" href="?page=1&amp;tbl=product" data-page="1" title="Page 1">2</a><a class="btn" href="?page=2&amp;tbl=product" data-page="2" title="Page 2">3</a><a class="btn" href="?page=3&amp;tbl=product" data-page="3" title="Page 3">4</a><a class="btn" href="?page=4&amp;tbl=product" data-page="4" title="Page 4">5</a><a class="btn" href="?page=5&amp;tbl=product" data-page="5" title="Page 5">6</a><a class="btn" href="?page=6&amp;tbl=product" data-page="6" title="Page 6">7</a><a class="btn" href="?page=1&amp;tbl=product" data-page="1" title="Next page"> Suivante »</a><span class="btn-disable">..</span><a class="btn" href="?page=280&amp;tbl=product" data-page="280" title="Last page"> » </a><br>Resultats :1 - 30 sur 8401 - Page 1 sur 281 pages</div><table class="tbl"><thead><tr><th>id</th><th>nom</th><th>Model</th><th>Couver.</th><th>XT</th></tr><tr class="form-filter"><th><input type="text" name="filter[id]" class="filter-search"><select name="order[id]" class="order-sort">
+                                	<option value=""></option>
+                                	<option value="ASC">Par ordre croisent</option>
+                                    <option value="DESC">Par ordre decroisent</option>
+                                </select></th><th><input type="text" name="filter[name_fr]" class="filter-search"><select name="order[name_fr]" class="order-sort">
+                                	<option value=""></option>
+                                	<option value="ASC">Par ordre croisent</option>
+                                    <option value="DESC">Par ordre decroisent</option>
+                                </select></th><th><input type="text" name="filter[model]" class="filter-search"><select name="order[model]" class="order-sort">
+                                	<option value=""></option>
+                                	<option value="ASC">Par ordre croisent</option>
+                                    <option value="DESC">Par ordre decroisent</option>
+                                </select></th><th><input type="text" name="filter[image]" class="filter-search"><select name="order[image]" class="order-sort">
+                                	<option value=""></option>
+                                	<option value="ASC">Par ordre croisent</option>
+                                    <option value="DESC">Par ordre decroisent</option>
+                                </select></th><th><input type="text" name="filter[product_type]" class="filter-search"><select name="order[product_type]" class="order-sort">
+                                	<option value=""></option>
+                                	<option value="ASC">Par ordre croisent</option>
+                                    <option value="DESC">Par ordre decroisent</option>
+                                </select></th></tr></thead><tbody class="list-product"><tr data-id="13" data-tbl="product" class="row-product-13"><td>13</td><td>&nbsp;</td><td>S7200 - 403</td><td><img src="http://109.190.75.80/glasman_php/photos/7200-403.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="14" data-tbl="product" class="row-product-14"><td>14</td><td>SURJETEUSE JUKI 734 DE</td><td>MO 734 DE</td><td><img src="http://109.190.75.80/glasman_php/photos/promo/juki734.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="15" data-tbl="product" class="row-product-15"><td>15</td><td>JUKI MO - 654 DE</td><td>MO - 654 DE</td><td><img src="http://109.190.75.80/glasman_php/photos/promo/654de.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="22" data-tbl="product" class="row-product-22"><td>22</td><td>Machine à coudre industrielle siruba 818-1</td><td>818 1</td><td><img src="http://109.190.75.80/glasman_php/photos/L818Fplate.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="24" data-tbl="product" class="row-product-24"><td>24</td><td>Machine à coudre industrielle JUKI DDL </td><td>DDL 8700WB</td><td><img src="http://109.190.75.80/glasman_php/photos/ddl8700_01_1.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="33" data-tbl="product" class="row-product-33"><td>33</td><td> industrielle</td><td>EF4-B511</td><td><img src="http://109.190.75.80/glasman_php/photos/EF4-B511.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="34" data-tbl="product" class="row-product-34"><td>34</td><td>industrielle</td><td>EF4-B551</td><td><img src="http://109.190.75.80/glasman_php/photos/EF4-B531.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="35" data-tbl="product" class="row-product-35"><td>35</td><td>Futura C</td><td>Futura C</td><td><img src="http://109.190.75.80/glasman_php/photos/Futura C.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="36" data-tbl="product" class="row-product-36"><td>36</td><td>Futura A</td><td>Futura A</td><td><img src="http://109.190.75.80/glasman_php/photos/Futura.a.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="38" data-tbl="product" class="row-product-38"><td>38</td><td>&nbsp;</td><td>SH7004</td><td><img src="http://109.190.75.80/glasman_php/photos/kingtex/kingtex 6003.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="39" data-tbl="product" class="row-product-39"><td>39</td><td>&nbsp;</td><td>SH7005</td><td><img src="http://109.190.75.80/glasman_php/photos/kingtex/kingtex 6003.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="40" data-tbl="product" class="row-product-40"><td>40</td><td>Machine bourdonneuse industrielle</td><td>SH70B3</td><td><img src="http://109.190.75.80/glasman_php/photos/kingtex/kingtex_sh-60b3-022-l02.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="41" data-tbl="product" class="row-product-41"><td>41</td><td>&nbsp;</td><td>N11</td><td><img src="http://109.190.75.80/glasman_php/photos/n21.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="42" data-tbl="product" class="row-product-42"><td>42</td><td>surjeteuse industrielle</td><td>N21</td><td><img src="http://109.190.75.80/glasman_php/photos/N21.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="43" data-tbl="product" class="row-product-43"><td>43</td><td>Surjeteuse 5 fils Brother N31</td><td>N31</td><td><img src="http://109.190.75.80/glasman_php/photos/n21.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="44" data-tbl="product" class="row-product-44"><td>44</td><td>&nbsp;</td><td>CO/600</td><td><img src="http://109.190.75.80/glasman_php/photos/FOX600.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="45" data-tbl="product" class="row-product-45"><td>45</td><td>&nbsp;</td><td>K52</td><td><img src="http://109.190.75.80/glasman_php/photos/K52.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="46" data-tbl="product" class="row-product-46"><td>46</td><td>&nbsp;</td><td>420</td><td><i class="icon-picture" title="abs.jpg"></i></td><td>&nbsp;</td></tr>
+<tr data-id="47" data-tbl="product" class="row-product-47"><td>47</td><td>&nbsp;</td><td>CO/600 A/S</td><td><img src="http://109.190.75.80/glasman_php/photos/FOX600.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="48" data-tbl="product" class="row-product-48"><td>48</td><td>NaN</td><td>MINOR</td><td><img src="http://109.190.75.80/glasman_php/photos/MINOR.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="49" data-tbl="product" class="row-product-49"><td>49</td><td>&nbsp;</td><td>MINOR</td><td><img src="http://109.190.75.80/glasman_php/photos/MINOR.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="50" data-tbl="product" class="row-product-50"><td>50</td><td>&nbsp;</td><td>PRATIKA</td><td><img src="http://109.190.75.80/glasman_php/photos/pratika.gif" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="51" data-tbl="product" class="row-product-51"><td>51</td><td>CHAUDIERE AUTOMATIQUE</td><td>EXPORT50  5000W</td><td><img src="http://109.190.75.80/glasman_php/photos/export 220.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="52" data-tbl="product" class="row-product-52"><td>52</td><td>CHAUDIERE AUTOMATIQUE</td><td>EXPORT60</td><td><img src="http://109.190.75.80/glasman_php/photos/export 220.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="53" data-tbl="product" class="row-product-53"><td>53</td><td>&nbsp;</td><td>VP512</td><td><img src="http://109.190.75.80/glasman_php/photos/ourleuse.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="54" data-tbl="product" class="row-product-54"><td>54</td><td>&nbsp;</td><td>VP512</td><td><img src="http://109.190.75.80/glasman_php/photos/ourleuse.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="79" data-tbl="product" class="row-product-79"><td>79</td><td>chaudière K26</td><td>k26</td><td><img src="http://109.190.75.80/glasman_php/photos/k26.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="80" data-tbl="product" class="row-product-80"><td>80</td><td>k13</td><td>K13</td><td><img src="http://109.190.75.80/glasman_php/photos/k1300.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="81" data-tbl="product" class="row-product-81"><td>81</td><td>k13</td><td>K13</td><td><img src="http://109.190.75.80/glasman_php/photos/k1300.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+<tr data-id="82" data-tbl="product" class="row-product-82"><td>82</td><td>&nbsp;</td><td>K52</td><td><img src="http://109.190.75.80/glasman_php/photos/k52.jpg" style="max-height:40px;max-width:100px;" alt="[--]"></td><td>&nbsp;</td></tr>
+</tbody></table><div class="paging"><span class="btn-disable">1</span><a class="btn" href="?page=1&amp;tbl=product" data-page="1" title="Page 1">2</a><a class="btn" href="?page=2&amp;tbl=product" data-page="2" title="Page 2">3</a><a class="btn" href="?page=3&amp;tbl=product" data-page="3" title="Page 3">4</a><a class="btn" href="?page=4&amp;tbl=product" data-page="4" title="Page 4">5</a><a class="btn" href="?page=5&amp;tbl=product" data-page="5" title="Page 5">6</a><a class="btn" href="?page=6&amp;tbl=product" data-page="6" title="Page 6">7</a><a class="btn" href="?page=1&amp;tbl=product" data-page="1" title="Next page"> Suivante »</a><span class="btn-disable">..</span><a class="btn" href="?page=280&amp;tbl=product" data-page="280" title="Last page"> » </a><br>Resultats :1 - 30 sur 8401 - Page 1 sur 281 pages</div></div>				                <!--/AJAX_LIST-->
+       </div>
+</div>
+</body>
+</html>

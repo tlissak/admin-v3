@@ -152,12 +152,12 @@ UI.docReady();
                               
                                 
                                
-<div class="debug"  style="display:none;"><?  Debug::p()	?></div>
+<div class="debug"  style="display:none;"><?  Debug::p();	?></div>
 <script type="text/javascript">
-	if ($('.debug').html() && 1==2){
+	if ($('.debug').html()  &&  '1'== '<?=  ( isset( $ctrl->Debug ) && $ctrl->Debug)   ? 1 : 0  ; ?>' ){
 		dp = window.open('','debug '+ Math.random(),'width=1200,height=500,fullscreen=0,toolbar=1,resizable=1,scrollbars=1,top=200,left=1500',false) ;
 		dp.document.body.innerHTML = $('.debug').html();
-		$(dp.document.body).dblclick(function() { dp.close();     });
+		$(dp.document.body).dblclick(function() { this.ownerDocument.defaultView.close();     });
 	}
 </script>
 

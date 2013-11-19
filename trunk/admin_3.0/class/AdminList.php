@@ -23,8 +23,10 @@ class AdminList  extends PagingList   {
 	
 	public function initList(  $PAGE_SIZE_LIMIT  = 0 ){	
 		if ($this->initializedList ) return ;	$this->initializedList = true; //protect		
-		$this->initListSql();		
-		if ($PAGE_SIZE_LIMIT  == 0){ $PAGE_SIZE_LIMIT = 50 ; }  //changes
+		$this->initListSql();
+		if ($PAGE_SIZE_LIMIT == 0 && isset($this->PAGE_SIZE_LIMIT)){
+			$PAGE_SIZE_LIMIT = $this->PAGE_SIZE_LIMIT ;
+		}elseif ($PAGE_SIZE_LIMIT  == 0){ $PAGE_SIZE_LIMIT = 50 ; }  //changes
 		$this->_list = $this->getListRows($PAGE_SIZE_LIMIT);
 		$this->initListPaging($PAGE_SIZE_LIMIT); 
 	}

@@ -14,7 +14,7 @@
 							,type:'POST'
 							,success:function(o){
 								$('.tbl tbody',this).html(o.list);
-								$('.paging',this).replaceWith(o.paging) ;
+								$('.paging',this).replaceWith(o.paging ? o.paging : "<span></span>") ;
 								
 								ui.stateChanged.call(this,false);
 								

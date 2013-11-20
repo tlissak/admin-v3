@@ -29,12 +29,12 @@
 						+'<input type="hidden" name="' +fileinput +'" value="'+file.uploaded+'" />');
 						
 						
-						
 						if (  this.droparea.data('opts').fallback.attr('multiple')) {
 							$form =  $(this.droparea).closest('form')
 							$form.find('.form-id').val(0) ;
 							$form.find('.form-action').val('add')
 							$form.trigger('submit');
+							
 						}
 						
 					}else{

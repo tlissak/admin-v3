@@ -109,7 +109,7 @@ class AdminForm extends AdminTable{
 			
 			$h = '<span class="btn btn-mini btn-file"  >';
 			$h .= '<i class="icon-plus"></i>  ' . l('browse or drop file here') ;
-			$h .= '<input  name="'.$fld.'" type="file" data-url="?tbl='.$this->name.'&contexttbl='. get('contexttbl').'&fld='.$fld.'&upload=1"  />'; // add data-path ;
+			$h .= '<input  name="'.$fld.'" type="file" data-url="?tbl='.$this->name.'&contexttbl='. get('contexttbl').'&fld='.$fld.'&upload=1" '. $extends.'  />'; // add data-path ;
 			$h .= '</span>';
 			$h .= '<div class="files">';
 			if (V2_IMG){

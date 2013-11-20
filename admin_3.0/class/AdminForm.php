@@ -112,17 +112,17 @@ class AdminForm extends AdminTable{
 			$h .= '<input  name="'.$fld.'" type="file" data-url="?tbl='.$this->name.'&contexttbl='. get('contexttbl').'&fld='.$fld.'&upload=1" '. $extends.'  />'; // add data-path ;
 			$h .= '</span>';
 			$h .= '<div class="files">';
-			if (V2_IMG){
-				$h .= '<input type="hidden" name="'.$fld.'" id="fld_fld_'.$fld.'" value="'.$d[$fld] . '" '. $extends.' />' ;
-				if (is_image( '../'.$d[$fld]) ){  	$h .= '<img src="../'  . $d[$fld] .'?width=200" style="max-height:100px; max-width:100px;"  />' ;	}
-				$h .= '<a href="javascript:" class="btn link-delete-file" data-path="'.urlencode($d[$fld]).'" ><i class="icon-trash"></i></a>' ;	
+			$h .= '<input type="hidden" name="'.$fld.'" id="fld_fld_'.$fld.'" value="'.$d[$fld] . '" '. $extends.' />' ;			
+			if (V2_IMG && is_image( '../'.$d[$fld])){
+				$h .= '<img src="../'  . $d[$fld] .'?width=200" style="max-height:100px; max-width:100px;"  />' ;
 			}elseif(is_file(P_PHOTO .$d[$fld])){//current state ;
-				$h .= '<input type="hidden" name="'.$fld.'" id="fld_fld_'.$fld.'" value="'.$d[$fld] . '" '. $extends.' />' ;
 				if (is_image( P_PHOTO .$d[$fld]) ){  	$h .= '<img src="' .U_PHOTO . $d[$fld] .'?width=200" style="max-height:100px; max-width:100px;"  />' ;	}
 				elseif (is_pdf(P_PHOTO .$d[$fld])){  			$h .= '<a href="'.U_PHOTO .$d[$fld].'" target="_blank"><img src="img/pdf.jpg"  /></a>' ; 	}
 				else{$h .=  $d[$fld];	}
-				$h .= '<a href="javascript:" class="btn link-delete-file" data-path="'.urlencode($d[$fld]).'" ><i class="icon-trash"></i></a>' ;	
+			}else{
+				$h .='<img src="img/color_picker/grid.gif" style="max-height:100px; max-width:100px;" >' ;
 			}
+			$h .= '<a href="javascript:" class="btn link-delete-file" data-path="'.urlencode($d[$fld]).'" ><i class="icon-trash"></i></a>' ;	
 			$h .= '</div>';
 			return $h;
 		}

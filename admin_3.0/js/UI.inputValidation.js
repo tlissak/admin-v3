@@ -13,8 +13,8 @@
 			,msg: UI.lang.UNVALID_LINK
 		}
 		this._int = {
-			pattern : /^[0-9]{0,11}$/
-			,fix:function(v){ return $.trim(v).replace(/[^0-9]/g, '') ;}
+			pattern : /^[-0-9]{0,50}$/
+			,fix:function(v){ return $.trim(v).replace(/[^-0-9]/g, '') ;}
 			,msg: UI.lang.UNVALID_INTEGER
 		}
 		this._price = {

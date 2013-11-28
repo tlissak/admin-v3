@@ -44,20 +44,25 @@
 	})
 	
 	ui.formLoad(function(){
-		function bindFirst(elm,name, fn) { 
+		function bindFirst(elm,name, fn) {
+				if ($(elm).size() == 0) return; 
 				elm.bind(name, fn);
-				var handlers = $._data(elm.get(0), "events")[name.split('.')[0]] ;	
-				var handler = handlers.pop();
-				handlers.splice(0, 0, handler);
+				try{	
+					var handlers = $._data(elm.get(0), "events")[name.split('.')[0]] ;	
+					var handler = handlers.pop();
+					handlers.splice(0, 0, handler);
+				}catch(e){
+					console.log(e,"UI.fileBrowser.js  FAILD" , elm);	
+				}
 		};
 		
 		bindFirst($('.rte-zone .rte-toolbar .image'),'click',function(e){
-			
+
 			//override the click event
 			e.stopImmediatePropagation();
 			e.stopPropagation();  
-			e.preventDefault();
-		
+			e.preventDefault();			
+			
 			UI.current_iframe = $(this).closest('.rte-zone').find('>iframe')[0] ;
 			UI.browseFilesCallback = function(a){				
 					var URI = $(this).attr('href').replace('#',"");

@@ -11,15 +11,16 @@
 
 if(typeof $.fn.rte === "undefined") {
 	
-	function bindFirst(elm,name, fn) { 
-				elm.bind(name, fn);
-				try{	
-					var handlers = $._data(elm.get(0), "events")[name.split('.')[0]] ;	
-					var handler = handlers.pop();
-					handlers.splice(0, 0, handler);
-				}catch(e){
-					console.log(e,"$.fn.bindFirst FAILD" , elm);	
-				}
+	function bindFirst(elm,name, fn) {
+			if ($(elm).size() == 0) return; 
+			elm.bind(name, fn);
+			try{	
+				var handlers = $._data(elm.get(0), "events")[name.split('.')[0]] ;	
+				var handler = handlers.pop();
+				handlers.splice(0, 0, handler);
+			}catch(e){
+				console.log(e,"jquery.rte.js bindFirst FAILD" , elm);	
+			}
 	};
 	function parse_css(st){
 		var keys = st.replace(/\{[\s|\S]*?\}/g,',').replace(/\n|\r/g,' ').replace(/@[\s|\S]*?[\;|,]/g,'').replace(/\/\*.*?\*\/?/g,'').replace(/ /g,'').split(',')

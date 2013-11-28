@@ -54,7 +54,7 @@ body[dir="rtl"] .right{ float:left;}
 .tabrow {    text-align: center;    list-style: none;    margin: 0px 0 20px;    padding: 0;    line-height: 27px;    height: 37px;    overflow: hidden;    font-size: 10.5px;    font-family: arial;    position: relative;    }
 .tabrow li {    border: 1px solid #E7E7E7;    background: #FFF;*zoom:1; border-top:none;	 
     display: inline-block;    position:relative;    z-index: 0;    border-bottom-left-radius: 6px;    border-bottom-right-radius: 6px;    box-shadow: 0 1px 3px rgba(185, 185, 185, 0.4);  margin: 0;       }
-.tabrow a {    color: #333;    text-decoration: none; display:block;  padding: 0 50px; text-shadow:0 1px 1px rgba(255, 255, 255, 0.75);}
+.tabrow a {    color: #333;    text-decoration: none; display:block;  padding: 0 20px; text-shadow:0 1px 1px rgba(255, 255, 255, 0.75);}
 .tabrow li.active {    background: #f1f1f1;    color: #333;    z-index: 2;    border-top-color: #f1f1f1;    }
 .tabrow li.active a{ font-weight:bold;}
 .tabrow [class^="icon-"], [class*=" icon-"]{ float:left; margin-right:10px;}

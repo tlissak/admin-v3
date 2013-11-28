@@ -60,7 +60,7 @@
 				.append('<div class="'+callback.action+'" >'+callback.title + ' '+ $msg +'</div>' ) 
 				.appendTo($('.LAY-message',this)).fadeIn('slow') ;
 	
-				$('.relation-tab tbody input:not(:checked)').parents("tr").remove();
+				$('.relation-tab tbody input.relation-cbx:not(:checked)').parents("tr").remove();
 				
 				 if(! form.is('#main-form')){ // relation form data changed
 				 	ui.stateChanged.call( context , callback ) ;

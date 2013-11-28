@@ -235,14 +235,13 @@ if(typeof $.fn.rte === "undefined") {
 							$('.cssstyle',this).html( '<option value="">- css -</option>' + _select );
 						}});
 			}
-			$('.image', tb).click(function(){   
+			// $('.image', tb).click(function(e){ 
+			$(document).on('click','.image',function(e){   //change style that can be override
 				var p=prompt("image URL:");    
 				if(p)
-					formatText('InsertImage', p);				
+					formatText('InsertImage', p);
 				return false; 
 			});
-			
-			
 			
 			$('.cssstyle', tb).change(function(){
                 var index = this.selectedIndex;

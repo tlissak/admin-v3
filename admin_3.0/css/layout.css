@@ -121,8 +121,8 @@ body.dragover .droparea{ padding:30px; background:#FFC}
 .fullsize{ overflow:visible !important;}
 
 .filebrowser_overlay ,.filebrowser_workspace { display:none;}
-.filebrowser_overlay{ position:fixed; top:0; left:0; right:0; bottom:0; background-color:#000; z-index:10; opacity:0.5; cursor:move;}
-.filebrowser_workspace{ z-index:10; background-color:#FFF; height:90%; top:5%; left:5%; width:90%; position:absolute; border:#DDD 1px solid;}
+.filebrowser_overlay{ position:fixed; top:0; left:0; right:0; bottom:0; background-color:#000; z-index:1000; opacity:0.5; cursor:move;}
+.filebrowser_workspace{ z-index:1000; background-color:#FFF; height:90%; top:5%; left:5%; width:90%; position:absolute; border:#DDD 1px solid;}
 
 .filebrowser_workspace .LAY-leftcol { background-color:#F1F1F1; }
 .filebrowser_workspace .btn-file,.filebrowser_workspace .droparea{ display:block; float:none;}

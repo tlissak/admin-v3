@@ -308,14 +308,15 @@ class AdminMvc extends AdminList{
 	
 	
 	function getFilterOrderParam(){
-		$order = post('order') ;
-		if (is_array($order) && count($order)){
+		$order = post('order') ? post('order') : get('order');
+		if ($order && is_array($order) && count($order)){
 			foreach($order as $k=>$v){
 				if($v){	$this->order_val[$k] =  $v;	}
 			}
 		}
-		$filter = post('filter') ;
-		if (is_array($filter) && count($filter)){
+		$filter = post('filter') ? post('filter') : get('filter');
+
+		if ($filter && is_array($filter) && count($filter)){
 			foreach($filter as $k=>$v){
 				if ($v){$this->filter_val[$k] = $v;	}
 			}

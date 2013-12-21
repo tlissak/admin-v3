@@ -180,6 +180,8 @@ class AdminController{
 					$this->contextTable->initDbRelationData();
 					$this->contextTable->initRelations() ;
 					$this->action	= $this->contextTable->id>0 ? 'mod' : 'add' ;
+
+					$this->contextTable->getFilterOrderParam() ;
 					$this->contextTable->initList($ctrl->PAGE_SIZE)  ; // even if it calles by ajax page size limit should not requires a lot of resource 
 					$this->contextTable->setSelectedByValue($this->table->id) ; 
 				}

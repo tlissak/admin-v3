@@ -16,7 +16,7 @@ class FileBrowser{
 			'full'=>$f ,
 			'relative'=>$rel
 			,'name'=>basename($f)
-			,'uri'=>U_PHOTO. $rel 
+			,'uri'=>U_PHOTO. trim( $rel,'/')
 		);
 	}
 	

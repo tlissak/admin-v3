@@ -7,16 +7,9 @@ class SQL{
 	 ,'LONGTEXT' 
 	) ;
 	static $types_int = array('BOOLEAN' ,'BIT' ,'INTEGER','FLOAT','NUMERIC' ,'REAL','DOUBLE','DECIMAL') ;
-	//TODO :
-	//VERIFY IF ALL 
 	
-	static function v2txt($out){			
-			/* \' */	$out = str_replace("\\'","'",$out) ;
-			/* \  */	$out = str_replace("\\","",$out) ;	
-			/* "  */ $out = str_replace('""','"',$out) ;
-			$out =SQLite3::escapeString($out) ;			
-			$out =  "'". $out ."'" ;
-			return $out;
+	static function v2txt($out){	
+			return "'". SQLite3::escapeString(str_replace('""','"',str_replace("\\","",str_replace("\\'","'",$out))) ) ."'";
 	}
 	static function v2int($str){ if (is_numeric($str)){ return $str ;} return intval($str);}	
 	static function strpos_arr($haystack, $needle) {	if(!is_array($needle)) $needle = array($needle);

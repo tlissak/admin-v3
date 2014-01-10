@@ -144,11 +144,12 @@ and this overwite the to be empty data :
 				if ($obj->keys['type'] == RelationType::InnerSimple){					
 					
 					if (!$IS_CALLED_BY_ME_RECURSION_PROTECTION){ 	// ive disabled the protection because of  same table (as parent tree) list not loaded !
+						
 						$obj->initializedRelationsObject = false;
 						$obj->initInnerRelations( 1 ); 
 						$obj->initList() ;
 						
-						if ($this->id>0)
+						if ($this->id>0  && count($this->data))
 							$obj->selected = array($this->data[$obj->keys['left_key']]) ;
 							
 						if ($this->id > 0 && count($this->data)){	

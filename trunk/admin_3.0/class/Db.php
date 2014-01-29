@@ -83,23 +83,25 @@ class Db{
 			}
 			return $output ;
 		}
-		if (PDO_TYPE == 'sqlite'){
-			$sql = $this->fetchRow("SELECT sql FROM sqlite_master WHERE type='table' AND tbl_name='$tbl'") ;
-			$sql = $sql['sql'] ;
+		if (PDO_TYPE == 'sqlite'){			
+			$_sql = $this->fetchRow("SELECT sql FROM sqlite_master WHERE type='table' AND tbl_name='$tbl'") ;
+			$sql = $_sql['sql'] ;
 			$sql = str_replace("  "," ",str_replace("  "," ",$sql)); //
 			$sql = str_replace("\r\n","",$sql);
 			$sql = str_replace(',',"\r\n,",$sql);
 			$sql = str_replace('(',"\r\n(\r\n",$sql);
-			$sql = str_replace(')',"\r\n)",$sql);			
+			$sql = str_replace(')',"\r\n)",$sql);
 			$_matches = false;
 			if (strpos($sql,'[') > 0) {
 				preg_match_all("/\[(.+)\] (\w+)?/", $sql  , $_matches, PREG_SET_ORDER);
 			}elseif (strpos($sql,'"') > 0){
 				preg_match_all("/\"(.+)\" (\w+)?/", $sql  , $_matches, PREG_SET_ORDER); 
-			}else{
+			}else{				
 				p('Error parsing fields from table see $db->ctypes');	
-				p($_matches);
+				p('parsing table : '. $tbl) ;
+				p($_sql);				
 				p($sql);
+				p($_matches);				
 				die();
 			}			
 			$sres = array();

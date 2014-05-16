@@ -9,7 +9,9 @@ interface PostAction {
 }
 
 
-class AdminController{	
+class AdminController{
+	public static $_ALLOWED_IPS = array();
+	
 	public static $_PREF = array() ;
 	public static $_PREF_DEF = array(	'body_dir'=>'ltr' ) ;
 	public static $_LNG = array() ;
@@ -213,7 +215,11 @@ class AdminController{
 	
 	public function initAuth(){
 		
-		global $cookie ;
+		global $cookie ;		
+		
+		if ( count(Ctrl::$_ALLOWED_IPS)  && in_array(IP,Ctrl::$_ALLOWED_IPS)){
+			return true ;
+		}
 		
 		if (get('_token')){
 			if (AdminController::validate_token(get('_token'))){

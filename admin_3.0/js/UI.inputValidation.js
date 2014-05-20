@@ -23,7 +23,7 @@
 			,msg: UI.lang.UNVALID_PRICE
 		}
 		this._float = {
-			pattern : /(^-?\d*(\.\d*)$)|^$/
+			pattern : /(^-?\d*(\.\d*)?$)|^$/
 			,fix:function(v){ return $.trim(v).replace(/[^-0-9.]/g, '') ;}
 			,msg: UI.lang.UNVALID_FLOAT
 		}	

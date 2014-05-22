@@ -81,10 +81,10 @@ class AdminForm extends AdminTable{
 			return '<input type="text" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'"  data-type="float"  '. $extends.' />' ;
 		}
 		if ($type == 'price'){
-			return '<input type="number" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'"  data-type="price" '. $extends.' />' ;
+			return '<input type="number" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'" step="any"  data-type="price" '. $extends.' />' ;
 		}
 		if ($type == 'sort'){
-			return '<input type="number" name="'.$fld.'" step="any" id="fld_'.$fld.'" value="'.$d[$fld].'"  data-type="float" data-limit="50" '. $extends.' />' ;
+			return '<input type="number" name="'.$fld.'"id="fld_'.$fld.'" value="'.$d[$fld].'"  step="any"  data-type="float" data-limit="50" '. $extends.' />' ;
 		}
 		if ($type == 'url'){
 			return '<input type="text" name="'.$fld.'" id="fld_'.$fld.'" value="'.$d[$fld].'"  data-type="url" data-limit="255" '. $extends.' />' ;

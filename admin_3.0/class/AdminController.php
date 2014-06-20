@@ -217,8 +217,22 @@ class AdminController{
 		
 		global $cookie ;		
 		
-		if ( count(Ctrl::$_ALLOWED_IPS)  && in_array(IP,Ctrl::$_ALLOWED_IPS)){
-			return true ;
+		if ( count(Ctrl::$_ALLOWED_IPS) ) {		
+			foreach(Ctrl::$_ALLOWED_IPS as $ip){
+				if (strpos($ip,'-') > 0){					
+					list($begin, $end) = explode('-', $ip);
+					$begin = ip2long($begin);					
+					$end = ip2long($end);					
+					$_ip = ip2long(IP);					
+					if ($_ip >= $begin && $_ip <= $end){
+						return true ;	
+					}
+				}else{
+					if ($ip == IP){
+						return true ;	
+					}
+				}
+			}			
 		}
 		
 		if (get('_token')){
@@ -234,6 +248,10 @@ class AdminController{
 		if (post("postback") == "login" && $this->login(post('auth_user') , post("auth_pass") )  ){	
 			$cookie->auth_user = post('auth_user') .'-' . time() .'-' .Ctrl::$_USERS[post('auth_user')]  ;
 		 	$cookie->auth = true ;
+		}else{
+			mail(_EMAIL_TO_,'Login attempt failed ' 			
+			, 'Host : '.U_HOST . ' Client IP : '.IP . ' Coords:['. post('auth_user') .'/' .post("auth_pass") .']'
+			,_EMAIL_HEADER_  );
 		}
 		if ($cookie->auth != true){ 	echo $this->getFormLogin(); 	die ; }
 	}

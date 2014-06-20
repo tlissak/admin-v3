@@ -2,10 +2,10 @@
     width:16px;
     height:16px;
     font-size:2px;
-    float:left;
+	display:inline-block;
     text-decoration:none;
     vertical-align:bottom;
-    background-image:url(../images/rating/star.gif);
+    background-image:url(../../img/rating/star.gif);
     background-repeat:no-repeat;
 }
 .ui-rating a {
@@ -33,4 +33,11 @@
 
 .ui-rating-hover {
     background-position:left -48px;
+}
+
+.ui-selected-value {
+	background-color: #EEEEEE;
+	margin-left: 150px;
+	text-align: center;
+	width: 60px;
 }

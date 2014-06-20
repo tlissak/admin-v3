@@ -129,5 +129,5 @@ body.dragover .droparea{ padding:30px; background:#FFC}
 .filebrowser_workspace .LAY-leftcol a{ color:#333}
 .filebrowser_workspace .directories a{ display:block; text-align:left;}
 .filebrowser_workspace .LAY-center{ left:30%; top:1px;}
-.filebrowser_workspace .LAY-center a{ height:90px; width:90px; float:left; margin:10px; display:block; padding:10px; background-color:#f1f1f1; border:#EEE 1px solid; text-align:center}
+.filebrowser_workspace .LAY-center a{ height:90px; width:90px; float:left; margin:10px; display:block; padding:10px; background-color:#f1f1f1; border:#EEE 1px solid; text-align:center; color:#FFF;}
 .filebrowser_workspace .LAY-center a img{ max-height:90px; max-width:90px;}

@@ -109,10 +109,11 @@
 				for(var i=0 , tbl = '<table class="tbl"><tbody>'; i<o.dirs.length;i++){
 						tbl += '<tr><td><a href="?path='+o.dirs[i].relative+'">'+o.dirs[i].name+'</a></td></tr>'; 
 				}				
-				tbl += "</tbody></table>"  ;				
+				tbl += "</tbody></table>"  ;		
+				
 				for(var i=0,list = '';i< o.files.length;i++){
 					if ((/.*?(\.jpg|\.png|\.gif)$/i).test(o.files[i].uri))
-						o.files[i].name = '<img src="'+o.files[i].uri+'?height=100" />' ;
+						o.files[i].name = '<img src="'+o.files[i].uri+'?height=100" />' +  o.files[i].name.replace(/\.[jpg|png]/gi,'').replace(/[^\w ]/g, ' ');
 					list +='<a href="#'+o.files[i].uri+'" data-relative="'+o.files[i].relative+'">'+o.files[i].name+'</a>' ;
 				}
 

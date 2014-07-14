@@ -36,8 +36,8 @@ class AtosApi{
 		$params['capture_mode'] = 'PAYMENT_N';
 		$params['capture_day'] =1;
 		$params['block_align'] 			= "center"; //BLOCK_ALIGN!center! left
-		$params['customer_email'] = strlen($OrderInfo['email'] ) <=128 ? $OrderInfo['email'] : '' ;
-		$params['customer_ip_address'] = (IP!="") ? substr(IP, max(0, strlen(IP) - 20), min(19, strlen(IP))) : '' ;
+		$params['customer_email'] = $OrderInfo['email'] && strlen($OrderInfo['email'] ) > 128 ? substr($OrderInfo['email'],0,128) : $OrderInfo['email'] ;
+		$params['customer_ip_address'] = (IP!="") ? substr(IP, 0, 19) : '' ;
 		$params['capture_mode'] = "";
 		$params['block_order'] = "1,2,3,4,5,6,7,8"; //BLOCK_ORDER!1,2,3,4,5,6,7,8!
 		$params['textcolor'] = "000000"; //TEXTCOLOR!000000! black
@@ -109,50 +109,63 @@ class AtosApi{
 		return $args;
 	}
 	
-	function log_response($return_type = 'unset'){
+	public function log_response($return_type = 'unset'){
+
 		
 		if ($this->error){
-			mail(ATOS_LOG_EMAIL,'error paiemet glasman ['.$return_type.']' , $this->error,_EMAIL_HEADER_)	 ;
+			mail(ATOS_LOG_EMAIL,'error paiemet glasman ['.$return_type.']' , $this->error,_EMAIL_HEADER_)	 ;			
 			return ;
 		}
 		
-		$tableau = explode('!', $this->last_line);			
-		$EOL = "\n\r<br />";
-		$log = "------------------------ ".date('d/m/Y h:m:s')." -----------------------------" ;
-		$log .= $EOL .  "merchant_id : " . $tableau[3] ;
-		$log .= $EOL .   "merchant_country : " . $tableau[4]; 
-		$log .= $EOL .   "amount : " . $tableau[5];
-		$log .= $EOL .   "transaction_id : " . $tableau[6];
-		$log .= $EOL .   "payment_means : " . $tableau[7];
-		$log .= $EOL .   "transmission_date : " . $tableau[8];
-		$log .= $EOL .   "payment_time : " .$tableau[9];
-		$log .= $EOL .   "payment_date : " . $tableau[10];
-		$log .= $EOL .   "response_code : " . $tableau[11];
-		$log .= $EOL .   "payment_certificate : " . $tableau[12];
-		$log .= $EOL .   "authorisation_id : " . $tableau[13];
-		$log .= $EOL .   "currency_code : " . $tableau[14];
-		$log .= $EOL .   "card_number : " . $tableau[15];
-		$log .= $EOL .   "cvv_flag : " . $tableau[16];
-		$log .= $EOL .   "cvv_response_code : " . $tableau[17];
-		$log .= $EOL .   "bank_response_code : " . $tableau[18];
-		$log .= $EOL .   "complementary_code : " . $tableau[19];
-		$log .= $EOL .   "return_context : " . $tableau[20];
-		$log .= $EOL .   "UNK ? : " .$tableau[21];
-		$log .= $EOL .   "caddie : " . $tableau[22];
-		$log .= $EOL .   "receipt_complement : " .$tableau[23];
-		$log .= $EOL .   "merchant_language : " . $tableau[24];
-		$log .= $EOL .   "language : " . $tableau[25];
-		$log .= $EOL .   "customer_id : " . $tableau[26];
-		$log .= $EOL .   "order_id : " . $tableau[27];
-		$log .= $EOL .   "customer_email : " . $tableau[28]; 
-		$log .= $EOL .   "customer_ip_address : " . $tableau[29];
-		$log .= $EOL .   "capture_day : " .$tableau[30] ;
-		$log .= $EOL .   "capture_mode : " .$tableau[31];
-		$log .= $EOL .   "data : " . $tableau[32];
-		$log .= $EOL .   "---------------------------------------------------" ;
-		$log .= $EOL .   "LINE : " . $this->last_line ;
-		$log .= $EOL .   "---------------------------------------------------" ;
-		mail(ATOS_LOG_EMAIL,'Log paiement glasman ['.$return_type.']',$log,_EMAIL_HEADER_);
+		$tableau = explode('!', $this->last_line);
+		$log = "------------------------ ".date('Y-m-d h:m:s')." -----------------------------" ;		
+		$vals = array(
+			'merchant_id'=> $tableau[3] ,
+			'merchant_country'=> $tableau[4] ,
+			"amount" => $tableau[5] ,
+			"transaction_id" =>  $tableau[6],
+			"payment_means" =>  $tableau[7],
+			"transmission_date" =>  $tableau[8],
+			"payment_time" => $tableau[9],
+			"payment_date" =>  $tableau[10],
+			"response_code" =>  $tableau[11],
+			"payment_certificate" =>  $tableau[12],
+			"authorisation_id" =>  $tableau[13],
+			"currency_code" =>  $tableau[14],
+			"card_number" =>  $tableau[15],
+			"cvv_flag" =>  $tableau[16],
+			"cvv_response_code" =>  $tableau[17],
+			"bank_response_code" =>  $tableau[18],
+			"complementary_code" =>  $tableau[19],
+			"return_context" =>  $tableau[20],
+			"unk" => $tableau[21],
+			"caddie" =>  $tableau[22],
+			"receipt_complement" => $tableau[23],
+			"merchant_language" =>  $tableau[24],
+			"language" =>  $tableau[25],
+			"customer_id" =>  $tableau[26],
+			"order_id" =>  $tableau[27],
+			"customer_email" =>  $tableau[28], 
+			"customer_ip_address" =>  $tableau[29],
+			"capture_day" => $tableau[30] ,
+			"capture_mode" => $tableau[31],
+			"data" =>  $tableau[32] ,
+			'last_line' => $this->last_line,
+			'datetime'=> date('Y-m-d h:m:s'),
+			'return_type'=>$return_type
+		);			
+		foreach ($vars as $k=>$v){
+			$log .= "\n\r<br />" .  $k .' : '. $v ;	
+		}
+		
+		try{
+			$sql = SQL::build('INSERT','transaction',$vals) ;
+			$db->query( $sql );
+		}catch(Exception $e){
+			mail(ATOS_LOG_EMAIL,'Log paiement glasman ['.$return_type.']',$log . ' ' . $e->getMessage() ,_EMAIL_HEADER_);
+			//mail('tlissak@gmail.com','Transaction insert Exception',$e->getMessage(),_EMAIL_HEADER_);		
+		}
+		
 	}
 }
 

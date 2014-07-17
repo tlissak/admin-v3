@@ -84,13 +84,15 @@ UI.docReady();
                      		<div class="LAY-north">
                         		
 			 				<div class="LAY-message"></div>
+                            
+                            <? if ( !  $ctrl->contextTable->protected ){ ?>
 							<div class="LAY-controls">
                             <div class="button-group">
 							  <button type="submit" id="btn-save" name="postback"  class="btn-green"  > <i class="icon-ok"></i> <? c(l('save')) ; ?></button>                              
                               <a class="btn-orange x-new" data-id="0" data-tbl="<? c( $contexttbl ) ;?>"   > <i class="icon-plus"></i> <? c(l('new')) ; ?></a>
 
                                </div>
-                               
+
                                <? if( $ctrl->contextTable->id  > 0) { ?>
                                <div class="button-group right">
                             	<a  class="btn-blue x-dup" data-id="<? c( $ctrl->contextTable->id ) ; ?>" data-tbl="<? c( $contexttbl ) ;?>" > <i class="icon-addshape"></i> <? c(l('duplicate')) ; ?></a>                           
@@ -99,6 +101,14 @@ UI.docReady();
                                 <? } ?>
                                
 						</div>	
+                        <? }else{ ?>
+                        <div class="LAY-controls">
+                            <div class="button-group">
+							  <button type="submit" id="btn-save" name="postback"  class="btn-green"  > <i class="icon-ok"></i> <? c(l('save')) ; ?></button>   
+                               </div>                               
+						</div>	
+                        
+                        <? } ?>
                     
                     </div>
                     	<? }?>

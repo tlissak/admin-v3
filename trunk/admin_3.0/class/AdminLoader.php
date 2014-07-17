@@ -22,19 +22,28 @@ class AdminLoader extends AdminForm{
 	public $order 		= false ;
 	public $fld_title 	= false; // require 
 	public $show 		= 1; //in menu
-
+	
+	public $options = array('readonly'=>0);
+	public $protected = 0 ;
+	
+	
 	public function Image($x ){		$this->image[] = $x 	; 	return $this ; }
 	public function View($x ){		$this->view = $x 	; 			return $this ; }
 	public function Show($x ){		$this->show = $x 	; 		return $this ; }
 	public function FieldTitle($x){  $this->fld_title = $x ; 		return $this; }
 	public function Relation($x ){	$this->relation[$x['name']] = $x 	; return $this ; }
 	public function AddTableAttr($x , $y){ $this->{$x} = $y; return $this; }
-	public function Load(){		
+	public function Load($opt_array=array()){		
 		if (! $this->name) {				_die("Table name not seted", E_USER_WARNING); return false;}
 		if ( ! $this->view){			trigger_error("view not seted table ". $this->name . ' not loaded !', E_USER_WARNING);	return false; }		
 		if ( ! $this->fld_title){		trigger_error("fld_title not seted table ". $this->name , E_USER_WARNING);	 }			
 		if (count($this->image)){		$this->verifyImageInput() ; 	}
-		if (count($this->relation)){	$this->verifyRelationInput()  ; }	
+		if (count($this->relation)){	$this->verifyRelationInput()  ; }
+		$this->options = $opt_array ;
+		
+		if (isset($this->options['readonly'])  && $this->options['readonly'] ){
+			$this->protected = 1 ;
+		}
 		Ctrl::$tableInstances[$this->name] = &$this ;
 		return false ;	
 	}

@@ -44,8 +44,8 @@ class AdminRelation extends AdminMvc {
 				foreach($keys as $k){	$k_ids[] = $k['k_id'] ;		}
 				$this->dataRelation[$v['tbl']]	 = $k_ids  ; 
 			}elseif ($v['type'] ==  RelationType::ManyToOneByKey ){				
-				$sql = 'SELECT id AS k_id FROM `'.$v['tbl'] .'` WHERE ' ;
-				$sql .=' `'. $v['tbl'] .'`.`'. $v['left_key'] .'` =  ' . ($this->data[ $v['right_key'] ] ?  $this->data[ $v['right_key'] ] : '0' );
+				$sql = 'SELECT id AS k_id FROM `'.$v['tbl'] .'` WHERE ' ;				
+				$sql .=' `'. $v['tbl'] .'`.`'. $v['left_key'] .'` =  ' . ( ( array_key_exists ($v['right_key'],$this->data ) && $this->data[ $v['right_key'] ] ) ?  $this->data[ $v['right_key'] ] : '0' );
 				$keys = $this->db->fetch($sql);
 				foreach($keys as $k){	$k_ids[] = $k['k_id'] ;		}
 				$this->dataRelation[$v['tbl']]	 = $k_ids  ; 
@@ -236,18 +236,21 @@ and this overwite the to be empty data :
 	
 	
 	function deleteRelations(){ /*del M2M relation only !!! */
+			
 		if( ! count($this->relation) ){ 		return ; }
 		if ($this->id < 0){ 						return ; }
 		foreach ($this->relation as $k=>$v ) {
-			if ($v['type'] == RelationType::ManyToMany ||
-				$v['type'] == RelationType::ManyToManySelect){
-				$this->db->query('DELETE  FROM `'. $v['by_tbl']. '` WHERE `' . $v['right_key']. '` = ' . $this->id );				
-			}
-			if ($v['type'] == RelationType::ManyToOne){
-				$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = 0 WHERE `' . $v['left_key']. '` = ' . $this->id );	
-			}
-			if ($v['type'] == RelationType::ManyToOneByKey){	
-				$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key']  . '` = 0 WHERE  `'. $v['tbl'] .'`.`'. $v['left_key'] .'` =  ' . ($this->post_data[ $v['right_key'] ] ?  $this->post_data[ $v['right_key'] ] : '0' ) ); 
+			if (isset($v['readonly']) && $v['readonly']){}else{					
+				if ($v['type'] == RelationType::ManyToMany ||
+					$v['type'] == RelationType::ManyToManySelect){					
+						$this->db->query('DELETE  FROM `'. $v['by_tbl']. '` WHERE `' . $v['right_key']. '` = ' . $this->id );
+				}
+				if ($v['type'] == RelationType::ManyToOne){
+					$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = 0 WHERE `' . $v['left_key']. '` = ' . $this->id );	
+				}
+				if ($v['type'] == RelationType::ManyToOneByKey){	
+					$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key']  . '` = 0 WHERE  `'. $v['tbl'] .'`.`'. $v['left_key'] .'` =  ' . ($this->post_data[ $v['right_key'] ] ?  $this->post_data[ $v['right_key'] ] : '0' ) ); 
+				}
 			}
 		}
 	}	
@@ -257,55 +260,55 @@ and this overwite the to be empty data :
 		if ($this->id < 0){ 						return ; }
 		
 		foreach ($this->relation as $k=>$v ) {		
-			
-			if ($v['type'] ==  RelationType::ManyToMany ||
-				$v['type'] == RelationType::ManyToManySelect || 
-				$v['type'] ==  RelationType::ManyToOne ||
-				$v['type'] ==  RelationType::ManyToOneByKey
-				 ){
-					if ($dupplicate){
-						$k_ids = $this->dataRelation[$v['tbl']] ;
-					}else{
-						$k_ids = post($v['tbl']) ? post($v['tbl']) : array() ;
-					}
-			}
-			
-			if ($v['type'] ==  RelationType::ManyToOneByKey ){
-					if (count($k_ids)>0)
-						$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = ' . 
-							($this->post_data[ $v['right_key'] ] ?  $this->post_data[ $v['right_key'] ] : '0' )  . ' WHERE id IN(' . join($k_ids,",") . ') ' );
-					$this->db->query( 'DELETE  FROM `'. $v['tbl']. '` WHERE `' . $v['left_key']. '` =  0 '  );						
-			}
-			
-			if ($v['type'] ==  RelationType::ManyToMany || $v['type'] == RelationType::ManyToManySelect){		
-					
-					if ($dupplicate){
-						$k_ids = $this->dataRelation[$v['tbl']] ;
-					}else{
-						$k_ids = post($v['tbl']) ? post($v['tbl']) : array() ;
-					}
-								 
-					$insert_sql = '';
-					$bulided = false;
-					foreach( $k_ids as $id){						
-						if ($bulided){
-							$insert_sql .=  ' UNION SELECT '.$id .','. $this->id   ;
+			if (isset($v['readonly']) && $v['readonly']){  }else{	
+				if ($v['type'] ==  RelationType::ManyToMany ||
+					$v['type'] == RelationType::ManyToManySelect || 
+					$v['type'] ==  RelationType::ManyToOne ||
+					$v['type'] ==  RelationType::ManyToOneByKey
+					 ){
+						if ($dupplicate){
+							$k_ids = $this->dataRelation[$v['tbl']] ;
 						}else{
-							$insert_sql .=  'INSERT INTO `'. $v['by_tbl'] .'` (`'.$v['left_key'].'`,`'.$v['right_key'].'`) SELECT '.$id.','.$this->id  ; 
+							$k_ids = post($v['tbl']) ? post($v['tbl']) : array() ;
 						}
-						$bulided = true ;
-					}
-					if ($bulided){
-						$this->db->query($insert_sql );
-					}
+				}
+				
+				if ($v['type'] ==  RelationType::ManyToOneByKey ){
+						if (count($k_ids)>0)
+							$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = ' . 
+								($this->post_data[ $v['right_key'] ] ?  $this->post_data[ $v['right_key'] ] : '0' )  . ' WHERE id IN(' . join($k_ids,",") . ') ' );
+						$this->db->query( 'DELETE  FROM `'. $v['tbl']. '` WHERE `' . $v['left_key']. '` =  0 '  );						
+				}
+				
+				if ($v['type'] ==  RelationType::ManyToMany || $v['type'] == RelationType::ManyToManySelect){		
+						
+						if ($dupplicate){
+							$k_ids = $this->dataRelation[$v['tbl']] ;
+						}else{
+							$k_ids = post($v['tbl']) ? post($v['tbl']) : array() ;
+						}
+									 
+						$insert_sql = '';
+						$bulided = false;
+						foreach( $k_ids as $id){						
+							if ($bulided){
+								$insert_sql .=  ' UNION SELECT '.$id .','. $this->id   ;
+							}else{
+								$insert_sql .=  'INSERT INTO `'. $v['by_tbl'] .'` (`'.$v['left_key'].'`,`'.$v['right_key'].'`) SELECT '.$id.','.$this->id  ; 
+							}
+							$bulided = true ;
+						}
+						if ($bulided){
+							$this->db->query($insert_sql );
+						}
+				}
+				
+				if ($v['type'] ==  RelationType::ManyToOne){
+						if (count($k_ids)>0)
+							$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = ' . $this->id . ' WHERE id IN(' . join($k_ids,",") . ') '  );
+						$this->db->query( 'DELETE  FROM `'. $v['tbl']. '` WHERE `' . $v['left_key']. '` =  0 '  );	
+				}
 			}
-			
-			if ($v['type'] ==  RelationType::ManyToOne){
-					if (count($k_ids)>0)
-						$this->db->query( 'UPDATE `'. $v['tbl']. '` SET `' . $v['left_key'] . '` = ' . $this->id . ' WHERE id IN(' . join($k_ids,",") . ') '  );
-					$this->db->query( 'DELETE  FROM `'. $v['tbl']. '` WHERE `' . $v['left_key']. '` =  0 '  );	
-			}
-			
 
 		}	
 	}		

@@ -135,7 +135,13 @@ class AdminController{
 					if (post('form_submit_action_type')	== 'del'){ 			$this->action = PostAction::DEL ;			}
 					if (post('form_submit_action_type')	== 'dup'){ 			$this->action = PostAction::DUP ;			}
 					
-					if ($this->action 			==	PostAction::UNSETD){ 			_die('What ? ');		}
+					
+					if ($this->contextTable->protected){
+						$this->action 			=	PostAction::UNSETD ;
+					}
+					
+					if ($this->action 			==	PostAction::UNSETD){ 			_die('PostAction::UNSETD or no permissions'); fb("Died ?");		}
+				
 					
 					$callback = array();
 					$callback['title']				= post($this->contextTable->fld_title) ; // verify when deleting

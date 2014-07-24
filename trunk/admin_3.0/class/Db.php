@@ -2,6 +2,7 @@
 class Db{
 	public $db ;
 	public $errors = array() ;
+	public $querys = array() ;
 	public $last_error =  "" ;
 	private $pdo_type  ;
 	private $pdo_dsn  ;
@@ -26,14 +27,17 @@ class Db{
 	static function iso2utf8(&$value, $key){
 		$value = iconv('ISO-8859-1','UTF-8', $value);
 	}
+	function debug($sql){
+		$this->querys[] = $sql ;	
+	}
 	function error($e,$q){
 			$er  = (implode(', ',$e) .' :: '. $q );
 			$this->last_error = $er ;	
 			$this->errors[] = $er;
-			DebugError('Db', $er ) ;
+			
 	}
 	function fetch($q){
-		DebugSql($q);
+		$this->debug($q);
 		if ($sth = $this->db->prepare($q) ){
 			$sth->execute();	
 			if ($res =  $sth->fetchall(PDO::FETCH_ASSOC)){
@@ -48,7 +52,7 @@ class Db{
 		}
 	}
 	function fetchRow($q){
-		DebugSql($q);
+		$this->debug($q);
 		if ($sth = $this->db->prepare($q)){
 			$sth->execute();	
 			if ($res = $sth->fetch(PDO::FETCH_ASSOC) ){
@@ -63,7 +67,7 @@ class Db{
 		}
 	}
 	function query($q){
-		DebugSql($q);
+		$this->debug($q);
 		if ($sth = $this->db->prepare($q)){
 			$sth->execute();
 			if (strrpos($q,'INSERT' ) === 0)
@@ -76,45 +80,22 @@ class Db{
 	}
 	function ctypes($tbl) {
 		if (PDO_TYPE == 'mysql'){
-			$cols = $this->fetch("SHOW COLUMNS FROM `$tbl`");
+			$columns = $this->fetch("SHOW COLUMNS FROM `$tbl`");
 			$output = array() ;
-			foreach($cols as $cl) {
+			foreach($columns as $cl) {
 					$output[$cl['Field']] = strtoupper( preg_replace('/\(.+\)/','',$cl['Type'] ) );
 			}
 			return $output ;
 		}
 		if (PDO_TYPE == 'sqlite'){			
-			$_sql = $this->fetchRow("SELECT sql FROM sqlite_master WHERE type='table' AND tbl_name='$tbl'") ;
-			$sql = $_sql['sql'] ;
-			$sql = str_replace("  "," ",str_replace("  "," ",$sql)); //
-			$sql = str_replace("\r\n","",$sql);
-			$sql = str_replace(',',"\r\n,",$sql);
-			$sql = str_replace('(',"\r\n(\r\n",$sql);
-			$sql = str_replace(')',"\r\n)",$sql);
-			$_matches = false;
-			if (strpos($sql,'[') > 0) {
-				preg_match_all("/\[(.+)\] (\w+)?/", $sql  , $_matches, PREG_SET_ORDER);
-			}elseif (strpos($sql,'"') > 0){
-				preg_match_all("/\"(.+)\" (\w+)?/", $sql  , $_matches, PREG_SET_ORDER); 
-			}else{				
-				p('Error parsing fields from table see $db->ctypes');	
-				p('parsing table : '. $tbl) ;
-				p($_sql);				
-				p($sql);
-				p($_matches);				
-				die();
-			}			
-			$sres = array();
-			if ($_matches){
-				foreach($_matches as $m){
-					if (count($m) == 3){
-						$sres[trim($m[1])] = trim($m[2] );
-					}
-				}	
+			$columns = $this->fetch("PRAGMA table_info($tbl)");	
+			$output = array();		
+			foreach($columns as $cl){
+				$output[$cl['name']] = strtoupper( preg_replace('/\(.+\)/','',$cl['type'] ) );
 			}
-			return $sres ;
+			return $output ;
 		}
-		die("Db::ctypes($tbl) : db pdo type get fields not handled ". PSO_TYPE );
+		die("Db::ctypes($tbl) : db pdo type get fields not handled ". PDO_TYPE );
 	}
 }
 

@@ -28,11 +28,11 @@ class Upload{
 						if ($uploaded = $this->upload_image($photo)){
 							$photo['uploaded'] = $uploaded ;
 						}else{
-							$photo['error'] = 998 ;
+							$photo['error'] = "998 - May permissions or folder not exists" ;
 							$photo['error_msg'] = 'UploadError' ;		
 						}
 					}else{
-						$photo['error'] = 999 ;
+						$photo['error'] = "999 - May MIME file type not allowed" ;
 						$photo['error_msg'] = 'FileTypeNotAllowed' ;
 					}
 					unset($photo['tmp_name']) ;

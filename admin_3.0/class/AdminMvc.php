@@ -42,7 +42,7 @@ class AdminMvc extends AdminList{
 		$h .= '<table class="tbl">';
 		
 		$h .= '<thead><tr>';
-		if (($this->viewtype == "SELECT-EDIT" || $this->viewtype == "SELECT-ONE-EDIT") && ! $this->protected){			
+		if (($this->viewtype == "SELECT" || $this->viewtype == "SELECT-EDIT" || $this->viewtype == "SELECT-ONE-EDIT") && ! $this->protected){			
 			$h .= '<th style="width:4%">&#9745;</th>';
 		}
 		foreach ($this->view as $k=>$v){
@@ -101,7 +101,7 @@ class AdminMvc extends AdminList{
 		$out = '';
 		$out .= '<tr class="form-filter" >';
 		
-		if (($this->viewtype == "SELECT-EDIT" || $this->viewtype == "SELECT-ONE-EDIT" ) && ! $this->protected){			
+		if (($this->viewtype == "SELECT" || $this->viewtype == "SELECT-EDIT" || $this->viewtype == "SELECT-ONE-EDIT" ) && ! $this->protected){			
 			$out .= '<th style="width:4%">&nbsp;</th>';
 		}
 		
@@ -233,11 +233,11 @@ class AdminMvc extends AdminList{
 				$tr .=  ($dt['_selected'] ? ' selected ' : '')  ;
 			}
 			$tr .=  '" >' ;
-			
+				
 			if ($this->viewtype == "SELECT-EDIT" && !$this->protected){
 				$tr .= '<td><input class="relation-cb relation-cbx" type="checkbox"  id="_fld_'.$this->name.'_'.$id .'" value="'.$id .'"  '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
 			}
-			if ($this->viewtype == "SELECT-ONE-EDIT" && !$this->protected){
+			if (($this->viewtype == "SELECT" || $this->viewtype == "SELECT-ONE-EDIT" )  && !$this->protected){
 				$tr .= '<td><input class="relation-cb" type="radio"   id="_fld_'.$this->name.'_'.$id .'" value="'.$id .'"   '. ($dt['_selected'] ? 'checked="checked"' : '') .'   /></td>'  ;
 			}
 			

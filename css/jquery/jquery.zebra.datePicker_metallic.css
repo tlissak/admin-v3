@@ -27,7 +27,7 @@
 .Zebra_DatePicker .dp_daypicker td,
 .Zebra_DatePicker .dp_daypicker th,
 .Zebra_DatePicker .dp_monthpicker td,
-.Zebra_DatePicker .dp_yearpicker td         { width: 30px; border: 1px solid #BBB; background: #DEDEDE url('../img/date_picker/metallic/default-date.png') repeat-x top; color: #666 }
+.Zebra_DatePicker .dp_yearpicker td         { width: 30px; border: 1px solid #BBB; background: #DEDEDE url('../../img/date_picker/metallic/default-date.png') repeat-x top; color: #666 }
 
 /* = HEADER
 ----------------------------------------------------------------------------------------------------------------------*/
@@ -71,7 +71,7 @@
 ----------------------------------------------------------------------------------------------------------------------*/
 /* = ICON
 ----------------------------------------------------------------------------------------------------------------------*/
-button.Zebra_DatePicker_Icon                { position: absolute; width: 16px; height: 16px; background: url('../img/date_picker/calendar.png') no-repeat left top; text-indent: -9000px; border: none; cursor: pointer; margin: 0 0 0 5px; padding: 0; line-height: 0 }
+button.Zebra_DatePicker_Icon                { position: absolute; width: 16px; height: 16px; background: url('../../img/date_picker/calendar.png') no-repeat left top; text-indent: -9000px; border: none; cursor: pointer; margin: 0 0 0 5px; padding: 0; line-height: 0 }
 button.Zebra_DatePicker_Icon_Disabled       { background-image: url('../../img/date_picker/calendar-disabled.png') }
 button.Zebra_DatePicker_Icon_Inside         { margin: 0 3px 0 0 }
 

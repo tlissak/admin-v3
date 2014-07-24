@@ -35,7 +35,8 @@ class AdminForm extends AdminTable{
 	public function _Date($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'date') ;return $this; }	
 	public function _Check($fld,$title,$opt=array()){ 	$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'checkbox') ;return $this; }	
 	public function _Textarea($fld,$title,$opt=array()){$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'textarea') ;return $this; }	
-	public function _Rte($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'rte') ;return $this; }		
+	public function _Rte($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'rte') ;return $this; }
+	public function _Hidden($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'hidden') ;return $this; }			
 	public function _File($fld,$title,$opt=array()){ 		$this->formFields[] = array('opt'=>$opt,'name'=>$fld,'title'=>$title,'type'=>'file') ;return $this; }		
 	public function _Html($html,$opt=array()){ 			$this->formFields[] = array('opt'=>$opt,'type'=>'html','html'=>$html) ;return $this; }	
 	
@@ -128,7 +129,7 @@ class AdminForm extends AdminTable{
 		}
 		
 		if($type == 'hidden'){
-			return '<input type="hidden" name="s_'.$fld.'" id="hdn_fld_'.$fld.'" value="'.($d[$fld])  . '" '. $extends.' />' ;		
+			return '<input type="hidden" name="'.$fld.'" id="hdn_fld_'.$fld.'" value="'. isset($d[$fld]) ? $d[$fld] : $opt['default_value']  . '" '. $extends.' />' ; //
 		}
 		if ($type == 'range'){
 			return '<input type="range" name="'.$fld.'" id="fld_'.$fld.'" data-type="int" value="'.$d[$fld].'" step="1" data-limit="11" max="'.$opt['max'].'" min="'.$opt['min'].'" '. $extends.' /><span>'.$d[$fld].'</span>' ;

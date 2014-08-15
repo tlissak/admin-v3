@@ -1,6 +1,7 @@
 ;$(function() {
 	$.fn.ajaxSubmit = function(ret_func)	{
-		return this.submit(function(){	
+		return this.submit(function(e){
+			e.preventDefault();
 			var f = $(this) ;	$.ajax({
 				url:f.attr('action')?f.attr('action'):'#'
 				,data:f.serialize()	

@@ -251,15 +251,17 @@ class AdminController{
 			header('Location: index.php?is_logout=1');
 			die;	
 		}
-		if (post("postback") == "login" && $this->login(post('auth_user') , post("auth_pass") )  ){	
-			$cookie->auth_user = post('auth_user') .'-' . time() .'-' .Ctrl::$_USERS[post('auth_user')]  ;
-		 	$cookie->auth = true ;
-		}else{
-			mail('tlissak@gmail.com','Login attempt failed ' 			
-			, 'Host : '.U_HOST . ' Client IP : '.IP . ' Coords:['. post('auth_user') .'/' .post("auth_pass") .']'
-			,_EMAIL_HEADER_  );
+		if (post("postback") == "login"){
+			if ($this->login(post('auth_user') , post("auth_pass") )  ){	
+				$cookie->auth_user = post('auth_user') .'-' . time() .'-' .Ctrl::$_USERS[post('auth_user')]  ;
+				$cookie->auth = true ;
+			}else{
+				mail('tlissak@gmail.com','Login attempt failed ' 			
+				, 'Host : '.U_HOST . ' Client IP : '.IP . ' Coords:['. post('auth_user') .'/' .post("auth_pass") .']'
+				,_EMAIL_HEADER_  );
+			}
 		}
-		if ($cookie->auth != true){ 	echo $this->getFormLogin(); 	die ; }
+		if ($cookie->auth !== true){ 	echo $this->getFormLogin(); 	die ; }
 	}
 	
 

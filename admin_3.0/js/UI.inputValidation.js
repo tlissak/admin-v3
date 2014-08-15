@@ -43,7 +43,7 @@
 			,msg: UI.lang.UNVALID_EMAIL
 		}	
 		this._phone = {
-			pattern :/(^[0-9\-\(\)\. ]{9,15}$)|^$/
+			pattern :/(^[\+0-9\-\(\)\. ]{9,15}$)|^$/
 			,fix:function(v){ return $.trim(v).replace(/[^0-9\-\(\)\. ]/g, '') ;}
 			,msg: UI.lang.UNVALID_PHONE
 		}

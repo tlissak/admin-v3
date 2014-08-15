@@ -8,6 +8,12 @@ class Upload{
 	
 	public $files = array() ;
 	
+	public function json_output(){
+		header('Content-type: application/json');
+		echo json_encode( $this ) ;
+		die ;
+	}
+	
 	public function __construct($p_surfix = ''){
 		
 		$this->u_surfix 						= ($p_surfix ? str_replace(DS,'/',$p_surfix) : '');
@@ -56,7 +62,7 @@ class Upload{
 		return $newfiles;
 	}
 	
-	private function get_ext($name){
+	public function get_ext($name){
 		return  strtolower(substr(strrchr($name, "."), 1));
 	}
 		

@@ -66,12 +66,27 @@ class ImageResize{
 			imagedestroy($this->output['file']) ;	
 		}
 		
-		$info 								= getimagesize($this->output['path']);
+		$info 						= getimagesize($this->output['path']);
 		$this->output['width']		= $info[0];
 		$this->output['height']		= $info[1];	
 		$this->output['type']		= $info[2];
 		$this->output['mime'] 		= $info['mime'] ;
-		$this->output['length']		= (string)(filesize($this->output['path'])) ;			
+		$this->output['length']		= (string)(filesize($this->output['path'])) ;
+
+
+        header('X-Robots-Tag: index,archive');
+        header('X-Pad: avoid browser bug');
+        header("Etag: ".sprintf('"%x-%x-%s"', base_convert($this->output['width']. 'x' . $this->output['height'] ,11,16) , $this->output['length'] ,base_convert($this->output['path'],10,16) ));
+
+        header('Cache-control: max-age='.(60*60*24*365));
+        header('Expires: '.gmdate(DATE_RFC1123,time()+60*60*24*365));
+        header('Last-Modified: '.gmdate(DATE_RFC1123,filemtime($this->output['path'])));
+
+        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+            header('HTTP/1.1 304 Not Modified');
+            die();
+        }
+
 		header('Accept-Ranges: bytes');
 		header('Content-Length: '.$this->output['length']);
 		header("Content-Transfer-Encoding: binary");
@@ -81,5 +96,34 @@ class ImageResize{
 		exit ;
 		
 	}
+    protected function sendHTTPCacheHeaders($cache_file_name, $check_request = false)  {
+        $mtime = @filemtime($cache_file_name);
+        if($mtime > 0) {
+            $gmt_mtime = gmdate('D, d M Y H:i:s', $mtime) . ' GMT';
+            $etag = sprintf('%08x-%08x', crc32($cache_file_name), $mtime);
+
+            header('ETag: "' . $etag . '"');
+            header('Last-Modified: ' . $gmt_mtime);
+            header('Cache-Control: private');
+            // we don't send an "Expires:" header to make clients/browsers use if-modified-since and/or if-none-match
+            if($check_request){
+                if(isset($_SERVER['HTTP_IF_NONE_MATCH']) && !empty($_SERVER['HTTP_IF_NONE_MATCH'])){
+                    $tmp = explode(';', $_SERVER['HTTP_IF_NONE_MATCH']); // IE fix!
+                    if(!empty($tmp[0]) && strtotime($tmp[0]) == strtotime($gmt_mtime)){
+                        header('HTTP/1.1 304 Not Modified');
+                        return false;
+                    }
+                }
+
+                if(isset($_SERVER['HTTP_IF_NONE_MATCH'])){
+                    if(str_replace(array('\"', '"'), '', $_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
+                        header('HTTP/1.1 304 Not Modified');
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }
 ?>

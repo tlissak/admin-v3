@@ -115,17 +115,18 @@ class AdminMvc extends AdminList{
 						break;
 				}
 			}
-			
-			if ($used_key_relation){
-                   $out .= '<select name="filter['.$used_key_relation->keys["left_key"].']" class="filter-select" >' ; 
-				   $out .= '<option value="">-</option>' ;
-                   foreach($used_key_relation->_list as $li){
-                   		$out .= '<option value="'.$li['id'] .'">'.$li[  $used_key_relation->fld_title ].'</option>' ;
-                   }
-                   $out .= '</select>' ;
-            }else{ 
-                   $out .=  '<input type="text" name="filter['.  $key .']" class="filter-search" />' ;
-            }
+
+
+			/*if ($used_key_relation && count($used_key_relation->_list) < 30) {
+                $out .= '<select name="filter[' . $used_key_relation->keys["left_key"] . ']" class="filter-select" >';
+                $out .= '<option value="">-</option>';
+                foreach ($used_key_relation->_list as $li) {
+                    $out .= '<option value="' . $li['id'] . '">' . $li[$used_key_relation->fld_title] . '</option>';
+                }
+                $out .= '</select>';
+            }else{*/
+            $out .=  '<input type="text" name="filter['.  $key .']" class="filter-search" />' ;
+            //}
 			
 			$out .= '<select name="order['.$key.']" class="order-sort">
                                 	<option value=""></option>

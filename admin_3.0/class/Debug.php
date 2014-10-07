@@ -5,7 +5,7 @@ function pTrace($obj){
 	p($obj);	
 }
 function Debug($x){
-	fb($x,FirePHP::TRACE) ;
+	//fb($x,FirePHP::TRACE) ;
 	Debug::$info[] = FullTrace();
 	Debug::$info[] = $x ;	
 }
@@ -19,7 +19,7 @@ function DebugSql($q){
 	Debug::$sql[] = $q;	
 }
 function DebugError($src,$inf){ 	
-	fb( "[$src] $inf ",FirePHP::TRACE) ; 
+	//fb( "[$src] $inf ",FirePHP::TRACE) ;
 	Debug::$error[] = '<span style="color:red">' . "[$src] $inf " ."</span>" .  '<span style="color:green">' . Trace() .'</span>';
 }
 function Todo($inf,$impotance=1){ 	
@@ -71,8 +71,8 @@ class Debug{
 	public static $error = array() ;	
 	
 	function __construct(){
-		if (!self::$debug_error) return ;
-		set_error_handler('developpementErrorHandler');
+		//if (!self::$debug_error) return ;
+		//set_error_handler('developpementErrorHandler');
 		ini_set('html_errors', 'on');
 		ini_set('display_errors', 'on');
 		error_reporting(E_ALL );	

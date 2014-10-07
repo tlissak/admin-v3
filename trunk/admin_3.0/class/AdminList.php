@@ -40,19 +40,24 @@ class AdminList  extends PagingList   {
 		$this->sql_tables 			= ' `'.$this->name.'` ' ;		
 		$this->sql_order				= "" ;			
 		$this->sql_param 			= "" ;
-		
+
+        $this->__r_fields = array();
+
 		foreach($this->relations as $rel){
 			if($rel->keys['type'] == RelationType::Simple 	|| $rel->keys['type'] == RelationType::InnerSimple ){
 					$inner_sql = ','. $rel->name.$rel->keys['left_key'].'_ljoin.'.$rel-> fld_title .' AS '.$rel->keys['left_key'] . '_inner ' ;
 					$this->sql_left_joins .= ' LEFT JOIN `'. $rel->name . '` AS '.$rel->name .$rel->keys['left_key'].'_ljoin '  ;
 					$this->sql_left_joins .= ' ON '.$rel->name.$rel->keys['left_key'] .'_ljoin.id = `'. $this->name.'`.'.  $rel->keys['left_key']  .' ' ;
 					$this->sql_fields .= $inner_sql ;
+
+                $this->__r_fields[$rel->keys['left_key'].'_inner'] = $rel->name.$rel->keys['left_key'].'_ljoin.'.$rel-> fld_title ;
 			}
 		}
-		
-		if ( count($this->filter_val  )>0 ) {	
+
+        if ( count($this->filter_val  )>0 ) {
 			$this->sql_param .= $this->getListSqlFilter( ) ;
 		}
+
 		if ( count($this->order_val) >0 ) {	
 			$this->sql_order = $this->getListSqlOrder( ) ;
 		}
@@ -62,19 +67,31 @@ class AdminList  extends PagingList   {
 		}
 	}	
 	
-	function getListSqlFilter(){		
+	function getListSqlFilter(){
+
 		$out = '' ;
 		$found = false;
 		foreach($this->filter_val as $fld=>$query ){
 				$rf = false;
 				foreach($this->relations as $r){ 	 /* so he has relation values*/
-					if($r->keys['left_key'] == $fld ){ $rf = true;	break ;		}
+					if($r->keys['left_key'] == $fld ){
+                        $rf = true;
+                        p($r);
+                        break ;
+                    }
+
+
 				}
 				if ($rf){		$val = ' = '. SQL::v2int($query)  ;
-				}else{		$val  = ' LIKE ' .SQL::v2txt($query .'%') ;			}				
-				$out .= ($found ? ' AND ' : ' WHERE ') . '`'.$this->name.'`.' . $fld . $val ;
+				}else{		$val  = ' LIKE ' .SQL::v2txt($query .'%') ;			}
+
+                if (! in_array($fld,$this->fields) && $fld != 'id') {
+                    $out .= ($found ? ' AND ' : ' WHERE ') . $this->__r_fields[$fld] . $val;
+                }else {
+                    $out .= ($found ? ' AND ' : ' WHERE ') . '`' . $this->name . '`.' . $fld . $val;
+                }
 				$found = true;
-		}	
+		}
 		return $out;
 	}
 	

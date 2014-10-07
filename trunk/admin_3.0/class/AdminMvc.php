@@ -290,12 +290,13 @@ class AdminMvc extends AdminList{
 			$tr .= "</tr>";
 		return $tr ;	;
 	}
-	
+
 	function thumb($img){
-		if (V2_IMG)
-			return 	'<img src="../'. ((strpos($img,'photos/') === 0 )? $img : 'photos/'. $img ) .'?height=40" style="max-height:40px;max-width:100px;"  alt="[--]" />'; 
+		if (V2_IMG) {
+            return ($img && $img !="&nbsp;-&nbsp;") ? '<img src="../' . ((strpos($img, 'photos/') === 0) ? $img : 'photos/' . $img) . '?height=40" style="max-height:40px;max-width:100px;"  alt="[--]" />' : '--';
+        }
 		if ( is_image( P_PHOTO . str_replace('/',DS,$img)) ){
-			return 	'<img src="'. U_PHOTO . $img .'?height=40" style="max-height:40px;max-width:100px;"  alt="[--]" />'; 
+			return 	'<img src="'. U_PHOTO . $img .'?height=40" style="max-height:40px;max-width:100px;"  alt="[-|-]" />';
 		}else{
 			return '<i class="icon-picture" title="'.$img.'"></i>';
 		}

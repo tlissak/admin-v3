@@ -1,5 +1,5 @@
 <?php
-include('inc/conf.php');
+include('inc/config.php');
 include('inc/func.php');
 
 $br = '<br />'."\r\n" ;
@@ -18,7 +18,7 @@ if(post('postback')  ){
 	if (is_email(post('mailto')) ){
 		$mailto .= ',' .post('mailto') ;
 	}
-	@mail( $mailto,'Message [JLC] '  ,$html,_EMAIL_HEADER_) ;	
+	@mail( $mailto,'Message '  ,$html,_EMAIL_HEADER_) ;	
 	echo 'Votre message a bien été envoyé !' . "\n";
 }else{
 	echo "Formulaire inconnue.."; 

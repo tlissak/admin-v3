@@ -43,6 +43,9 @@ function FullTrace(){
 			if (isset($v["args"])){
 				$out .= "(";
 				foreach($v["args"] as $arg){
+                    if (is_array($arg)){
+                        $arg = implode(",",$arg) ;
+                    }
 					$out .=  $arg.",";
 				}
 				$out .= ")";

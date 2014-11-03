@@ -8,7 +8,7 @@ class ImageResize{
 		
 		$file =  P_PHOTO . str_replace('/',DS,$u_file );		
 		if (! is_file( $file )){		die('input file not found '.$file  );	}
-		if ($dims['height'] == 0 && $dims['width'] == 0){ die('dimensions not seted');}
+		if ($dims['height'] == 0 && $dims['width'] == 0){ die('dimensions not seted ' .$_SERVER['QUERY_STRING'] . ' ' . $_SERVER['REQUEST_URI']);}
 		
 		$info 								= getimagesize($file);		
 		$this->input['path']			= $file ;

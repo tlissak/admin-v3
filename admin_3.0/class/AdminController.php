@@ -248,6 +248,7 @@ class AdminController{
 		}		
 		if (get('logout') == '1'){
 			$cookie->auth = false ;
+            $cookie->write();
 			header('Location: index.php?is_logout=1');
 			die;	
 		}
@@ -255,6 +256,7 @@ class AdminController{
 			if ($this->login(post('auth_user') , post("auth_pass") )  ){	
 				$cookie->auth_user = post('auth_user') .'-' . time() .'-' .Ctrl::$_USERS[post('auth_user')]  ;
 				$cookie->auth = true ;
+                $cookie->write();
 			}else{
 				mail('tlissak@gmail.com','Login attempt failed ' 			
 				, 'Host : '.U_HOST . ' Client IP : '.IP . ' Coords:['. post('auth_user') .'/' .post("auth_pass") .']'

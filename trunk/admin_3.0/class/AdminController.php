@@ -263,7 +263,13 @@ class AdminController{
 				,_EMAIL_HEADER_  );
 			}
 		}
-		if ($cookie->auth !== true){ 	echo $this->getFormLogin(); 	die ; }
+
+		if ($cookie->auth == true){ // == true can be == 1
+            return true ;
+        }
+
+        echo $this->getFormLogin();
+        die ;
 	}
 	
 

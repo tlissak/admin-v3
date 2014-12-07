@@ -83,7 +83,7 @@ class PagingList {
 	public function getListRows($page_size){
 		$list = $this->db->fetch( $this->getListRowsSql($page_size) );		
 		if ($this->db->last_error != "" ){
-			Debug("Sql list contains errors : " .$this->db->last_error ) ;
+			//p("Sql list contains errors : " .$this->db->last_error ) ;
 			return array();
 		}
 		return $list;
@@ -95,7 +95,7 @@ class PagingList {
 		$count_sql =  $this->getListCountSql($page_size)  ;
 		$list_count = $this->db->fetchRow($count_sql);
 		if (count($list_count) == 0 ) {
-			Debug("Sql count contains errors " . $this->db->last_error  /*$this->getListCountSql($page_size)*/) ;
+			//p("Sql count contains errors " . $this->db->last_error  /*$this->getListCountSql($page_size)*/) ;
 			return ;
 		}
 				

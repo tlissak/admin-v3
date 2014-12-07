@@ -3,14 +3,22 @@ include('inc/config.php');
 include('inc/func.php');
 
 $br = '<br />'."\r\n" ;
+$error = array();
 
 if(post('postback')  ){
 
 	$html = '';		
 	if(! is_email(post('E-Mail')) || strlen(post('Nom'))  < 4 ){
-			echo 'Adresse E-Mail ou Nom  non valide !';
-			die ;
+        $error[] = 'Adresse E-Mail ou Nom  non valide !';
 	}
+
+    if (count($error)>0){
+        foreach($error as $er){
+            echo $er . "\r\n" ;
+        }
+        die ;
+    }
+
 	foreach($_POST as $field=>$value){
 			$html .= $field .' : ' . $value . $br ;
 	}

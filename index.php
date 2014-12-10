@@ -20,6 +20,7 @@ Loader::Load() ;
 
 /*TODO:
 Add bread crumbs
+Add login
 List copy paging top of list
 */
 
@@ -173,22 +174,28 @@ if (get('ajax') == 'list') {
                 </div>
             </div>
 
-            <div class="main-form col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading clearfix">
-                        <a class="btn btn-link visible-sm pull-right"
-                           href="javascript:void(0)"
-                           data-toggle="collapse" data-target="#form-panel" aria-expanded="true" aria-controls="form-panel" ><i class="icon ion-ios7-arrow-up"></i></a>
-                        <h3 class="panel-title"><i class="icon ion-compose"></i> <?= Loader::Current()->title ?> Form</h3>
-                    </div>
-                    <div class="panel-body collapse in" id="form-panel">
-                        <?
-                        if (Loader::Current())
-                            echo Loader::Current()->Form->GetBody();
-                        ?>
+            <form>
+                CONTROLS HERE IN FIXED
+
+                <div class="main-form col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <a class="btn btn-link visible-sm pull-right"
+                               href="javascript:void(0)"
+                               data-toggle="collapse" data-target="#form-panel" aria-expanded="true" aria-controls="form-panel" ><i class="icon ion-ios7-arrow-up"></i></a>
+                            <h3 class="panel-title"><i class="icon ion-compose"></i> <?= Loader::Current()->title ?> Form</h3>
+                        </div>
+                        <div class="panel-body collapse in" id="form-panel">
+                            <?
+                            if (Loader::Current())
+                                echo Loader::Current()->Form->GetBody();
+                            ?>
+                                RELATION LIST IN DIFFRENT PANEM
+
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </body>

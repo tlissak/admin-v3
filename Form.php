@@ -43,7 +43,7 @@ class Form{
         //Get : Buttons controls depandes on Action
     }
 
-
+//TODO Generate panels
     public function GetBody(){
         /* init data */
         $this->id = get('id') ? intval(get('id')) : 0 ;

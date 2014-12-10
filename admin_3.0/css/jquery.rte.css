@@ -1,8 +1,0 @@
-.rte-zone.fullsize{ position:fixed; top:5%; left:5%; right:5%; bottom:5%; z-index:999 ; background:#FFF; }
-.rte-zone.fullsize iframe,.rte-zone.fullsize textarea{ height:93% !important}
-.rte-zone textarea{padding:0;margin:0;border:0;position:relative;left:0;clear:both;}
-.rte-toolbar{width:100%;margin:0;padding:0 0 1px;display:block;border-bottom:3px double #DADADA;background-color:#fdfdfd;font:10px Tahoma,Verdana,Arial,Helvetica,sans-serif;}
-.rte-toolbar p{margin:0;padding:0;clear:both;}
-.rte-toolbar select{font:13px Tahoma,Verdana,Arial,Helvetica,sans-serif;height:22px;padding:0;margin:0;}
-.rte-toolbar .select-list {max-width:100px;} 
-.rte-zone-outer.fullsize{  position:fixed;width:100%; height:100%; background-color:rgba(51,51,51,0.7); top:0; left:0; z-index:4}

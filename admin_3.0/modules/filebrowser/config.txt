@@ -1,2 +1,0 @@
-name=filebrowser
-core=ModuleFilebrowser

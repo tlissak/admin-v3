@@ -9,57 +9,61 @@ class Mvc{
     public function __construct(&$p){
         $this->parent = $p;
     }
+
     public function GetHeader(){
         //p($this->parent); die;
-        //
+        $fields = array();
+        $opts = array('silent' => ''
+        , 'select-item-name' => 'id'
+        , 'sort-name' => 'id'
+        , 'sort-order' => 'desc'
+        , 'striped' => 'true'
+        , 'toggle' => "table"
+        , 'height' => 500
+        , 'url' => '?ajax=list&tbl=' . $this->parent->name
 
-        $out =  '<table
-                data-click-to-select="true"
-               data-cache="false"
-               data-classes="table table-condensed"
-               data-height="500"
-               data-page-list="[5, 10, 20, 50, 100, 200]"
-               data-pagination="true"
-               data-search="true"
-               data-select-item-name="id"
-               data-show-columns="true"
-               data-show-refresh="true"
-               data-show-toggle="true"
-               data-show_export="true"
-               data-side-pagination="server"
-               data-silent=""
-               data-sort-name="id"
-               data-sort-order="desc"
-               data-striped="true"
-               data-toggle="table"
-               data-url="?ajax=list&tbl='.$this->parent->name.'"
-                ><thead><tr>'."\r\n";
+        , 'cache' => 'false'
+        , 'classes' => 'table table-condensed'
+        , 'page-list' => '[5, 10, 20, 50, 100, 200]'
+        , 'pagination' => 'true'
+        , 'search' => 'true'
+        , 'show-columns' => 'true'
+        , 'show-refresh' => 'true'
+        , 'show-toggle' => 'true'
+        , 'show_export' => 'true'
+        , 'side-pagination' => 'server'
+        );
 
         $this->parent->view_type = '-' ;
 
-        if ($this->parent->view_type == 'CHECKBOX' )
-            $out .= '<th data-field="id"  data-visible="true" data-checkbox="true">-</th>' ."\r\n";
-        elseif ($this->parent->view_type == 'RADIO' )
-            $out .= '<th data-field="id"  data-visible="true" data-radio="true">-</th>' ."\r\n";
-        //else $out .= '<th data-field="id"  data-visible="false" >#</th>' ."\r\n";
+
+        if ($this->parent->view_type == 'CHECKBOX' ) {
+            $fields[] = '<th data-field="id"  data-visible="true" data-checkbox="true">-</th>';
+            $opts['click-to-select'] ="true" ;
+        }elseif ($this->parent->view_type == 'RADIO' ) {
+            $fields[] = '<th data-field="id"  data-visible="true" data-radio="true">-</th>' ;
+            $opts['click-to-select'] ="true" ;
+        }
 
         foreach( $this->parent->viewFields as $key=>$title) {
-            $out .= '<th data-field="'.$key.'" data-sortable="true" '. ($key == 'id' ? ' data-visible="false" ' : '' ).' >' . $title .'</th>' ."\r\n";
+            $fields[] = '<th data-field="'.$key.'" data-sortable="true" '. ($key == 'id' ? ' data-visible="false" ' : '' ).' >' . $title .'</th>' ;
+        }
 
+        $out =  '<table ' ;
+        foreach ($opts as $k =>$v){
+            $out .= ' data-'.$k . '="'.$v.'"'.NL;
+        }
+        $out .= ' ><thead><tr>'.NL;
 
+        foreach ($fields as $f){
+            $out .= $f . NL;
         }
         $out .=  '</tr></thead></table>' ;
         return $out ;
     }
 
 
-    public function GetJsonBody(){
-        $this->parent->Listing->getList();
-        $out = array('sql'=>$this->parent->Listing->sql_rows,'total'=> $this->parent->Listing->num_results,"status"=>200 ,'rows'=>$this->parent->Listing->_list);
-        //header('Content-type: application/json');
-        echo json_encode($out);
-        die ;
-    }
+
 }
 
 ?>

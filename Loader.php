@@ -10,6 +10,8 @@ class Loader{
 
     public $name = '';
 
+    //TODO Loader add fancy title and icon
+
 
     public $formFields = array();
     public $dbFields = array();
@@ -53,7 +55,7 @@ class Loader{
     public function View($st= array()){ $st = array_merge(array('id'=>'id'),$st) ; $this->viewFields = $st;  return $this ;   }
     public function Relation($name,$st=array()){ $this->relations_instances[$name] = new Relation($name,$st)  ; return $this;}
 
-    function AddFormField($type,$name,$title,$opts=array()){
+    function FormControl($type,$name,$title,$opts=array()){
         $field = array('name'=>$name,'title'=>$title,'type'=>$type) ; count($opts) > 0 ?  $filed['opts'] = $opts : null ;
         $this->formFields[] = $field ;
         return $this;
@@ -68,6 +70,11 @@ class Loader{
      */
     public $Mvc ; //Listing
 
+    /**
+     * @var Form
+     */
+    public $Form ;
+
     public static function Load(){
 
 
@@ -76,6 +83,9 @@ class Loader{
 
         foreach(self::$instances as &$loader){
             $loader->loaded = true ;
+
+            if (! $loader->icon){                 $loader->icon = 'cog';            }
+            if (! $loader->title){                $loader->title = ucfirst( $loader->name );            }
 
             $loader->dbFields = array_keys( $db->ctypes( $loader->name ) ) ;
 
@@ -107,9 +117,29 @@ class Loader{
 
         //relation need to be loaded
         foreach(self::$instances as &$loader) {
-            $loader->Listing = new Listing($loader);
-            $loader->Mvc = new Mvc($loader);
+            $loader->Listing    = new Listing($loader);
+            $loader->Mvc        = new Mvc($loader);
+            $loader->Form       = new Form($loader);
         }
+
+    }
+
+    /**
+     * @var Submit;
+     */
+    public $Postback ;
+    public function Submit(){
+        $this->Postback = new Submit($this);
+        $this->Postback->Set();
+        die ;
+    }
+
+    public function GetListing(){
+        $this->Listing->getList();
+        $out = array('sql'=>$this->Listing->sql_rows,'total'=> $this->Listing->num_results,"status"=>200 ,'rows'=>$this->Listing->_list);
+        //header('Content-type: application/json');
+        echo json_encode($out);
+        die ;
     }
 
     /**
@@ -122,6 +152,10 @@ class Loader{
             die('Table is missing in loader instance Loader("'.$table.'"); ' );
         }
         return self::$instances[$table] ;
+    }
+    public static function Current(){
+        if (get('tbl'))
+            return self::Get(get('tbl')) ;
     }
 }
 ?>

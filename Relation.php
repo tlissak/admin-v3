@@ -34,8 +34,8 @@ class Relation {
 
             $this->view_fields[$this->view_field] = $this->alias .'.'.$this->parent->titleField ;
 
-            $this->field = $this->alias .'.'. $related_table->titleField ."\r\n" ;
-            $this->field_alias = $this->field .' AS '.$this->view_field ."\r\n" ;
+            $this->field = $this->alias .'.'. $related_table->titleField  ;
+            $this->field_alias = $this->field .' AS '.$this->view_field ;
 
 
 

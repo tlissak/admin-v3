@@ -24,8 +24,14 @@ Loader('product','name_fr')
     ->FormControl('text','url_alias','Url simplifier' ,array('required'=>1))
     ->FormControl('textarea','keywords','Meta keywords')
     ->Attr('icon','link')
+
+
     ;
 
+//TODO Add gorup with title and id
+//TODO Form control option can be relayd to this group
+//TODO RTE height
+//TODO File upload
 
 
 Loader('category','title_fr')

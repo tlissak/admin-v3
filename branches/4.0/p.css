@@ -81,4 +81,17 @@ ul.main-menu .sub-menu li .sub-menu .text {    padding-left:50px;}
 
 
 .panel-title .glyphicon{ font-size: 15px; margin-right: 10px;}
+.fixed-table-toolbar .columns{ margin:15px 20px 0; }
+.fixed-table-pagination ul.pagination{ margin:5px 0;}
 
+
+@media (min-width: 1200px) {
+    .pull-left-lg {
+        float: left ;
+    }
+    .pull-right-lg {
+        float: right;
+    }
+}
+
+.rte{ height: 300px;}

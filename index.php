@@ -6,10 +6,11 @@ define('NL',"\r\n") ;
 
 $db = new Db();
 $cookie = new Cookie('x_admin_user');
-
-include('Listing.php');
 include('Mvc.php');
+include('Listing.php');
+include('ListingMvc.php');
 include('Form.php');
+include('FormMvc.php');
 include('Relation.php');
 include('Loader.php');
 
@@ -18,10 +19,7 @@ include('Config.php');
 /*INIT*/
 Loader::Load() ;
 
-/*TODO:
-Add bread crumbs
-Add login
-List copy paging top of list
+/*TODO: Add bread crumbs / Add login
 */
 
 if(get('set_form_ajax') ) {
@@ -64,7 +62,7 @@ if (get('ajax') == 'list') {
 -->
 
         <link rel="stylesheet" type="text/css" href="bs/bootstrap3-wysihtml5.css" />
-        <script src="bs/wysihtml5x-toolbar.min.js"></script>
+        <script src="bs/wysihtml5x-toolbar.0.5.min.js"></script>
         <script src="bs/bootstrap3-wysihtml5.js"></script>
 
         <link href="bs/bootstrap-editable.css" rel="stylesheet"/>
@@ -155,47 +153,20 @@ if (get('ajax') == 'list') {
         <div class="container-fluid primary-content">
 
 
+<? if (Loader::Current()){ ?>
 
-            <div class="main-list col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading clearfix">
-                            <a class="btn btn-link visible-sm pull-right"
-                               href="javascript:void(0)"
-                               data-toggle="collapse" data-target="#listing-panel" aria-expanded="true" aria-controls="listing-panel" ><i class="icon ion-ios7-arrow-up"></i></a>
-
-                        <h3 class="panel-title"><i class="glyphicon glyphicon-list-alt"></i> <?= Loader::Current()->title ?> List</h3>
-                    </div>
-                    <div class="panel-body collapse in" id="listing-panel">
-                        <?
-                        if (Loader::Current())
-                            echo Loader::Current()->Mvc->GetHeader();
-                        ?>
-                    </div>
-                </div>
-            </div>
+    <?= Loader::Current()->ListingMvc->GetPanel(); ?>
 
             <form>
-                CONTROLS HERE IN FIXED
+                <?= Loader::Current()->FormMvc->GetPanels(); ?>
+<?
+//TODO : CONTROLS HERE IN FIXED
+//TODO : RELATION LIST IN DIFFRENT PANEL
+?>
 
-                <div class="main-form col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading clearfix">
-                            <a class="btn btn-link visible-sm pull-right"
-                               href="javascript:void(0)"
-                               data-toggle="collapse" data-target="#form-panel" aria-expanded="true" aria-controls="form-panel" ><i class="icon ion-ios7-arrow-up"></i></a>
-                            <h3 class="panel-title"><i class="icon ion-compose"></i> <?= Loader::Current()->title ?> Form</h3>
-                        </div>
-                        <div class="panel-body collapse in" id="form-panel">
-                            <?
-                            if (Loader::Current())
-                                echo Loader::Current()->Form->GetBody();
-                            ?>
-                                RELATION LIST IN DIFFRENT PANEM
 
-                        </div>
-                    </div>
-                </div>
             </form>
+<? } ?>
         </div>
     </div>
 </body>

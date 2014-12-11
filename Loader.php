@@ -10,10 +10,8 @@ class Loader{
 
     public $name = '';
 
-    //TODO Loader add fancy title and icon
-
-
     public $formFields = array();
+    public $formPanel = array();
     public $dbFields = array();
     public $viewFields = array();
     public $relationFields = array();
@@ -38,7 +36,7 @@ class Loader{
      *
      * Set Attribute
      */
-    public function Attr($key,$value){        $this->attr[$key] = $value ;    }
+    public function Attr($key,$value){        $this->attr[$key] = $value ; return $this ;    }
 
     /**
      * @param $key attriubte
@@ -55,25 +53,53 @@ class Loader{
     public function View($st= array()){ $st = array_merge(array('id'=>'id'),$st) ; $this->viewFields = $st;  return $this ;   }
     public function Relation($name,$st=array()){ $this->relations_instances[$name] = new Relation($name,$st)  ; return $this;}
 
-    function FormControl($type,$name,$title,$opts=array()){
-        $field = array('name'=>$name,'title'=>$title,'type'=>$type) ; count($opts) > 0 ?  $filed['opts'] = $opts : null ;
-        $this->formFields[] = $field ;
+
+    /**
+     * @param $type
+     * @param $name
+     * @param $title
+     * @param array $opts
+     * @return $this
+     */
+    public function Panel($id,$title,$icon,$pull){
+        $this->formPanel[$id] = array('title'=>$title,'icon'=>$icon,"cont"=>'','pull'=>$pull) ;
         return $this;
     }
     /**
-     * @var Listing
+     * @param $type
+     * @param $name
+     * @param $title
+     * @param array $opts
+     * @return $this
      */
-    public $Listing ; //Listing
+    public function FormControl($type,$name,$title,$opts=array()){
+        $field = array('name'=>$name,'title'=>$title,'type'=>$type) ; $field['opts'] = count($opts) > 0 ?   $opts : false ;
+        $this->formFields[] = $field ;
+        return $this;
+    }
 
     /**
-     * @var Mvc
+     * @var Mvc Shared objects
      */
-    public $Mvc ; //Listing
+    public $Mvc ;
+
+    /**
+     * @var Listing
+     */
+    public $Listing ;
+    /**
+     * @var ListingMvc
+     */
+    public $ListingMvc ;
 
     /**
      * @var Form
      */
     public $Form ;
+    /**
+     * @var FormMvc
+     */
+    public $FormMvc ;
 
     public static function Load(){
 
@@ -117,9 +143,11 @@ class Loader{
 
         //relation need to be loaded
         foreach(self::$instances as &$loader) {
+            $loader->Mvc        = new Mvc($loader); //Shared object
             $loader->Listing    = new Listing($loader);
-            $loader->Mvc        = new Mvc($loader);
+            $loader->ListingMvc = new ListingMvc($loader);
             $loader->Form       = new Form($loader);
+            $loader->FormMvc    = new FormMvc($loader);
         }
 
     }
@@ -153,9 +181,9 @@ class Loader{
         }
         return self::$instances[$table] ;
     }
+
     public static function Current(){
-        if (get('tbl'))
-            return self::Get(get('tbl')) ;
+        return (get('tbl')) ? self::Get(get('tbl')) : false ;
     }
 }
 ?>

@@ -2,17 +2,20 @@
 
 #region INIT
 
+
+
 Loader('page','title_fr')
     ->View(array('title_fr'=>"nom") )
-    ->FormControl('text','meta_title','Meta titre',array('required'=>1))
-    ->FormControl('textarea','meta_desc','Meta desc',array('required'=>1))
+    ->FormControl('text','meta_title','Meta titre',array('panel'=>'meta','required'=>1))
+    ->FormControl('textarea','meta_desc','Meta desc',array('panel'=>'meta','required'=>1))
     ->FormControl('text','title_fr','Nom FR',array('required'=>1))
-    ->FormControl('text','title_en','Nom EN')
+    ->FormControl('text','title_en','Nom EN',array('panel'=>'english'))
     ->FormControl('rte','content_fr','Contenu FR')
-    ->FormControl('rte','content_en','Contenu EN')
+    ->FormControl('rte','content_en','Contenu EN',array('panel'=>'english','extends'=>' style="height:800px" '))
     ->Attr("title",'CMS')
+    ->Panel('english','Contenu anglais','compose','pull-right-lg')
+    ->Panel('meta','Meta','compose','pull-left-lg')
 ;
-
 
 Loader('product','name_fr')
     ->View(array('name_fr'=>"nom",'model'=>'Model','category_id_inner'=>'categorie','image'=>'Couver.','sort'=>'Ordre') )
@@ -28,9 +31,6 @@ Loader('product','name_fr')
 
     ;
 
-//TODO Add gorup with title and id
-//TODO Form control option can be relayd to this group
-//TODO RTE height
 //TODO File upload
 
 
@@ -49,6 +49,24 @@ Loader('marque','title')
     ->FormControl('file','image','Image')
     ->FormControl('check','valid','Valide')
     ->FormControl("rte",'content','Contenu') ;
+
+
+Loader('order','order_date')
+    //'client_id_inner'=>"Client",,'status_inner'=>'Status'
+    ->View(array('order_date'=>'Date','total'=>"Total") )
+   /* ->Relation('country',array('type'=>'InnerSimple','left_key'=>'country_id'))
+    ->Relation( 'cart'		,array('type'=>'ManyToOneByKey','left_key'=>'id_guest',"right_key"=>'id_guest','readonly'=>1))
+    ->Relation( 'transaction'		,array('type'=>'ManyToOneByKey','left_key'=>'order_id',"right_key"=>'id','readonly'=>1))
+    ->Relation( 'client'		,array('type'=>'Simple','left_key'=>'client_id'))
+    ->Relation( 'order_status'		,array('type'=>'InnerSimple','left_key'=>'status'))
+   */
+    ->FormControl('text' ,'order_date','Date de commande',array("readonly"=>1))
+    ->FormControl('number' ,'id_guest', 'ID Session',array("readonly"=>1))
+    ->FormControl('text' ,'total','Total',array("readonly"=>1))
+   // ->_Html('<p><label></label><a href="'. U_BASE .'_vieworder.php" target="_blank" class="btn-red btn-large fac-gen"><i class="icon-invoice"></i> Voir la facture</a></p>')
+    ->Attr('sort_name','id')
+    ->Attr('sort_order','DESC')
+ ;
 
 #endregion
 ?>

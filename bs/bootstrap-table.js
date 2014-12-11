@@ -233,6 +233,7 @@
     BootstrapTable.prototype.initContainer = function () {
         this.$container = $([
             '<div class="bootstrap-table">',
+            '<div class="fixed-table-pagination fixed-table-pagination-top"></div>',
             '<div class="fixed-table-toolbar"></div>',
             '<div class="fixed-table-container">',
             '<div class="fixed-table-header"><table></table></div>',

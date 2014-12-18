@@ -61,8 +61,8 @@ class Loader{
      * @param array $opts
      * @return $this
      */
-    public function Panel($id,$title,$icon,$pull){
-        $this->formPanel[$id] = array('title'=>$title,'icon'=>$icon,"cont"=>'','pull'=>$pull) ;
+    public function Panel($id,$title,$icon){
+        $this->formPanel[$id] = array('title'=>$title,'icon'=>$icon,"cont"=>''/*,'pull'=>$pull*/) ;
         return $this;
     }
     /**
@@ -79,9 +79,9 @@ class Loader{
     }
 
     /**
-     * @var Mvc Shared objects
+     * @var PanelMvc Shared objects
      */
-    public $Mvc ;
+    public $PanelMvc ;
 
     /**
      * @var Listing
@@ -110,7 +110,7 @@ class Loader{
         foreach(self::$instances as &$loader){
             $loader->loaded = true ;
 
-            if (! $loader->icon){                 $loader->icon = 'cog';            }
+            if (! $loader->icon){                 $loader->icon = 'fa fa-circle-o';            }
             if (! $loader->title){                $loader->title = ucfirst( $loader->name );            }
 
             $loader->dbFields = array_keys( $db->ctypes( $loader->name ) ) ;
@@ -143,7 +143,7 @@ class Loader{
 
         //relation need to be loaded
         foreach(self::$instances as &$loader) {
-            $loader->Mvc        = new Mvc($loader); //Shared object
+            $loader->PanelMvc   = new PanelMvc($loader);
             $loader->Listing    = new Listing($loader);
             $loader->ListingMvc = new ListingMvc($loader);
             $loader->Form       = new Form($loader);
@@ -153,13 +153,12 @@ class Loader{
     }
 
     /**
-     * @var Submit;
+     * @var Postback;
      */
     public $Postback ;
     public function Submit(){
-        $this->Postback = new Submit($this);
+        $this->Postback = new Postback($this);
         $this->Postback->Set();
-        die ;
     }
 
     public function GetListing(){

@@ -6,23 +6,27 @@ define('NL',"\r\n") ;
 
 $db = new Db();
 $cookie = new Cookie('x_admin_user');
-include('Mvc.php');
-include('Listing.php');
-include('ListingMvc.php');
-include('Form.php');
-include('FormMvc.php');
-include('Relation.php');
-include('Loader.php');
+include('controller/PanelMvc.php');
+include('controller/Listing.php');
+include('controller/ListingMvc.php');
+include('controller/Form.php');
+include('controller/FormMvc.php');
+include('controller/Relation.php');
+include('controller/Loader.php');
+
+include('controller/Postback.php');
 
 include('Config.php');
 
 /*INIT*/
 Loader::Load() ;
 
-/*TODO: Add bread crumbs / Add login
+/*
+ * TODO : On list click load item for editing
+ * TODO: Add bread crumbs / Add login
 */
 
-if(get('set_form_ajax') ) {
+if(post('set_form_ajax') ) {
     Loader::Current()->Submit();
 }
 if (get('ajax') == 'list') {
@@ -39,9 +43,12 @@ if (get('ajax') == 'list') {
 
         <title>Admin V4</title>
 
-        <script src="jquery-2.1.1.min.js"></script>
+        <script src="js/jquery-2.1.1.min.js"></script>
 
         <link href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" data-type="1.5.2">
+
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
 
         <script src="bs/bootstrap.min.js"></script>
         <link href="bs/bootstrap.min.css" rel="stylesheet">
@@ -49,9 +56,9 @@ if (get('ajax') == 'list') {
         <script src="bs/bootstrap-table.js"></script>
         <link href="bs/bootstrap-table.min.css" rel="stylesheet">
 
-        <script src="jquery.tableExport/jquery.base64.js"></script>
-        <script src="jquery.tableExport/html2canvas.js"></script>
-        <script src="jquery.tableExport/tableExport.js"></script>
+        <script src="js/jquery.tableExport/jquery.base64.js"></script>
+        <script src="js/jquery.tableExport/html2canvas.js"></script>
+        <script src="js/jquery.tableExport/tableExport.js"></script>
         <script src="bs/bootstrap-table-export.min.js"></script>
 
 
@@ -60,6 +67,8 @@ if (get('ajax') == 'list') {
         <link href="bs/bootstrap-wysihtml5.css" rel="stylesheet"/>
         <script src="bs/bootstrap-wysihtml5.js"></script>
 -->
+
+        <script src="bs/bootstrap-form-validator.min.js" ></script>
 
         <link rel="stylesheet" type="text/css" href="bs/bootstrap3-wysihtml5.css" />
         <script src="bs/wysihtml5x-toolbar.0.5.min.js"></script>
@@ -87,13 +96,12 @@ if (get('ajax') == 'list') {
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-
-        <link href="p.css" rel="stylesheet">
+        <link href="css/admin.css" rel="stylesheet">
 
         <script>
             $(document).ready(function(){
                 $('.rte').wysihtml5({
-                    stylesheets: ["include-me-in-rte.css"]
+                    stylesheets: ["css/include-me-in-rte.css"]
                     ,"html":true
                     ,'locale':'en' //fr dont exist
                 });
@@ -107,15 +115,12 @@ if (get('ajax') == 'list') {
 
 
 <div class="wrapper">
-    <nav role="navigation" class="top-bar navbar-fixed-top">
+    <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
         <div class="logo-area">
             <a class="btn btn-link btn-nav-sidebar-minified pull-left"  onclick="$('.wrapper').toggleClass('main-nav-minified')"><i class="icon ion-arrow-swap"></i></a>
             <a class="btn btn-link btn-off-canvas pull-left" onclick="$('.wrapper').removeClass('main-nav-minified').toggleClass('off-canvas-active')"><i class="icon ion-navicon"></i></a>
-            <div class="logo pull-left">
-                <a href="#">
-                    ADMINPANEL
-                </a>
-            </div>
+            <a class="navbar-brand" href="#">ADMINPANEL</a>
+
         </div>
     </nav>
 
@@ -133,7 +138,7 @@ if (get('ajax') == 'list') {
                             if ( ! $t->Hide) { ?>
                                 <li><a class="<?= $t->name == get('tbl') ? 'active' : '' ; ?>"
                                        data-tbl="<?= $t->name; ?>" href="?tbl=<?= $t->name; ?>&load=1">
-                                        <i class="glyphicon glyphicon-<?= $t->icon ?>"></i>
+                                        <i class="<?= $t->icon ?>"></i>
                                         <span class="text"><?= $t->title ?></span>
                                         <? if ($t->badge) { ?>
                                             <span class="badge bg-primary"><?= $t->badge ?></span>
@@ -153,20 +158,48 @@ if (get('ajax') == 'list') {
         <div class="container-fluid primary-content">
 
 
+
+            <div class="row">
+
+
 <? if (Loader::Current()){ ?>
 
     <?= Loader::Current()->ListingMvc->GetPanel(); ?>
 
-            <form>
+           <form class="main-form" data-toggle="validator" method="post">
+
+               <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                   <div class="container-fluid">
+
+                       <div class="navbar-header">
+                           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                               <i class="fa fa-pencil-square-o"></i>
+                           </button>
+
+                       </div>
+                       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                           <ul class="nav navbar-nav">
+                               <li><button type="submit" class="save"><i class="glyphicon glyphicon-save"></i> Save</a></button></li>
+                               <li class="nav-divider"></li>
+                               <li><a href="#"> <i class="glyphicon glyphicon-trash"></i> Delete</a></li>
+                               <li class="nav-divider"></li>
+                               <li><a href="#"> <i class="glyphicon glyphicon-plus"></i> Dupplicate</a></li>
+                           </ul>
+                       </div>
+                   </div>
+               </nav>
+
+
+
+
+
                 <?= Loader::Current()->FormMvc->GetPanels(); ?>
-<?
-//TODO : CONTROLS HERE IN FIXED
-//TODO : RELATION LIST IN DIFFRENT PANEL
-?>
+
 
 
             </form>
 <? } ?>
+                </div>
         </div>
     </div>
 </body>

@@ -13,22 +13,27 @@ Loader('page','title_fr')
     ->FormControl('rte','content_fr','Contenu FR')
     ->FormControl('rte','content_en','Contenu EN',array('panel'=>'english','extends'=>' style="height:800px" '))
     ->Attr("title",'CMS')
-    ->Panel('english','Contenu anglais','compose','pull-right-lg')
-    ->Panel('meta','Meta','compose','pull-left-lg')
+    ->Panel('english','Contenu anglais','icon ion-compose')
+    ->Panel('meta','Meta','icon ion-compose')
+    ->Attr('icon',"fa fa-file-o")
 ;
 
 Loader('product','name_fr')
     ->View(array('name_fr'=>"nom",'model'=>'Model','category_id_inner'=>'categorie','image'=>'Couver.','sort'=>'Ordre') )
     ->Relation( 'marque' , array( 'type'=>'InnerSimple','left_key'=>'marque_id') )
     ->Relation( 'category',	array( 'type'=>'InnerSimple','left_key'=>'category_id'))
-    ->FormControl('rte','description_fr','Résumé')
-    ->FormControl('rte','description_long','Description')
-    ->FormControl('rte','features','Caracteristiques')
-    ->FormControl('text','url_alias','Url simplifier' ,array('required'=>1))
-    ->FormControl('textarea','keywords','Meta keywords')
-    ->Attr('icon','link')
+    ->FormControl('text','name_fr','Nom')
+    ->FormControl('text','model','Model')
+    ->FormControl('rte','description_fr','Résumé',array('panel'=>'rte'))
+    ->FormControl('rte','description_long','Description',array('panel'=>'rte'))
+    ->FormControl('rte','features','Caracteristiques',array('panel'=>'rte'))
+    ->FormControl('text','url_alias','Url simplifier' ,array('panel'=>'meta','required'=>1))
+    ->FormControl('textarea','keywords','Meta keywords',array('panel'=>'meta'))
+    ->Attr('icon','fa fa-sitemap')
 
 
+    ->Panel('meta','Meta','icon ion-compose')
+    ->Panel('rte','Content','icon ion-compose')
     ;
 
 //TODO File upload
@@ -40,7 +45,10 @@ Loader('category','title_fr')
     ->FormControl('text','title_fr','Nom',array('required'=>1))
     ->FormControl('sort','sort','Sort')
     ->FormControl('number','level','Niveau',array('required'=>1))
-    ->Attr('badge','-');
+    //->Attr('badge','')
+    ->Attr('icon','glyphicon glyphicon-th')
+
+;
 
 
 Loader('marque','title')

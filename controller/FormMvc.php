@@ -10,22 +10,27 @@ class FormMvc
     public $id;
 
     public $panels = array() ;
-/*
-    public function GetHeader(){
-        //TODO: hidden controls like ID , Action / Buttons controls depandes on Action
+
+    public function GetRelationsPanels(){
+        //TODO Get Relation lists panels
+        //
+
+        foreach($this->parent->relations_instances as $r){
+            Loader::Get($r->name)->ListingMvc->GetPanel();
+        }
+
     }
-*/
 
     public function GetPanels(){
 
-        //TODO Get Relation lists panels
+
+
 
         /* init data */
-        $this->id = get('id') ? intval(get('id')) : 0;
 
         $this->parent->Form->initData();
 
-        if ($this->id) {
+        if ($this->parent->id) {
             $this->parent->Form->initDbData();
         } else {
             $this->parent->Form->initPostData();
@@ -61,7 +66,17 @@ class FormMvc
         $out = '';
         foreach($this->parent->formPanel as $key=>&$pnl){
             $pnl['cont'] = $panelFields[$key] ;
-            $out .= $this->parent->PanelMvc->RenderPanel($key,$pnl,'Form') ;
+            $out .= $this->parent->PanelMvc->RenderPanel($key.'-form',$pnl,'Form') ;
+        }
+
+        foreach($this->parent->relations_instances as $r){
+            //p(Loader::Get($r->name)->view_type);
+            //TODO : Get view type by relation type
+           Loader::Get($r->name)->view_type = 'RADIO' ; //depends on relation type : CHECKBOX |RADIO
+            //p(Loader::Get($r->name)->view_type);
+
+
+            $out .= Loader::Get($r->name)->ListingMvc->GetPanel();
         }
 
         return $out ;

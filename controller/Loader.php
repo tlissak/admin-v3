@@ -9,6 +9,14 @@ class Loader{
     public static $instances = array();
 
     public $name = '';
+    public $id ;
+
+    /**
+     * @var String RADIO|CHECKBOX
+     */
+    public $view_type ;
+
+    public $current = false;
 
     public $formFields = array();
     public $formPanel = array();
@@ -103,12 +111,15 @@ class Loader{
 
     public static function Load(){
 
-
-
         global $db;
 
         foreach(self::$instances as &$loader){
             $loader->loaded = true ;
+
+            if ($loader->name == get('tbl')){
+                $loader->id = get('id');
+                $loader->current = true ;
+            }
 
             if (! $loader->icon){                 $loader->icon = 'fa fa-circle-o';            }
             if (! $loader->title){                $loader->title = ucfirst( $loader->name );            }
@@ -174,14 +185,14 @@ class Loader{
      * @param string $table
      * @return Loader
      */
-    public static  function Get($table){
+    public static function &Get($table){
         if (!isset(self::$instances[$table])){
             die('Table is missing in loader instance Loader("'.$table.'"); ' );
         }
         return self::$instances[$table] ;
     }
 
-    public static function Current(){
+    public static function &Current(){
         return (get('tbl')) ? self::Get(get('tbl')) : false ;
     }
 }

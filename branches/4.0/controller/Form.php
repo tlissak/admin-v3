@@ -6,7 +6,6 @@ class Form{
      */
     private $parent ;
 
-    public $id ;
     public $data = array() ;
     public $data_posted = array() ;
 
@@ -17,12 +16,12 @@ class Form{
     }
     function initDbData(){
         global $db ;
-        $sql = 'SELECT ' . implode(NL.',',$this->parent->dbFields) . ' FROM ' . $this->parent->name . ' WHERE `'.$this->name.'`.id = '.$this->id  ;
+        $sql = 'SELECT ' . implode(NL.',',$this->parent->dbFields) . ' FROM ' . $this->parent->name . ' WHERE `'.$this->parent->name.'`.id = '.$this->parent->id  ;
         $res = $db->fetchRow($sql);
         if(count($res)){
             $this->data = $res;
         }else{
-            $this->id = 0;
+            $this->parent->id = 0;
         }
     }
     function initPostData(){

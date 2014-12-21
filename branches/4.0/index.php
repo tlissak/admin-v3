@@ -6,6 +6,7 @@ define('NL',"\r\n") ;
 
 $db = new Db();
 $cookie = new Cookie('x_admin_user');
+
 include('controller/PanelMvc.php');
 include('controller/Listing.php');
 include('controller/ListingMvc.php');
@@ -22,14 +23,17 @@ include('Config.php');
 Loader::Load() ;
 
 /*
- * TODO : On list click load item for editing
  * TODO: Add bread crumbs / Add login
+ * TODO save state of list collapse and last url
+ * TODO Form View Add tab system
+ * TODO Relation Print state !
 */
 
 if(post('set_form_ajax') ) {
     Loader::Current()->Submit();
 }
 if (get('ajax') == 'list') {
+    //sleep(1);
     Loader::Current()->GetListing();
 }
 
@@ -53,8 +57,8 @@ if (get('ajax') == 'list') {
         <script src="bs/bootstrap.min.js"></script>
         <link href="bs/bootstrap.min.css" rel="stylesheet">
 
-        <script src="bs/bootstrap-table.js"></script>
-        <link href="bs/bootstrap-table.min.css" rel="stylesheet">
+        <script src="bs/bootstrap-table.1.5.0.js"></script>
+        <link href="bs/bootstrap-table.1.5.0.css" rel="stylesheet">
 
         <script src="js/jquery.tableExport/jquery.base64.js"></script>
         <script src="js/jquery.tableExport/html2canvas.js"></script>
@@ -62,11 +66,12 @@ if (get('ajax') == 'list') {
         <script src="bs/bootstrap-table-export.min.js"></script>
 
 
-        <!--
+<!--
         <script src="bs/wysihtml5-0.3.0.js"></script>
         <link href="bs/bootstrap-wysihtml5.css" rel="stylesheet"/>
         <script src="bs/bootstrap-wysihtml5.js"></script>
 -->
+        <script src="js/jquery-deparam.js"></script>
 
         <script src="bs/bootstrap-form-validator.min.js" ></script>
 
@@ -95,16 +100,25 @@ if (get('ajax') == 'list') {
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-
+       <script src="bs/locale/bootstrap-table-fr-FR.min.js"></script>
         <link href="css/admin.css" rel="stylesheet">
 
         <script>
+
             $(document).ready(function(){
+
                 $('.rte').wysihtml5({
                     stylesheets: ["css/include-me-in-rte.css"]
                     ,"html":true
-                    ,'locale':'en' //fr dont exist
+                    ,'locale':'en'
                 });
+
+                var tbl = $('#form-panel-listing .table')
+                    .on('click-row.bs.table', function (e, row, $element) {
+                        params = $.deparam(window.location.search) ;
+                        params.id = row.id ;
+                        window.location = '?' + ($.param(params) ) ;
+                 })
             })
 
         </script>

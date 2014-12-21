@@ -11,9 +11,13 @@ class ListingMvc{
     }
 
     public function GetPanel(){
+
+       // if (! $this->parent->current){             p($this->parent->view_type);            die ;        }
+
         $pnl = array('pull'=>'pull-left-lg' , 'title'=> $this->parent->title ,'icon'=> 'glyphicon glyphicon-list','cont'=>$this->GetHeader());
         // return "" ;
-        return $this->parent->PanelMvc->RenderPanel('listing',$pnl,'List') ;
+
+        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$pnl,'List') ;
     }
 
     public function GetHeader(){
@@ -42,9 +46,10 @@ class ListingMvc{
         , 'show-toggle' => 'true'
         , 'show_export' => 'true'
         , 'side-pagination' => 'server'
+           // ,'click-to-select'=>'true'
         );
-
-        $this->parent->view_type = '-' ;
+// data-align="center" data-formatter="actionFormatter" data-events="actionEvents"
+        //$this->parent->view_type = '-' ;
 
 
         if ($this->parent->view_type == 'CHECKBOX' ) {
@@ -56,7 +61,8 @@ class ListingMvc{
         }
 
         foreach( $this->parent->viewFields as $key=>$title) {
-            $fields[] = '<th data-field="'.$key.'" data-sortable="true" '. ($key == 'id' ? ' data-visible="false" ' : '' ).' >' . $title .'</th>' ;
+            $fields[] = '<th data-field="'.$key.'" data-sortable="true" '.
+                ($key == 'id' ? ' data-visible="false" ' : '' ).' >' . $title .'</th>' ;
         }
 
         $out =  '<table ' ;

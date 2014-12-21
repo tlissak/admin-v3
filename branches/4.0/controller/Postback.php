@@ -6,17 +6,19 @@ class Postback{
      * @var Loader
      */
     private $parent ;
-    public $id ;
+
     public $name ;
     public $form ;
 
     private $action ;
+    private $_id ;
 
     public function __construct(Loader &$p){
         $this->parent   = $p ;
         $this->name     = $p->name ;
         $this->form     = $p->Form;
-        $this->id       = $p->Form->id ;
+        //private
+        $this->_id       = $p->Form->id ;
     }
 
     private $PostAction = array('add','mod','del','dup') ;
@@ -53,7 +55,7 @@ class Postback{
         //    $this->initDbData();
         //}
 
-        return $this->id;
+        return $this->_id;
 
     }
 
@@ -61,7 +63,7 @@ class Postback{
         global $db;
         $this->form->initPostData() ;
 
-        if ($this->id = $db->query(SQL::build('INSERT',$this->name,$this->form->data_posted) ) ){
+        if ($this->_id = $db->query(SQL::build('INSERT',$this->name,$this->form->data_posted) ) ){
             //TODO set relation values
             //$this->deleteRelations() ;
             //$this->addRelations() ;
@@ -75,7 +77,7 @@ class Postback{
         $this->form->initData(); //empty for fields keys only
         //TODO set relation values
         //$this->initDbRelationData() ;
-        if ($this->id = $db->query(SQL::build('DUPLICATE',$this->name,$this->form->data,$this->id) ) ){
+        if ($this->_id = $db->query(SQL::build('DUPLICATE',$this->name,$this->form->data,$this->_id) ) ){
           //  $this->addRelations( true ) ;
         }else{
             p('Post duplicate db error '. $db->last_error);
@@ -85,7 +87,7 @@ class Postback{
     public function Edit(){
         global $db;
         $this->initPostData() ;
-        if ($db->query(SQL::build('UPDATE',$this->name,$this->form->data_posted,$this->id) ) ){
+        if ($db->query(SQL::build('UPDATE',$this->name,$this->form->data_posted,$this->_id) ) ){
             //TODO set relation values
            // $this->deleteRelations() ;
            // $this->addRelations() ;
@@ -96,12 +98,12 @@ class Postback{
 
     public function Delete(){
         global $db;
-        if ($db->query('DELETE  FROM `'.$this->name.'` WHERE id = '. $this->id) ){
+        if ($db->query('DELETE  FROM `'.$this->name.'` WHERE id = '. $this->_id) ){
             //TODO set relation values
             //$this->deleteRelations() ;
         }else{
             p('Post delete db error '. $db->last_error);
-        } //$this->id =  0;
+        } //$this->_id =  0;
     }
 }
 

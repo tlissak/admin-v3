@@ -15,6 +15,10 @@ class Relation {
 
     public $alias ;
 
+    /**
+     * @var Loader
+     */
+    public $RelatedTable ;
 
 
     /**
@@ -38,7 +42,7 @@ class Relation {
     {
         $this->parent = $parent;
 
-        $related_table = Loader::Get($this->name);
+        $this->RelatedTable = &Loader::Get($this->name);
 
         if($this->data['type'] == 'Simple' 	|| $this->data['type'] == 'InnerSimple' ){
 
@@ -46,10 +50,10 @@ class Relation {
 
             $this->view_field = $this->data['left_key'].'_inner' ;
 
-
+//            p($this->parent->titleField);
             $this->view_fields[$this->view_field] = $this->alias .'.'.$this->parent->titleField ;
 
-            $this->field = $this->alias .'.'. $related_table->titleField  ;
+            $this->field = $this->alias .'.'. $this->RelatedTable->titleField  ;
             $this->field_alias = $this->field .' AS '.$this->view_field ;
 
 

@@ -203,12 +203,11 @@ if (get('ajax') == 'list') {
 
         <div id="my-tab-content" class="tab-content">
             <div class="tab-pane active" id="tab-list">
-                <?= Loader::Current()->ListingMvc->GetPanel(); ?>
+               <?= Loader::Current()->ListingMvc->GetPanel(); ?>
             </div>
             <div class="tab-pane" id="tab-form">
-                <div class="row">
                    <?= Loader::Current()->FormMvc->GetPanels(); ?>
-                </div>
+
             </div>
 
             <?= Loader::Current()->RelationMvc->GetTabsCont(); ?>

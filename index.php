@@ -13,6 +13,7 @@ include('controller/ListingMvc.php');
 include('controller/Form.php');
 include('controller/FormMvc.php');
 include('controller/Relation.php');
+include('controller/RelationMvc.php');
 include('controller/Loader.php');
 
 include('controller/Postback.php');
@@ -22,11 +23,11 @@ include('Config.php');
 /*INIT*/
 Loader::Load() ;
 
+//TODO  add bans ips system
+//TODO token check
 /*
  * TODO: Add bread crumbs / Add login
- * TODO save state of list collapse and last url
- * TODO Form View Add tab system
- * TODO Relation Print state !
+ * TODO save user state sorting / search for each table in cache
 */
 
 if(post('set_form_ajax') ) {
@@ -101,7 +102,7 @@ if (get('ajax') == 'list') {
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
        <script src="bs/locale/bootstrap-table-fr-FR.min.js"></script>
-        <link href="css/admin.css" rel="stylesheet">
+        <link href="css/admin.css" id="admin-css" rel="stylesheet">
 
         <script>
 
@@ -113,12 +114,14 @@ if (get('ajax') == 'list') {
                     ,'locale':'en'
                 });
 
-                var tbl = $('#form-panel-listing .table')
+                var tbl = $('#tab-list .table')
                     .on('click-row.bs.table', function (e, row, $element) {
                         params = $.deparam(window.location.search) ;
                         params.id = row.id ;
                         window.location = '?' + ($.param(params) ) ;
-                 })
+                })
+                if (tbl.size() == 0 )
+                    throw ("Unable to set links to table");
             })
 
         </script>
@@ -133,7 +136,7 @@ if (get('ajax') == 'list') {
         <div class="logo-area">
             <a class="btn btn-link btn-nav-sidebar-minified pull-left"  onclick="$('.wrapper').toggleClass('main-nav-minified')"><i class="icon ion-arrow-swap"></i></a>
             <a class="btn btn-link btn-off-canvas pull-left" onclick="$('.wrapper').removeClass('main-nav-minified').toggleClass('off-canvas-active')"><i class="icon ion-navicon"></i></a>
-            <a class="navbar-brand" href="#">ADMINPANEL</a>
+            <a class="navbar-brand" href="#" onclick="$('#admin-css').attr('href','#');">ADMINPANEL</a>
 
         </div>
     </nav>
@@ -168,53 +171,54 @@ if (get('ajax') == 'list') {
     </div>
 
 
-    <div id="col-right">
-        <div class="container-fluid primary-content">
-
-
-
-            <div class="row">
-
+<div id="col-right">
+    <div class="container-fluid primary-content">
 
 <? if (Loader::Current()){ ?>
-
-    <?= Loader::Current()->ListingMvc->GetPanel(); ?>
-
-           <form class="main-form" data-toggle="validator" method="post">
-
-               <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-                   <div class="container-fluid">
-
-                       <div class="navbar-header">
-                           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                               <i class="fa fa-pencil-square-o"></i>
-                           </button>
-
-                       </div>
-                       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                           <ul class="nav navbar-nav">
-                               <li><button type="submit" class="save"><i class="glyphicon glyphicon-save"></i> Save</a></button></li>
-                               <li class="nav-divider"></li>
-                               <li><a href="#"> <i class="glyphicon glyphicon-trash"></i> Delete</a></li>
-                               <li class="nav-divider"></li>
-                               <li><a href="#"> <i class="glyphicon glyphicon-plus"></i> Dupplicate</a></li>
-                           </ul>
-                       </div>
-                   </div>
-               </nav>
-
-
-
-
-
-                <?= Loader::Current()->FormMvc->GetPanels(); ?>
-
-
-
-            </form>
-<? } ?>
+    <form class="main-form tabbable tabs-left" data-toggle="validator" method="post">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <i class="fa fa-pencil-square-o"></i>
+                    </button>
                 </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><button type="submit" class="save"><i class="glyphicon glyphicon-save"></i> Save</a></button></li>
+                        <li class="nav-divider"></li>
+                        <li><a href="#"> <i class="glyphicon glyphicon-trash"></i> Delete</a></li>
+                        <li class="nav-divider"></li>
+                        <li><a href="#"> <i class="glyphicon glyphicon-plus"></i> Dupplicate</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+            <li class="active"><a href="#tab-list" data-toggle="tab">List</a></li>
+            <li><a href="#tab-form" data-toggle="tab">Form</a></li>
+            <?= Loader::Current()->RelationMvc->GetTabs(); ?>
+        </ul>
+
+        <div id="my-tab-content" class="tab-content">
+            <div class="tab-pane active" id="tab-list">
+                <?= Loader::Current()->ListingMvc->GetPanel(); ?>
+            </div>
+            <div class="tab-pane" id="tab-form">
+                <div class="row">
+                   <?= Loader::Current()->FormMvc->GetPanels(); ?>
+                </div>
+            </div>
+
+            <?= Loader::Current()->RelationMvc->GetTabsCont(); ?>
+
         </div>
+    </form>
+<? } ?>
+
     </div>
+</div>
+</div><!-- wrapper -->
 </body>
 </html>

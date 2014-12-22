@@ -1585,7 +1585,7 @@
                 //tlissak
                 setTimeout(function() {
                     $this.data('bootstrap.table', (data = new BootstrapTable(that, options)));
-                },i * 1500);
+                },i * 800);
             }
         });
 

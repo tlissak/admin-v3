@@ -248,8 +248,7 @@ class AdminController{
 		return false ;	
 	}
 	
-	//TODO  add bans ips system
-	//TODO token check
+
 	/**
 	 * Login requests handler
 	 * will set the $cookie->auth or will show the login form

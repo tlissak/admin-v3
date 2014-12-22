@@ -1,6 +1,6 @@
 <?php
 
-function Loader($name){  $Loader =  new Loader($name); Loader::$instances[$name] = & $Loader ;  return $Loader ;}
+function Loader($name,$title=""){  $Loader =  new Loader($name,$title); Loader::$instances[$name] = & $Loader ;  return $Loader ;}
 
 class Loader{
     /**
@@ -11,10 +11,7 @@ class Loader{
     public $name = '';
     public $id ;
 
-    /**
-     * @var String RADIO|CHECKBOX
-     */
-    public $view_type ;
+    public $tmpView ;
 
     public $current = false;
 
@@ -24,7 +21,7 @@ class Loader{
     public $viewFields = array();
     public $relationFields = array();
 
-    public $titleField = array();
+    public $titleField = false;
     //Html();
 
     public $relation_data = array();
@@ -36,7 +33,7 @@ class Loader{
     public $loaded = false ;
     private $attr = array();
 
-    public function __construct($name,$title = ''){        $this->name = $name ; if ($title)  $this->titleField = $title ;   }
+    public function __construct($name,$title ){        $this->name = $name ; if ($title)  $this->titleField = $title ;   }
 
     /**
      * @param $key
@@ -109,6 +106,11 @@ class Loader{
      */
     public $FormMvc ;
 
+    /**
+     * @var RelationMvc
+     */
+    public $RelationMvc ;
+
     public static function Load(){
 
         global $db;
@@ -137,6 +139,9 @@ class Loader{
                 elseif (in_array('name_fr',$loader->dbFields))
                     $loader->titleField = 'name_fr' ;
             }
+            if (! $loader->titleField) {
+               // $loader->titleField = 'id' ;
+            }
 
             // if loader dosent have any view fields add the id and the titleField
             if (count($loader->viewFields) == 0)
@@ -152,6 +157,8 @@ class Loader{
             }
         }
 
+
+
         //relation need to be loaded
         foreach(self::$instances as &$loader) {
             $loader->PanelMvc   = new PanelMvc($loader);
@@ -159,6 +166,7 @@ class Loader{
             $loader->ListingMvc = new ListingMvc($loader);
             $loader->Form       = new Form($loader);
             $loader->FormMvc    = new FormMvc($loader);
+            $loader->RelationMvc = new RelationMvc($loader);
         }
 
     }
@@ -173,11 +181,7 @@ class Loader{
     }
 
     public function GetListing(){
-        $this->Listing->getList();
-        $out = array('sql'=>$this->Listing->sql_rows,'total'=> $this->Listing->num_results,"status"=>200 ,'rows'=>$this->Listing->_list);
-        //header('Content-type: application/json');
-        echo json_encode($out);
-        die ;
+        $this->ListingMvc->GetList();
     }
 
     /**
@@ -192,8 +196,9 @@ class Loader{
         return self::$instances[$table] ;
     }
 
-    public static function &Current(){
-        return (get('tbl')) ? self::Get(get('tbl')) : false ;
+    public static function Current(){
+        $ret = false;
+        return (get('tbl')) ? self::Get(get('tbl')) : $ret ;
     }
 }
 ?>

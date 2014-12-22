@@ -5,7 +5,7 @@ class PanelMvc{
 
     public function RenderPanel($id,$pnl,$type){
         $tpl ='
-                <div class="col-md-6 panel-compact">
+                <div class="panel-compact">
                     <div class="panel panel-default">
                         <div class="panel-heading clearfix">
                             <a class="pull-right"

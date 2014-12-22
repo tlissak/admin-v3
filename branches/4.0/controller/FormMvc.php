@@ -11,19 +11,10 @@ class FormMvc
 
     public $panels = array() ;
 
-    public function GetRelationsPanels(){
-        //TODO Get Relation lists panels
-        //
 
-        foreach($this->parent->relations_instances as $r){
-            Loader::Get($r->name)->ListingMvc->GetPanel();
-        }
 
-    }
 
     public function GetPanels(){
-
-
 
 
         /* init data */
@@ -67,16 +58,6 @@ class FormMvc
         foreach($this->parent->formPanel as $key=>&$pnl){
             $pnl['cont'] = $panelFields[$key] ;
             $out .= $this->parent->PanelMvc->RenderPanel($key.'-form',$pnl,'Form') ;
-        }
-
-        foreach($this->parent->relations_instances as $r){
-            //p(Loader::Get($r->name)->view_type);
-            //TODO : Get view type by relation type
-           Loader::Get($r->name)->view_type = 'RADIO' ; //depends on relation type : CHECKBOX |RADIO
-            //p(Loader::Get($r->name)->view_type);
-
-
-            $out .= Loader::Get($r->name)->ListingMvc->GetPanel();
         }
 
         return $out ;
@@ -171,7 +152,7 @@ class FormMvc
         }
         if ($type == 'sort') {
             $out .= '<span class="input-group-addon"><i class="fa fa-sort"></i></span>
-        <input type="number" name="' . $fld . '"id="fld_' . $fld . '" value="' . $value . '" class="form-control" step="any"  data-type="float" data-limit="50" ' . $extends . ' />';
+        <input type="number" name="' . $fld . ' "id="fld_' . $fld . '" value="' . $value . '" class="form-control" step="any"  data-type="float" data-limit="50" ' . $extends . ' />';
         }
         if ($type == 'url') {
             $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span>

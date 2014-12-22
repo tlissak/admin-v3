@@ -82,21 +82,22 @@ ul.main-menu .sub-menu li .sub-menu .text {    padding-left:50px;}
 .fixed-table-toolbar .columns{ margin:15px 20px 0; }
 .fixed-table-pagination ul.pagination{ margin:5px 0;}
 
-.panel-compact{margin: 1em 0;}
+.panel-compact{margin: 0 1em;}
 @media (min-width: 1200px) {
     #tab-form *,#tab-form *:before,#tab-form *:after {         box-sizing: border-box !important;    }
-    #tab-form .row {         -moz-column-gap: 1em;        -moz-column-width: 50em;     }
+    #tab-form .row {         -moz-column-gap: 1em;        -moz-column-width: 47em;     }
     #tab-form .panel-compact {
         float: none;
         display: inline-block;
-        margin: 0.25rem;
-        padding: 1rem;
-        width: 100%;
+        margin: 0 1em 0 -0.5em;
+        padding: 0;
+        width: 47em;
     }
 }
 
 
 /* custom inclusion of right, left and below tabs */
+.main-form{ padding: 1px;}
 
 @media (min-width: 1200px) {
 .tabs-below > .nav-tabs,.tabs-right > .nav-tabs,.tabs-left > .nav-tabs {    border-bottom: 0;}

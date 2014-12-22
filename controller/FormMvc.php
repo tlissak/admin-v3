@@ -122,58 +122,64 @@ class FormMvc
 
 
         if ($type == 'color') {
+            $out .= '<span class="input-group-addon"><i class="fa fa-paint-brush"></i> </span>';
             $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control color_picker"   data-type="color"  data-limit="7" ' . $extends . '  />';
         }
         if ($type == 'date') {
+            $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i> </span>';
             $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control date_picker"  data-type="date" data-limit="10" ' . $extends . ' />';
         }
         if ($type == 'text') {
-            $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-font"></i> </span>
-        <input type="' . $type . '" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" ' . $extends . ' class="form-control" data-limit="255" />';
+            $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-font"></i> </span>';
+            $out .= '<input type="' . $type . '" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" ' . $extends . ' class="form-control" data-limit="255" />';
         }
         if ($type == 'zipcode') {
+            $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>';
             $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" data-type="zipcode" class="form-control" data-limit="5" ' . $extends . ' />';
         }
         if ($type == 'number') {
-            $out .= '<span class="input-group-addon">0-9 </span>
-        <input type="number" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" data-type="int" class="form-control" data-limit="11" ' . $extends . ' />';
+            $out .= '<span class="input-group-addon">0-9 </span>';
+            $out .= '<input type="number" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" data-type="int" class="form-control" data-limit="11" ' . $extends . ' />';
         }
         if ($type == 'email') {
-            $out .= '<span class="input-group-addon"><i class="fa fa-at"></i> </span>
-        <input type="email" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" data-type="email" class="form-control" data-limit="100" ' . $extends . ' />';
+            $out .= '<span class="input-group-addon"><i class="fa fa-at"></i> </span>';
+            $out .= '<input type="email" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" data-type="email" class="form-control" data-limit="100" ' . $extends . ' />';
         }
         if ($type == 'float') {
-            $out .= '<span class="input-group-addon">0.00</span>
-        <input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control" data-type="float"  ' . $extends . ' />';
+            $out .= '<span class="input-group-addon">0.00</span>';
+            $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control" data-type="float"  ' . $extends . ' />';
         }
         if ($type == 'price') {
-            $out .= '<span class="input-group-addon">€</span>
-        <input type="number" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control" step="any"  data-type="price" ' . $extends . ' />';
+            $out .= '<span class="input-group-addon">€</span>';
+            $out .= '<input type="number" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control" step="any"  data-type="price" ' . $extends . ' />';
         }
         if ($type == 'sort') {
-            $out .= '<span class="input-group-addon"><i class="fa fa-sort"></i></span>
-        <input type="number" name="' . $fld . ' "id="fld_' . $fld . '" value="' . $value . '" class="form-control" step="any"  data-type="float" data-limit="50" ' . $extends . ' />';
+            $out .= '<span class="input-group-addon"><i class="fa fa-sort"></i></span>';
+            $out .= '<input type="number" name="' . $fld . ' "id="fld_' . $fld . '" value="' . $value . '" class="form-control" step="any"  data-type="float" data-limit="50" ' . $extends . ' />';
         }
         if ($type == 'url') {
-            $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span>
-        <input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '"  class="form-control" data-type="url" data-limit="255" ' . $extends . ' />';
+            $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span>';
+            $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '"  class="form-control" data-type="url" data-limit="255" ' . $extends . ' />';
         }
         if ($type == 'phone') {
+            $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>';
             $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control" data-type="phone" data-limit="20" ' . $extends . ' />';
         }
         if ($type == 'password') {
-            $out .= '<input type="' . $type . '" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control" data-type="password" data-limit="50" ' . $extends . ' />';
+            $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>';
+            $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control" data-type="password" data-limit="50" ' . $extends . ' />';
         }
         if ($type == 'checkbox' || $type == 'check') {
-            $out .= '<span class="cbr"><input type="checkbox" name="' . $fld . '" id="fld_' . $fld . '" value="1"  ' . (($value) ? ' checked="checked" ' : 'checked="checked"') . ' ' . $extends . ' /><i class="fa fa-check"></i></span>' ;
+            $out .= '<span class="cbr"><input type="checkbox" name="' . $fld . '" id="fld_' . $fld . '" value="1"  ' . (($value) ? ' checked="checked" ' : 'checked="checked"') ;
+            $out .= ' ' . $extends . ' /><i class="fa fa-check"></i></span>' ;
         }
         if ($type == 'textarea') {
-            $out .= '<span class="input-group-addon">-</span>
-        <textarea name="' . $fld . '" id="fld_' . $fld . '" class="form-control" spellcheck="false" ' . $extends . '>' . $value . '</textarea>';
+            $out .= '<span class="input-group-addon"><i class="fa fa-paragraph"></i></span>';
+            $out .= '<textarea name="' . $fld . '" id="fld_' . $fld . '" class="form-control" spellcheck="false" ' . $extends . '>' . $value . '</textarea>';
         }
         if ($type == 'rte') {
-            $out .= '<textarea name="' . $fld . '" id="fld_' . $fld . '" class="form-control rte" spellcheck="false" ' . $extends . '>'
-                . htmlentities($value, ENT_QUOTES, "UTF-8") . '</textarea>';
+            $out .= '<textarea name="' . $fld . '" id="fld_' . $fld . '" class="form-control rte" spellcheck="false" ' . $extends . '>' ;
+            $out .=  htmlentities($value, ENT_QUOTES, "UTF-8") . '</textarea>';
         }
         if ($type == 'file') {
 
@@ -201,10 +207,11 @@ class FormMvc
             $out .= $h;
         }
         if ($type == 'hidden') {
-            $out .= 'WWWWW<input type="hidden" name="' . $fld . '" id="hdn_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />'; //
+            $out .= '<input type="hidden" name="' . $fld . '" id="hdn_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';
         }
         if ($type == 'range') {
-            $out .= '<input type="range" name="' . $fld . '" id="fld_' . $fld . '" class="form-control" data-type="int" value="' . ($value ? $value : 0) . '" step="1" data-limit="11" max="' . $opt['max'] . '" min="' . $opt['min'] . '" ' . $extends . ' /><span>' . $value . '</span>';
+            $out .= '<input type="range" name="' . $fld . '" id="fld_' . $fld . '" class="form-control" data-type="int" value="' . ($value ? $value : 0) . '" ';
+            $out .= ' step="1" data-limit="11" max="' . $opt['max'] . '" min="' . $opt['min'] . '" ' . $extends . ' /><span>' . $value . '</span>';
         }
         if ($label) {
             $out .= '</div></div>';

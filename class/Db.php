@@ -7,6 +7,7 @@ class Db{
 	private $pdo_type  ;
 	private $pdo_dsn  ;
 	function __construct($p_dsn = PDO_DSN , $p_type= PDO_TYPE ){
+
 		$this->pdo_type 	= $p_type;
 		$this->pdo_dsn 	= $p_dsn;
 		try {
@@ -31,13 +32,13 @@ class Db{
 		$this->querys[] = $sql ;	
 	}
 	function error($e,$q){
+
         $er  = (implode(', ',$e) .' :: '. $q );
         $this->last_error = $er ;
         $this->errors[] = $er;
-        if (DEV_MODE) {
-            p($er);
-            p($q);
-        }
+        p($er);
+        p($q);
+		die ;
 			
 	}
 	function fetch($q){
@@ -60,7 +61,7 @@ class Db{
 		if ($sth = $this->db->prepare($q)){
 			$sth->execute();	
 			if ($res = $sth->fetch(PDO::FETCH_ASSOC) ){
-				if ($this->pdo_type == 'odbc') array_walk($res,'Db::iso2utf8' );	
+				//if ($this->pdo_type == 'odbc') array_walk($res,'Db::iso2utf8' );
 				return $res ;
 			}else{
 				return array() ;	
@@ -73,10 +74,14 @@ class Db{
 	function query($q){
 		$this->debug($q);
 		if ($sth = $this->db->prepare($q)){
-			$sth->execute();
-			if (strrpos($q,'INSERT' ) === 0)
-				return $this->db->lastInsertId() ;
-			return true ;	
+			if($sth->execute()){
+				if (strrpos($q,'INSERT' ) === 0)
+					return $this->db->lastInsertId() ;
+				return true ;
+			}else{
+				$this->error($this->db->errorInfo() , $q) ;
+				return false;
+			}
 		}else{
 			$this->error($this->db->errorInfo() , $q) ;
 			return false;	

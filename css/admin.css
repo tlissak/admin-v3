@@ -124,7 +124,7 @@ ul.main-menu .sub-menu li .sub-menu .text {    padding-left:50px;}
 }
 
 .rte{ height: 300px;}
-
+.file-drop-zone-title{ padding: 10px; font-size: 25px;    }
 /* NAV BAR */
 .navbar {     background-color:#fff;}
 .main-form .navbar-toggle {    border:none; color: #337ab7;}

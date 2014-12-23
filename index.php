@@ -16,6 +16,8 @@ include('controller/Relation.php');
 include('controller/RelationMvc.php');
 include('controller/Loader.php');
 
+include('controller/FileUpload.php');
+
 include('controller/Postback.php');
 
 include('Config.php');
@@ -26,11 +28,14 @@ Loader::Load() ;
 //TODO  add bans ips system
 //TODO token check
 /*
+ *
  * TODO: Add bread crumbs / Add login
  * TODO save user state sorting / search for each table in cache
 */
-
-if(post('set_form_ajax') ) {
+if (get('upload')){
+    new FileUpload(get('tbl').DS.get('fld').DS.get('id').DS);
+}
+if(get('set_form_ajax') ) {
     Loader::Current()->Submit();
 }
 if (get('ajax') == 'list') {
@@ -97,6 +102,10 @@ if (get('ajax') == 'list') {
         <link href="bs/bootstrap-progressbar-3.3.0.css" rel="stylesheet"/>
         <script src="bs/bootstrap-progressbar.js" ></script>
 
+
+        <link href="bs/fileinput.min.css" rel="stylesheet"/>
+        <script src="bs/fileinput.min.js" ></script>
+
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -116,12 +125,19 @@ if (get('ajax') == 'list') {
 
                 var tbl = $('#tab-list .table')
                     .on('click-row.bs.table', function (e, row, $element) {
+                        var _params = {}
                         params = $.deparam(window.location.search) ;
-                        params.id = row.id ;
-                        window.location = '?' + ($.param(params) ) ;
+                        _params.id = row.id ;
+                        _params.tbl = params.tbl ;
+                        window.location = '?' + ($.param(_params) ) ;
                 })
                 if (tbl.size() == 0 )
                     throw ("Unable to set links to table");
+
+                $('.input-group').click(function(){
+                    $("input[type='file']",this).fileinput('enable');
+                })
+
             })
 
         </script>
@@ -136,7 +152,7 @@ if (get('ajax') == 'list') {
         <div class="logo-area">
             <a class="btn btn-link btn-nav-sidebar-minified pull-left"  onclick="$('.wrapper').toggleClass('main-nav-minified')"><i class="icon ion-arrow-swap"></i></a>
             <a class="btn btn-link btn-off-canvas pull-left" onclick="$('.wrapper').removeClass('main-nav-minified').toggleClass('off-canvas-active')"><i class="icon ion-navicon"></i></a>
-            <a class="navbar-brand" href="#" onclick="$('#admin-css').attr('href','#');">ADMINPANEL</a>
+            <a class="navbar-brand" href="#" onclick="$('#admin-css').attr('href','css/clean.css');">ADMINPANEL</a>
 
         </div>
     </nav>
@@ -175,7 +191,10 @@ if (get('ajax') == 'list') {
     <div class="container-fluid primary-content">
 
 <? if (Loader::Current()){ ?>
-    <form class="main-form tabbable tabs-left" data-toggle="validator" method="post">
+
+    <form class="main-form tabbable tabs-left" data-toggle="validator" method="post"
+          action="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=<?= Loader::Current()->id ? 'mod' : 'add' ; ?>" >
+
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -186,27 +205,34 @@ if (get('ajax') == 'list') {
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><button type="submit" class="save"><i class="glyphicon glyphicon-save"></i> Save</a></button></li>
+
+                        <? if (Loader::Current()->id){ ?>
+
                         <li class="nav-divider"></li>
-                        <li><a href="#"> <i class="glyphicon glyphicon-trash"></i> Delete</a></li>
+                        <li><a href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=del"> <i class="glyphicon glyphicon-trash"></i> Delete</a></li>
                         <li class="nav-divider"></li>
-                        <li><a href="#"> <i class="glyphicon glyphicon-plus"></i> Dupplicate</a></li>
+                        <li><a href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=dup"> <i class="glyphicon glyphicon-plus"></i> Dupplicate</a></li>
+
+                        <? } ?>
                     </ul>
                 </div>
             </div>
         </nav>
 
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+
             <li class="active"><a href="#tab-list" data-toggle="tab">List</a></li>
             <li><a href="#tab-form" data-toggle="tab">Form</a></li>
             <?= Loader::Current()->RelationMvc->GetTabs(); ?>
         </ul>
 
         <div id="my-tab-content" class="tab-content">
-            <div class="tab-pane active" id="tab-list">
+
+            <div class="tab-pane" id="tab-list">
                <?= Loader::Current()->ListingMvc->GetPanel(); ?>
             </div>
-            <div class="tab-pane" id="tab-form">
-                   <?= Loader::Current()->FormMvc->GetPanels(); ?>
+            <div class="tab-pane active" id="tab-form">
+                <?= Loader::Current()->FormMvc->GetPanels(); ?>
 
             </div>
 

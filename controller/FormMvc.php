@@ -47,17 +47,14 @@ class FormMvc
         }
 
 
-        $cst = array('name'=>'tbl','value'=>$this->parent->name,'type'=>'hidden');
-        $panelFields['default'] .= $this->Control($cst) . NL;
-        $cst = array('name'=>'set_form_ajax','value'=>1,'type'=>'hidden');
-        $panelFields['default'] .= $this->Control($cst) . NL;
-        $cst = array('name'=>'id','value'=>get('id'),'type'=>'hidden');
-        $panelFields['default'] .= $this->Control($cst) . NL;
+
+
+        //$cst = array('name'=>'action','value'=>$this->parent->id ? 'mod' : 'add' ,'type'=>'hidden');
+        //$panelFields['default'] .= $this->Control($cst) . NL;
 
         $out = '';
         foreach($this->parent->formPanel as $key=>&$pnl){
-            $pnl['cont'] = $panelFields[$key] ;
-            $out .= $this->parent->PanelMvc->RenderPanel($key.'-form',$pnl,'Form') ;
+            $out .= $this->parent->PanelMvc->RenderPanel($key.'-form',$panelFields[$key],'Form',$this->parent->title ,'') ;
         }
 
         return $out ;
@@ -183,28 +180,45 @@ class FormMvc
         }
         if ($type == 'file') {
 
-            $h = '<div class="droparea"><span class="btn btn-mini btn-file"  >';
-            $h .= '<i class="icon-plus"></i>  ' . l('browse or drop file here');
-            $h .= '<input  name="' . $fld . '" type="file" ' . $extends . '  />'; // add data-path ;
-            $h .= '</span>';
-            $h .= '<div class="files">';
-            $h .= '<input type="hidden" name="' . $fld . '" id="fld_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';
-            if (V2_IMG && is_image('../' . $value)) {
-                $h .= '<img src="../' . $value . '?width=200" style="max-height:100px; max-width:100px;"  />';
-            } elseif (is_file(P_PHOTO . $value)) {//current state ;
-                if (is_image(P_PHOTO . $value)) {
-                    $h .= '<img src="' . U_PHOTO . $value . '?width=200" style="max-height:100px; max-width:100px;"  />';
-                } elseif (is_pdf(P_PHOTO . $value)) {
-                    $h .= '<a href="' . U_PHOTO . $value . '" target="_blank"><img src="img/pdf.jpg"  /></a>';
-                } else {
-                    $h .= $value;
-                }
-            } else {
-                $h .= '*** FILE NOT FOUND ('.$value.') ***';
+            $upload_url = 'index.php?upload=1&amp;tbl='.$this->parent->name.'&amp;fld='.$fld ;
+            $upload_url .=  ($this->parent->id) ? '&amp;id='.$this->parent->id : '&amp;id=0' ;
+
+//TODO clean up file upload code
+
+//_'.$fld.'
+            $out .= '<input type="file" class="file" id="fld_'.$fld.'" name="image"
+            data-preview-file-type="any"
+            data-upload-url="'.$upload_url.'"
+            data-browse-label="Select.."
+            data-remove-label="Sup."
+            data-drop-zone-title="Glissez le fichier ici.."
+            '.$extends.'
+            >' ;
+
+
+            $out .= '<script>
+
+$("#fld_'.$fld.'")
+.on(\'fileuploaded\', function(event, data, previewId, index) {
+                var formdata = data.form, files = data.files,extradata = data.extra, responsedata = data.response;
+                    $("#fld_fld_'.$fld.'").val(responsedata.files.image[0].uploaded) ;
+               // }
+             }).fileinput({
+             slugCallback: function(filename) {
+                   return filename.replace("(", "_");
+             }
+
+ ';
+
+            if ($this->parent->id && $value) {
+                $image = (! is_file(P_PHOTO . $value) ) ? 'img/gray_jean.png' : U_PHOTO . $value ;
+                $out .= ' , initialPreview: ["<img src=\''.$image .'\' class=\'file-preview-image\'>"]
+                ,initialPreviewConfig: [{ caption:\'' . $value . '\', width: \'120px\', url: \'#\'}]  ';
             }
-            $h .= '<a href="javascript:" class="btn link-delete-file" data-path="' . urlencode($value) . '" ><i class="icon-trash"></i></a>';
-            $h .= '</div></div>';
-            $out .= $h;
+
+            $out .= '}) </script>';
+            $out .= '<input class="form-control" readonly type="text" name="' . $fld . '" id="fld_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';
+
         }
         if ($type == 'hidden') {
             $out .= '<input type="hidden" name="' . $fld . '" id="hdn_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';

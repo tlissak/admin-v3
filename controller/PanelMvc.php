@@ -3,7 +3,7 @@
 
 class PanelMvc{
 
-    public function RenderPanel($id,$pnl,$type){
+    public function RenderPanel($id,$cont,$type,$title,$icon){
         $tpl ='
                 <div class="panel-compact">
                     <div class="panel panel-default">
@@ -23,9 +23,9 @@ class PanelMvc{
         $tpl = str_replace('{$id}',$id,$tpl) ;
         $tpl = str_replace('{$type}',$type,$tpl) ;
         //$tpl = str_replace('{$pull}',$pnl['pull'],$tpl) ;
-        $tpl = str_replace('{$icon}',$pnl['icon'],$tpl) ;
-        $tpl = str_replace('{$title}',$pnl['title'],$tpl) ;
-        $tpl = str_replace('{$cont}',$pnl['cont'],$tpl) ;
+        $tpl = str_replace('{$icon}',$icon,$tpl) ;
+        $tpl = str_replace('{$title}',$title,$tpl) ;
+        $tpl = str_replace('{$cont}',$cont,$tpl) ;
 
         return $tpl;
     }

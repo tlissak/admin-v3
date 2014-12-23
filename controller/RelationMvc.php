@@ -63,8 +63,8 @@ class RelationMvc{
         }
         //TODO : add $r->data['type'] == 'ManyToManySelect'
         //TODO : add $r->data['type'] == 'ManyToOneByKey'
-        $pnl = array('cont'=>$out,'icon'=>'icon') ;
-        $out = $this->parent->PanelMvc->RenderPanel('state_'.$r->RelatedTable->name,$pnl,$r->RelatedTable->title . ' state') ;
+
+        $out = $this->parent->PanelMvc->RenderPanel('state_'.$r->RelatedTable->name,$out,'state',$r->RelatedTable->title . ' state','') ;
         return  $out ;
 
     }

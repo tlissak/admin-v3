@@ -41,8 +41,6 @@ Loader('product','name_fr')
     ->Panel('rte','Content','icon ion-compose')
     ;
 
-//TODO File upload
-
 
 Loader('category','title_fr')
     ->View(array('title_fr'=>'Nom','parent_id_inner'=>"parent",'level'=>'niveau') )
@@ -82,9 +80,9 @@ Loader('order','order_date')    //
 
 Loader('product_type','type')   ->View(array('type'=>"Type") )    ->Attr('Hide',1);
 
-Loader('images','path')->View(array('id'=>"id",'path'=>"Image") )    ->FormControl('file','path','Image')->Attr('Hide',1);
-Loader('file','path')->View(array('id'=>"id",'path'=>"Fichier") )->FormControl('file','path','Fichier')->FormControl('text','title','Titre')->Attr('Hide',1);
-Loader('video','path')->View(array('id'=>"id",'path'=>"Url Video") )->FormControl('text','path','Url Video')->Attr('Hide',1);
+Loader('images','path')->View(array('id'=>"id",'path'=>"Image") )    ->FormControl('file','path','Image')->Attr('Hide',0);
+Loader('file','path')->View(array('id'=>"id",'path'=>"Fichier") )->FormControl('file','path','Fichier')->FormControl('text','title','Titre')->Attr('Hide',0);
+Loader('video','path')->View(array('id'=>"id",'path'=>"Url Video") )->FormControl('text','path','Url Video')->Attr('Hide',0);
 
 
 Loader('client','email')->View(array('id'=>"id",'email'=>"Email",'last_name'=>'Nom','first_name'=>'prénom') )

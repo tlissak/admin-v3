@@ -9,6 +9,10 @@ class Loader{
     public static $instances = array();
 
     public $name = '';
+
+    /**
+     * @var get('id')
+     */
     public $id ;
 
     public $tmpView ;
@@ -139,9 +143,9 @@ class Loader{
                 elseif (in_array('name_fr',$loader->dbFields))
                     $loader->titleField = 'name_fr' ;
             }
-            if (! $loader->titleField) {
-               // $loader->titleField = 'id' ;
-            }
+
+            // title field is obligatory
+            //if (! $loader->titleField) {                $loader->titleField = 'id' ;            }
 
             // if loader dosent have any view fields add the id and the titleField
             if (count($loader->viewFields) == 0)

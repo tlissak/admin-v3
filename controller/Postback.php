@@ -18,7 +18,7 @@ class Postback{
         $this->name     = $p->name ;
         $this->form     = $p->Form;
         //private
-        $this->_id       = $p->Form->id ;
+        $this->_id       = $p->id ;
     }
 
     private $PostAction = array('add','mod','del','dup') ;
@@ -27,7 +27,11 @@ class Postback{
 
         //$this->action = post('form_submit_action_type') ;
         //TODO : Get submit action from url or from post
-        $this->action = 'add' ;
+
+
+        $this->action = get('action');
+
+
         //$this->Save();
 
         //if ajax should die !
@@ -62,31 +66,37 @@ class Postback{
     public function Add(){
         global $db;
         $this->form->initPostData() ;
-
-        if ($this->_id = $db->query(SQL::build('INSERT',$this->name,$this->form->data_posted) ) ){
+        $sql = SQL::build('INSERT',$this->name,$this->form->data_posted) ;
+        if ($this->_id = $db->query($sql ) ){
             //TODO set relation values
             //$this->deleteRelations() ;
             //$this->addRelations() ;
         }else{
-            p('Post add db error '. $db->last_error);
+            p('Post add db error '.$sql  . $db->last_error);
         }
     }
 
     public function Dup(){
         global $db;
         $this->form->initData(); //empty for fields keys only
+
+        $data = array_filter( $this->form->data , function($kyes){ return $kyes !="id" ;},ARRAY_FILTER_USE_KEY ) ;
+
         //TODO set relation values
         //$this->initDbRelationData() ;
-        if ($this->_id = $db->query(SQL::build('DUPLICATE',$this->name,$this->form->data,$this->_id) ) ){
+
+
+        $sql = SQL::build('DUPLICATE',$this->name,$data,$this->_id) ;
+        if ($this->_id = $db->query($sql ) ){
           //  $this->addRelations( true ) ;
         }else{
-            p('Post duplicate db error '. $db->last_error);
+            p('Post duplicate db error '.$sql .  $db->last_error);
         }
     }
 
     public function Edit(){
         global $db;
-        $this->initPostData() ;
+        $this->form->initPostData() ;
         if ($db->query(SQL::build('UPDATE',$this->name,$this->form->data_posted,$this->_id) ) ){
             //TODO set relation values
            // $this->deleteRelations() ;

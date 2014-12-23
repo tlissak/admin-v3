@@ -31,9 +31,7 @@ class ListingMvc{
 
     public function GetPanel(){
 
-        $pnl = array('pull'=>'pull-left-lg' , 'title'=> $this->parent->title ,'icon'=> 'glyphicon glyphicon-list','cont'=>$this->GetHeader());
-
-        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$pnl,'List') ;
+        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$this->GetHeader(),'List',$this->parent->title,'glyphicon glyphicon-list') ;
     }
 
     public function GetHeader(){

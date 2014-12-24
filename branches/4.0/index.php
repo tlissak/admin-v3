@@ -80,11 +80,11 @@ if (get('ajax') == 'list') {
         <script src="js/jquery-deparam.js"></script>
 
         <script src="bs/bootstrap-form-validator.min.js" ></script>
-
+<!--
         <link rel="stylesheet" type="text/css" href="bs/bootstrap3-wysihtml5.css" />
         <script src="bs/wysihtml5x-toolbar.0.5.min.js"></script>
         <script src="bs/bootstrap3-wysihtml5.js"></script>
-
+-->
         <link href="bs/bootstrap-editable.css" rel="stylesheet"/>
         <script src="bs/bootstrap-editable.min.js"></script>
 
@@ -102,10 +102,14 @@ if (get('ajax') == 'list') {
         <link href="bs/bootstrap-progressbar-3.3.0.css" rel="stylesheet"/>
         <script src="bs/bootstrap-progressbar.js" ></script>
 
+        <script src="tinymce/tinymce.min.js"></script>
 
+        <link href="js/jquery.fancybox.css" />
+        <script src="js/jquery.fancybox.pack.js"></script>
+<!--
         <link href="bs/fileinput.min.css" rel="stylesheet"/>
         <script src="bs/fileinput.min.js" ></script>
-
+-->
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -113,39 +117,30 @@ if (get('ajax') == 'list') {
        <script src="bs/locale/bootstrap-table-fr-FR.min.js"></script>
         <link href="css/admin.css" id="admin-css" rel="stylesheet">
 
-        <script>
 
-            $(document).ready(function(){
-
-                $('.rte').wysihtml5({
-                    stylesheets: ["css/include-me-in-rte.css"]
-                    ,"html":true
-                    ,'locale':'en'
-                });
-
-                var tbl = $('#tab-list .table')
-                    .on('click-row.bs.table', function (e, row, $element) {
-                        var _params = {}
-                        params = $.deparam(window.location.search) ;
-                        _params.id = row.id ;
-                        _params.tbl = params.tbl ;
-                        window.location = '?' + ($.param(_params) ) ;
-                })
-                if (tbl.size() == 0 )
-                    throw ("Unable to set links to table");
-
-                $('.input-group').click(function(){
-                    $("input[type='file']",this).fileinput('enable');
-                })
-
-            })
-
-        </script>
+            <script type="text/javascript" src="js/init.js"></script>
 </head>
 
-<body class="fixed-top-active">
+<body>
 
 
+
+<div class="modal fade " id="ModalFileManager" tabindex="-1" role="dialog" aria-labelledby="ModalFileManagerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ModalFileManagerLabel">File Manager</h4>
+            </div>
+            <div class="modal-body">
+                <iframe src="" style="zoom:0.40" frameborder="0" height="550" width="99.6%"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="wrapper">
     <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
@@ -192,7 +187,7 @@ if (get('ajax') == 'list') {
 
 <? if (Loader::Current()){ ?>
 
-    <form class="main-form tabbable tabs-left" data-toggle="validator" method="post"
+    <form class="main-form tabbable tabs" data-toggle="validator" method="post"
           action="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=<?= Loader::Current()->id ? 'mod' : 'add' ; ?>" >
 
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -219,7 +214,7 @@ if (get('ajax') == 'list') {
             </div>
         </nav>
 
-        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+        <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
 
             <li class="active"><a href="#tab-list" data-toggle="tab">List</a></li>
             <li><a href="#tab-form" data-toggle="tab">Form</a></li>
@@ -231,7 +226,7 @@ if (get('ajax') == 'list') {
             <div class="tab-pane" id="tab-list">
                <?= Loader::Current()->ListingMvc->GetPanel(); ?>
             </div>
-            <div class="tab-pane active" id="tab-form">
+            <div class="tab-pane" id="tab-form">
                 <?= Loader::Current()->FormMvc->GetPanels(); ?>
 
             </div>
@@ -245,5 +240,8 @@ if (get('ajax') == 'list') {
     </div>
 </div>
 </div><!-- wrapper -->
+
+
+
 </body>
 </html>

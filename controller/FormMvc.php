@@ -54,7 +54,7 @@ class FormMvc
 
         $out = '';
         foreach($this->parent->formPanel as $key=>&$pnl){
-            $out .= $this->parent->PanelMvc->RenderPanel($key.'-form',$panelFields[$key],'Form',$this->parent->title ,'') ;
+            $out .= $this->parent->PanelMvc->RenderPanel($key.'-form',$panelFields[$key],'form',$this->parent->title . ' form' ,'') ;
         }
 
         return $out ;
@@ -179,7 +179,9 @@ class FormMvc
             $out .=  htmlentities($value, ENT_QUOTES, "UTF-8") . '</textarea>';
         }
         if ($type == 'file') {
-
+            $out .= '<a class="btn" data-toggle="modal" data-target="#ModalFileManager"
+             data-href="filemanager/dialog.php?type=2&field_id=fld_fld_' . $fld . '&base=">Open file manager</a>' ;
+            /*
             $upload_url = 'index.php?upload=1&amp;tbl='.$this->parent->name.'&amp;fld='.$fld ;
             $upload_url .=  ($this->parent->id) ? '&amp;id='.$this->parent->id : '&amp;id=0' ;
 
@@ -217,7 +219,8 @@ $("#fld_'.$fld.'")
             }
 
             $out .= '}) </script>';
-            $out .= '<input class="form-control" readonly type="text" name="' . $fld . '" id="fld_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';
+            */
+            $out .= '<input class="form-control change" readonly type="text" name="' . $fld . '" id="fld_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';
 
         }
         if ($type == 'hidden') {

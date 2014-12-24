@@ -82,7 +82,9 @@ ul.main-menu .sub-menu li .sub-menu .text {    padding-left:50px;}
 .fixed-table-toolbar .columns{ margin:15px 20px 0; }
 .fixed-table-pagination ul.pagination{ margin:5px 0;}
 
+/*
 .panel-compact{margin: 0 1em;}
+
 @media (min-width: 1200px) {
     #tab-form *,#tab-form *:before,#tab-form *:after {         box-sizing: border-box !important;    }
     #tab-form .row {         -moz-column-gap: 1em;        -moz-column-width: 47em;     }
@@ -94,7 +96,7 @@ ul.main-menu .sub-menu li .sub-menu .text {    padding-left:50px;}
         width: 47em;
     }
 }
-
+*/
 
 /* custom inclusion of right, left and below tabs */
 .main-form{ padding: 1px;}
@@ -137,6 +139,7 @@ ul.main-menu .sub-menu li .sub-menu .text {    padding-left:50px;}
 }
 
 .input-group-addon{ font-size: 12px;}
+.input-group-addon-clean{ background: #FFF;}
 
 button.save{ background: none; height: 50px; border: none; padding: 15px; display: block; cursor: pointer; width: 100%; text-align: left; }
 
@@ -150,4 +153,3 @@ button.save{ background: none; height: 50px; border: none; padding: 15px; displa
     padding: 2px;    margin-right: 10px;    text-align: center; line-height: 24px;  }
 .cbr input[type="radio"] + i {border-radius: 50%;}
 .cbr input:checked + i {    background: #337ab7;    color: #fff;}
-

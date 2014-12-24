@@ -31,7 +31,7 @@ class ListingMvc{
 
     public function GetPanel(){
 
-        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$this->GetHeader(),'List',$this->parent->title,'glyphicon glyphicon-list') ;
+        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$this->GetHeader(),'mainlist',$this->parent->title.' list','glyphicon glyphicon-list') ;
     }
 
     public function GetHeader(){
@@ -39,11 +39,12 @@ class ListingMvc{
         $fields = array();
         $opts = array('silent' => ''
 
+//TODO add relation left_key if exist
 
             , 'select-item-name' => '_id'
             , 'id-field'=>"_id"
 
-
+            , 'title-field' => $this->parent->titleField
             , 'sort-name' => $this->parent->sort_name ? $this->parent->sort_name : 'id'
             , 'sort-order' => $this->parent->sort_order ? $this->parent->sort_order : 'ASC'
             , 'striped' => 'true'

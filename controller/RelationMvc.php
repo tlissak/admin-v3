@@ -22,7 +22,6 @@ class RelationMvc{
 
     public function GetState(Relation $r,$data,$titleField){
 
-        //TODO: beutify state selections
 
         //if (! $data['id']){            return ;        }
 
@@ -33,18 +32,19 @@ class RelationMvc{
 
             if ($r->data['type'] == 'Simple' || $r->data['type'] == 'InnerSimple') {
 
+                //p($r->name);
+
                 $current_value = $data[$r->data['left_key']];
 
                 $sql = 'SELECT * FROM  `' . $r->name . '` WHERE id = ' . $current_value;
 
-                $out .= $sql;
+                //$out .= $this->wrap_input("sql",$sql) ;
 
                 $row = $db->fetchRow($sql);
 
-                if (count($row))
-                    $out .= '<input type="radio" name="' . $r->data['left_key'] . '" value="' . $current_value . '" checked > ' . $row[$titleField];
-
-
+                if (count($row)) {
+                    $out .= $this->wrap_input('<input type="radio" name="' . $r->data['left_key'] . '" value="' . $current_value . '" checked > ', $row[$titleField]);
+                }
             }
 
             if ($r->data['type'] == 'ManyToMany') {
@@ -54,19 +54,30 @@ class RelationMvc{
                 $sql .= ' WHERE tbl.id = by_tbl.' . $r->data['left_key'];
                 $sql .= ' AND  by_tbl.' . $r->data['right_key'] . ' = ' . $data['id'];
 
-                //$out .= $sql ;
+               // $out .= $this->wrap_input("sql",$sql) ;
+
                 $results = $db->fetch($sql);
                 foreach ($results as $row) {
-                    $out .= '<input type="checkbox" name="' . $r->data['left_key'] . '[]" value="' . $row['right_key'] . '" checked >' . $row[$titleField] . ' <br />';
+                    $out .= $this->wrap_input('<input type="checkbox" name="' . $r->data['left_key'] . '[]" value="' . $row['right_key'] . '" checked >', $row[$titleField] );
                 }
             }
         }
         //TODO : add $r->data['type'] == 'ManyToManySelect'
         //TODO : add $r->data['type'] == 'ManyToOneByKey'
 
-        $out = $this->parent->PanelMvc->RenderPanel('state_'.$r->RelatedTable->name,$out,'state',$r->RelatedTable->title . ' state','') ;
+        $out = $this->parent->PanelMvc->RenderPanel('state-'.$r->RelatedTable->name,$out,'state',$r->RelatedTable->title . ' state','') ;
         return  $out ;
 
+    }
+
+    public function wrap_input($input,$title){
+        return '
+        <label>
+        <div class="input-group">
+            <div class="input-group-addon"> '.$input.'</div>
+            <div class="input-group-addon input-group-addon-clean"> '.$title.'</div>
+        </div>
+        </label>' ;
     }
 
     public function GetTabsCont(){
@@ -79,7 +90,7 @@ class RelationMvc{
 
             $r->RelatedTable->tmpView = $r->view_type ;
 
-            $tabs_cont[] = '<div class="tab-pane" id="tab-relation-'.$r->name.'">' ;
+            $tabs_cont[] = '<div class="tab-pane active" id="tab-relation-'.$r->name.'">' ;
 
 
             $tabs_cont[] = $this->GetState($r, $this->parent->Form->data, $r->RelatedTable->titleField);
@@ -90,7 +101,8 @@ class RelationMvc{
             //set filter if relation is many to many
 
             if ($r->data['type'] != 'ManyToMany' && $r->data['type'] != 'ManyToOneByKey' ) {
-                $tabs_cont[] = $r->RelatedTable->ListingMvc->GetPanel();
+
+                $tabs_cont[] = $this->GetPanel($r->RelatedTable) ;
             }
 
 
@@ -100,6 +112,12 @@ class RelationMvc{
 
         }
         return implode(NL,$tabs_cont) ;
+    }
+
+    public function GetPanel(Loader &$r){
+
+        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$r->ListingMvc->GetHeader()
+            ,'relationlist',$this->parent->title.' R list','glyphicon glyphicon-list') ;
     }
 
 }

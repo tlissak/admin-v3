@@ -39,8 +39,6 @@ class ListingMvc{
         $fields = array();
         $opts = array('silent' => ''
 
-//TODO add relation left_key if exist
-
             , 'select-item-name' => '_id'
             , 'id-field'=>"_id"
 
@@ -72,15 +70,21 @@ class ListingMvc{
         // data-align="center" data-formatter="actionFormatter" data-events="actionEvents"
         //$this->parent->view_type = '-' ;
 
+        if ($this->parent->tmpRelation) {
 
-        if ($this->parent->tmpView == 'CHECKBOX' ) {
-            $fields[] = '<th data-field="_id"  data-visible="true" data-checkbox="true">-</th>';
-            $opts['click-to-select'] ="true" ;
-            $opts['url'] .= '&relation=1';
-        }elseif ($this->parent->tmpView == 'RADIO' ) {
-            $fields[] = '<th data-field="_id"  data-visible="true" data-radio="true">-</th>' ;
-            $opts['click-to-select'] ="true" ;
-            $opts['url'] .= '&relation=1';
+            $opts['selection-type'] = $this->parent->tmpRelation->view_type ;
+            $opts['title-field'] = $this->parent->titleField ;
+            $opts['left-key'] = $this->parent->tmpRelation->left_key ;
+
+            if ($this->parent->tmpRelation->view_type == 'CHECKBOX') {
+                $fields[] = '<th data-field="_id"  data-visible="true" data-checkbox="true">-</th>';
+                $opts['click-to-select'] = "true";
+                $opts['url'] .= '&relation=1';
+            } elseif ($this->parent->tmpRelation->view_type == 'RADIO') {
+                $fields[] = '<th data-field="_id"  data-visible="true" data-radio="true">-</th>';
+                $opts['click-to-select'] = "true";
+                $opts['url'] .= '&relation=1';
+            }
         }
 
         foreach( $this->parent->viewFields as $key=>$title) {

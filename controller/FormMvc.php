@@ -185,8 +185,6 @@ class FormMvc
             $upload_url = 'index.php?upload=1&amp;tbl='.$this->parent->name.'&amp;fld='.$fld ;
             $upload_url .=  ($this->parent->id) ? '&amp;id='.$this->parent->id : '&amp;id=0' ;
 
-//TODO clean up file upload code
-
 //_'.$fld.'
             $out .= '<input type="file" class="file" id="fld_'.$fld.'" name="image"
             data-preview-file-type="any"

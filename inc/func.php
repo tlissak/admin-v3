@@ -19,7 +19,7 @@ function l($_s){global $_LNG ; return isset($_LNG[$_s]) ? $_LNG[$_s] : $_s  ;}
 function p($o){ if (DEV_MODE || IP == IP_DEV){ echo '<pre class="debug-pre">' ;	  $xx = debug_backtrace() ;
 	if (count($xx)> 2 ) echo  basename($xx[2]['file']).':' . $xx[2]['line'] . " § " ;
 	else echo  basename($xx[1]['file']).':' . $xx[1]['line'] . " § ";
-	var_dump($o) ; /*print_r($o);*/  echo '</pre><hr />'; } } ;
+	var_dump($o) ; /*print_r($o);*/  echo '</pre>'; } } ;
 function coded($str){ 	return htmlentities($str, ENT_QUOTES , "UTF-8"); }  // depracted
 function strtoidate($str){	return date("d/m/Y",$str) ;}
 function redirect($uri){ header('Location: '.$uri);}

@@ -36,10 +36,10 @@ class Listing{
         /* RELATION */
 
         foreach($this->parent->relations_instances as &$rel){
-            if($rel->data['type'] == 'Simple' 	|| $rel->data['type'] == 'InnerSimple' ){
+            if($rel->type == 'Simple' 	|| $rel->type == 'InnerSimple' ){
                 $this->sql['fields']        .= ','. $rel->field_alias . NL;
                 $this->sql['left_joins']    .= ' LEFT JOIN `'. $rel->name . '` AS '.$rel->alias .' '.NL;
-                $this->sql['left_joins'] .= ' ON '.$rel->alias.'.id  = `'. $this->parent->name.'`.'.  $rel->data['left_key']  .' '.NL;
+                $this->sql['left_joins'] .= ' ON '.$rel->alias.'.id  = `'. $this->parent->name.'`.'.  $rel->left_key  .' '.NL;
             }
         }
 

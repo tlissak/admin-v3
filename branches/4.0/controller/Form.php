@@ -16,6 +16,8 @@ class Form{
     }
     function initDbData(){
         global $db ;
+        if (! $this->parent->id )
+            return ;
         $sql = 'SELECT ' . implode(NL.',',$this->parent->dbFields) . ' FROM `' . $this->parent->name . '` WHERE `'.$this->parent->name.'`.id = '.$this->parent->id  ;
         $res = $db->fetchRow($sql);
         if(count($res)){

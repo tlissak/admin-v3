@@ -153,3 +153,6 @@ button.save{ background: none; height: 50px; border: none; padding: 15px; displa
     padding: 2px;    margin-right: 10px;    text-align: center; line-height: 24px;  }
 .cbr input[type="radio"] + i {border-radius: 50%;}
 .cbr input:checked + i {    background: #337ab7;    color: #fff;}
+
+.debug-pre{margin-left: 230px; }
+.debug-pre:first-child{ margin-top: 54px; }

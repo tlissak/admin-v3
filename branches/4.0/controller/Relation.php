@@ -8,6 +8,11 @@ class Relation {
     /**
      * @var array
      */
+    public $type  ;
+    public $left_key ;
+    public $right_key ;
+    public $by_tbl ;
+
     public $view_fields = array();
 
     public $field;
@@ -30,12 +35,35 @@ class Relation {
         $this->name = $name ;
         $this->data = $data ;
 
-        if ($this->data['type'] == 'Simple' || $this->data['type'] == 'InnerSimple') {
+        if (!isset($data['type'])){
+            p('Relation dosent contain type value : '.$this->name);
+        }
+        if (!isset($data['left_key'])){
+            p('Relation dosent contain left_key value : '.$this->name);
+        }
+
+        $this->type = $data['type'] ;
+        $this->left_key = $data['left_key'] ;
+
+
+        if ($this->type == 'Simple' || $this->type == 'InnerSimple') {
             $this->view_type = 'RADIO';
         }
-        if ($this->data['type'] == 'ManyToMany' || $this->data['type'] == 'ManyToOneByKey' || $this->data['type'] == 'ManyToManySelect') {
+        if ($this->type == 'ManyToMany' || $this->type == 'ManyToOneByKey' || $this->type == 'ManyToManySelect') {
             $this->view_type = 'CHECKBOX';
+
+            if (!isset($data['by_tbl'])){
+                p('Relation dosent contain by_tbl value : '.$this->name);
+            }
+            if (!isset($data['right_key'])){
+                p('Relation dosent contain right_key value : '.$this->name);
+            }
+
+            $this->right_key    = isset($data['right_key']) ? $data['right_key'] : null ;
+            $this->by_tbl       = isset($data['by_tbl']) ? $data['by_tbl'] : null ;
         }
+
+
     }
 
     public function Load(Loader &$parent)
@@ -44,11 +72,11 @@ class Relation {
 
         $this->RelatedTable = &Loader::Get($this->name);
 
-        if($this->data['type'] == 'Simple' 	|| $this->data['type'] == 'InnerSimple' ){
+        if($this->type == 'Simple' 	|| $this->type == 'InnerSimple' ){
 
-            $this->alias = 'left_join_'.$this->name.'_'.$this->data['left_key'];
+            $this->alias = 'left_join_'.$this->name.'_'.$this->left_key;
 
-            $this->view_field = $this->data['left_key'].'_inner' ;
+            $this->view_field = $this->left_key.'_inner' ;
 
 //            p($this->parent->titleField);
             $this->view_fields[$this->view_field] = $this->alias .'.'.$this->parent->titleField ;

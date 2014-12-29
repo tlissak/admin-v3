@@ -36,7 +36,29 @@ if (get('upload')){
     new FileUpload(get('tbl').DS.get('fld').DS.get('id').DS);
 }
 if(get('set_form_ajax') ) {
-    Loader::Current()->Submit();
+    echo Loader::Current()->Submit();
+    die;
+}
+if (get('ajax') == 'form'){
+   // echo Loader::Current()->FormMvc->GetPanels();
+?>
+<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
+            <li class="active"><a href="#tab-form-<?= Loader::Current()->name ?>-ajax" data-toggle="tab">Form</a></li>
+            <?= Loader::Current()->RelationMvc->GetTabs(); ?>
+</ul>
+
+<div id="my-tab-content-0" class="tab-content">
+
+    <div class="tab-pane active" id="tab-form-<?= Loader::Current()->name ?>-ajax">
+        <?= Loader::Current()->FormMvc->GetPanels(); ?>
+
+    </div>
+
+    <?= Loader::Current()->RelationMvc->GetTabsCont(); ?>
+
+</div>
+<?
+    die;
 }
 if (get('ajax') == 'list') {
     //sleep(1);
@@ -102,10 +124,16 @@ if (get('ajax') == 'list') {
         <link href="bs/bootstrap-progressbar-3.3.0.css" rel="stylesheet"/>
         <script src="bs/bootstrap-progressbar.js" ></script>
 
-        <script src="tinymce/tinymce.min.js"></script>
+        <script src="tinymce/jquery.tinymce.min.js"></script>
 
+
+<!--
+
+        <script src="tinymce/tinymce.gzip.js"></script>
+<script src="tinymce/tinymce.min.js"></script>
         <link href="js/jquery.fancybox.css" />
         <script src="js/jquery.fancybox.pack.js"></script>
+        -->
 <!--
         <link href="bs/fileinput.min.css" rel="stylesheet"/>
         <script src="bs/fileinput.min.js" ></script>
@@ -216,17 +244,17 @@ if (get('ajax') == 'list') {
 
         <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
 
-            <li class="active"><a href="#tab-list" data-toggle="tab">List</a></li>
-            <li><a href="#tab-form" data-toggle="tab">Form</a></li>
+            <li class="active"><a href="#tab-list-<?= Loader::Current()->name ?>" data-toggle="tab">List</a></li>
+            <li><a href="#tab-form-<?= Loader::Current()->name ?>" data-toggle="tab">Form</a></li>
             <?= Loader::Current()->RelationMvc->GetTabs(); ?>
         </ul>
 
         <div id="my-tab-content" class="tab-content">
 
-            <div class="tab-pane" id="tab-list">
+            <div class="tab-pane" id="tab-list-<?= Loader::Current()->name ?>">
                <?= Loader::Current()->ListingMvc->GetPanel(); ?>
             </div>
-            <div class="tab-pane" id="tab-form">
+            <div class="tab-pane" id="tab-form-<?= Loader::Current()->name ?>">
                 <?= Loader::Current()->FormMvc->GetPanels(); ?>
 
             </div>
@@ -242,6 +270,32 @@ if (get('ajax') == 'list') {
 </div><!-- wrapper -->
 
 
+
+<div class="modal fade " id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                <input type="submit" class="btn btn-primary" value="Envoyer ma demande" name="contactSubmit">
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade " id="alert" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

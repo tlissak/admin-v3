@@ -15,7 +15,7 @@ class Loader{
      */
     public $id ;
 
-    public $tmpView ;
+    public $tmpRelation ;
 
     public $current = false;
 
@@ -182,6 +182,7 @@ class Loader{
     public function Submit(){
         $this->Postback = new Postback($this);
         $this->Postback->Set();
+        return $this->Postback->Message ;
     }
 
     public function GetListing(){

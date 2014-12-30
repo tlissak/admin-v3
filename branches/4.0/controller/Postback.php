@@ -13,7 +13,8 @@ class Postback{
     private $action ;
     private $_id ;
 
-    public $Message ='';
+    //TODO test relation add / mod / del / dup without virtual
+    private $VIRTUAL = true ;
 
     public function __construct(Loader &$p){
         $this->parent   = &$p ;
@@ -131,40 +132,51 @@ class Postback{
             p('Action type not set in form');
         }
 
-        if ($this->action == 'add') {
-            $this->Add();
-        } elseif ($this->action == 'dup') {
-            $this->Dup();
-        } elseif ($this->action == 'mod') {
-            $this->Edit();
-        }elseif ($this->action == 'del') {
-            $this->Delete();
-        }
+        $out = array("id"=>$this->_id,"tbl"=>$this->parent->name,'left-key'=>$this->parent->name,"action"=>$this->action);
+        $out['message'] = $this->action;
 
+        if ($this->action == 'add') {
+            $out['status'] = $this->Add() ? 201 : 501 ;
+        } elseif ($this->action == 'dup') {
+            $out['status'] = $this->Dup() ? 202 : 502 ;
+        } elseif ($this->action == 'mod') {
+            $out['status'] = $this->Edit() ? 203 : 503 ;
+        }elseif ($this->action == 'del') {
+            $out['old_id'] = $this->_id;
+            $out['status'] = $this->Delete() ? 204 : 504 ;
+        }
 
         if ($this->action == "add" || $this->action == 'mod' || $this->action == 'dup' ){
-            $this->parent->id = $this->_id;
-            $this->form->initDbData();
+            if ($this->VIRTUAL) {
+                $out['row'] = $this->form->data_posted ;
+                $out['row']['id'] = 0 ;
+            }else {
+                $out['id'] = $this->_id;
+                $this->parent->id = $this->_id;
+                $this->form->initDbData();
+                //
+                $out['row'] = $this->form->data ; // Should contains ID key
+            }
         }
 
-
-
-        $this->Message = "Saved :" ;
-
-        return $this->_id;
+        return json_encode($out);
 
     }
 
     public function Add(){
         global $db;
         $this->form->initPostData() ;
+
+        if ($this->VIRTUAL) return true;
+
         $sql = SQL::build('INSERT',$this->name,$this->form->data_posted) ;
         if ($this->_id = $db->query($sql ) ){
-
             $this->deleteRelations() ;
             $this->addRelations() ;
+            return true;
         }else{
             p('Post add db error '.$sql  . $db->last_error);
+            return false;
         }
     }
 
@@ -172,36 +184,50 @@ class Postback{
         global $db;
         $this->form->initData();
 
+        if ($this->VIRTUAL) return true;
+
         $data = array_filter( $this->form->data , function($kyes){ return $kyes !="id" ;},ARRAY_FILTER_USE_KEY ) ;
 
         $sql = SQL::build('DUPLICATE',$this->name,$data,$this->_id) ;
         if ($this->_id = $db->query($sql ) ){
             $this->addRelations( true ) ;
+            return true;
         }else{
             p('Post duplicate db error '.$sql .  $db->last_error);
+            return false;
         }
     }
 
     public function Edit(){
         global $db;
         $this->form->initPostData() ;
+
+        if ($this->VIRTUAL) return true;
+
         $sql = SQL::build('UPDATE',$this->name,$this->form->data_posted,$this->_id );
 
         if ($db->query($sql)  ){
             $this->deleteRelations() ;
             $this->addRelations() ;
+            return true;
         } else{
             p('Post edit db error '. $db->last_error);
+            return false;
         }
     }
 
     public function Delete(){
         global $db;
+
+        if ($this->VIRTUAL) return true;
+
         $sql = 'DELETE  FROM `'.$this->name.'` WHERE id = '. $this->_id ;
         if ($db->query($sql) ){
             $this->deleteRelations() ;
+            return true;
         }else{
             p('Post delete db error '. $db->last_error);
+            return false ;
         } //$this->_id =  0;
     }
 }

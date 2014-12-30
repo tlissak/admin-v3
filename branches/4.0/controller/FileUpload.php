@@ -67,9 +67,9 @@ class FileUpload{
         }
         //p( $this->files ) ;
         //die ;
-        header('Content-type: application/json');
-        echo json_encode( $this ) ;
-        die ;
+
+        return json_encode( $this ) ;
+
     }
 
     public function get_normalized_files(){

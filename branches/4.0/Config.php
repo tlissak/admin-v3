@@ -32,7 +32,7 @@ Loader('product','name_fr')
     ->FormControl('rte','description_fr','Résumé',array('panel'=>'rte'))
     ->FormControl('rte','description_long','Description',array('panel'=>'rte'))
     ->FormControl('rte','features','Caracteristiques',array('panel'=>'rte'))
-    ->FormControl('text','url_alias','Url simplifier' ,array('panel'=>'meta','required'=>1))
+    ->FormControl('text','url_alias','Url simplifier' ,array('panel'=>'meta')) //,'required'=>1
     ->FormControl('textarea','keywords','Meta keywords',array('panel'=>'meta'))
     ->Attr('icon','fa fa-sitemap')
 

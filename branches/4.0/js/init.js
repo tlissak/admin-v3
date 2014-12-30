@@ -27,46 +27,62 @@ $(function () {
 //
 $(function(){
 $("textarea.rte").tinymce({
-    script_url: 'tinymce/tinymce.gzip.php',
-  //  selector: "textarea.rte",
-    menubar: false,
-    toolbar_items_size: 'small',
-    plugins: [
-        "advlist autolink link image lists charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking save table contextmenu directionality emoticons paste textcolor colorpicker"
-        //responsivefilemanager
+    script_url: 'tinymce/tinymce.gzip.php',  //  selector: "textarea.rte",
+    menubar: false,    toolbar_items_size: 'small',
+    plugins: [  "advlist autolink link image lists charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking save table contextmenu directionality emoticons paste textcolor colorpicker"    //responsivefilemanager
     ],
     relative_urls: false,                //browser_spellcheck : true ,
-    filemanager_title:"Responsive Filemanager",
-    external_filemanager_path:"filemanager/",
-    external_plugins: { "filemanager" : "../filemanager/plugin.min.js"},
-    image_advtab: true,
-
-    toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | cut copy paste removeformat searchreplace | bullist numlist outdent indent | styleselect fontsizeselect  | image media link unlink anchor | fullscreen preview code charmap visualchars visualblocks | forecolor backcolor | table | hr ltr rtl"
-    //responsivefilemanager
+    filemanager_title:"Responsive Filemanager",  external_filemanager_path:"filemanager/",
+    external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}, image_advtab: true,
+    toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | cut copy paste removeformat searchreplace | bullist numlist outdent indent | styleselect fontsizeselect  | image media link unlink anchor | fullscreen preview code charmap visualchars visualblocks | forecolor backcolor | table | hr ltr rtl"   //responsivefilemanager
 });
 })
+
+$(window).on("beforeunload",function(){
+    if (window.changed){
+        return "Document not save ! are you sure ? ";
+    }
+})
+
 $(document).ready(function(){
+
+
+    //TODO on relation list load set selected from STATE
 
     $('form.main-form').on("submit",function() {
         $.ajax($(this).attr('action') ,{type:'POST'
-            ,data:$(this).serialize(),success:function(a){
-                $("#alert").modal('show').find(".modal-body").html(a)
+            ,data:$(this).serialize(),success:function(s){
+                window.changed = false ;
+                json_data = $.parseJSON(s) ;
+                $('#message').show().find(".alert-block").html(json_data.message)
             } }) ;
         return false;
     })
 
     $('#modal form').on("submit",function() {
+
+        var context = $(this).data('context') ;
+
         $.ajax($(this).attr('action') ,{type:'POST'
-            ,data:$(this).serialize(),success:function(a){
-                $("#alert").modal('show').find(".modal-body").html(a)
+            ,data:$(this).serialize(),success:function(s){
+                json_data = $.parseJSON(s) ;
+                $('#message').show().find(".alert-block").html(json_data.message)
+                //$("#alert").modal('show').find(".modal-body").html(json_data.message) ;
+                if (json_data.status < 400 ){
+                    window.changed = true ;
+                    State.Add(context,json_data.row);
+                    $("#modal").modal('hide') ;
+                    context.bootstrapTable("refresh")
+                }
             } }) ;
         return false;
     })
 
     $("#modal").on('show.bs.modal', function (e) {
-        //if (!data) return e.preventDefault() // stops modal from being shown
-       // console.log(data) ;
-        $("form",this).attr("action",$(e.relatedTarget).data('href') + "&action=add&set_form_ajax=1");
+        $("form",this)
+            .data('context',$(e.relatedTarget).parent().find('.panel-relationlist .table[data-left-key]') )
+            .attr("action",$(e.relatedTarget).data('href') + "&action=add&set_form_ajax=1");
+
         $.ajax($(e.relatedTarget).data('href'),{context:this,success:function(s){
             $(".modal-body",this).html(s);
             $('.table',this).bootstrapTable();
@@ -74,26 +90,45 @@ $(document).ready(function(){
 
     })
 
-    var tbl = $('.panel-mainlist .table')
-        .on('click-row.bs.table', function (e, row, $element) {
+    $('.panel-mainlist .table').on('click-row.bs.table', function (e, row, $element) {
             var _params = {
                 id : row.id,
                 tbl : (new RegExp('[\\?&]tbl=([^&#]*)').exec(window.location.search))[1]
             }
             window.location = '?' + ($.param(_params) ) ;
         })
-    var tbl = $('.panel-relationlist .table')
-        .on('click-row.bs.table', function (e, row, $element) {
 
-            var states = $(this).closest('.panel-relationlist').prev() ;
+    $('.panel-relationlist .table').on('check.bs.table',  function (e, row, $element) {
+        State.Add(this,row) ;
+    }).on('check.bs.table',  function (e, row, $element) {
+        State.Del(this, row);
+    })
+
+})
+
+var State ={
+    Del : function(el_list_relation,row){
+
+    }
+    ,Add : function(el_list_relation,row){
+
+            if (row.id === '' ){
+                console.log("Error : Lookup on Postback->Set() ; :  $out['row']['id'] = is not set ;");
+
+            }
+ //           console.log("adding item to state",el_list_relation,row) ;
+
+            var states = $(el_list_relation).closest('.tab-pane').find(".state-cont").parent() ;
             var states_cont = states.find('.state-cont') ;
             var state_value = states.find('input')
             var state_tpl = states.find('script[type="text/template"]').text();
 
-            var d = $(this).data();
+            var d = $(el_list_relation).data();
 
-            //console.log(state_tpl,state_value,states);
-            //console.log(d.selectionType,d.leftKey,d.titleField)
+
+
+//           console.log("elements of state ",state_tpl,state_value,states);
+//           console.log("elements data types",d.selectionType,d.leftKey,d.titleField)
 
 
 
@@ -104,18 +139,13 @@ $(document).ready(function(){
                 }
             }
 
-
             if (d.selectionType == 'RADIO' ) {
                 vars = {
                     value : row.id ,
                     title : row[d.titleField] ,
                     left_key : d.leftKey
                 }
-
-                console.log(state_tpl) ;
-                itm = Template(state_tpl,vars) ;
-                console.log(itm) ;
-
+                itm = State.Template(state_tpl,vars) ;
                 states_cont.html(itm) ;
             }
 
@@ -126,24 +156,19 @@ $(document).ready(function(){
                     left_key : d.leftKey +  '[]'
                     //right_key :
                 }
-
-                console.log(state_tpl) ;
-                itm = Template(state_tpl,vars) ;
-                console.log(itm) ;
-
+                itm = State.Template(state_tpl,vars) ;
                 states_cont.append(itm) ;
-             }
+            }
 
             return false ;
-        })
-
-})
-
-function Template(tpl,vars){
-    for(el in vars) {
-        regex = RegExp('\\{\\$'+el+'\\}',"g") ;
-        console.log(regex,vars[el]) ;
-        tpl = tpl.replace(regex,vars[el]) ;
     }
-    return tpl
+    ,Template : function (tpl,vars){
+        for(el in vars) {
+            regex = RegExp('\\{\\$'+el+'\\}',"g") ;// console.log(regex,vars[el]) ;
+            tpl = tpl.replace(regex,vars[el]) ;
+        }
+        return tpl
+    }
+
+
 }

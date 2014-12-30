@@ -25,22 +25,24 @@ include('Config.php');
 /*INIT*/
 Loader::Load() ;
 
-//TODO  add bans ips system
-//TODO token check
-/*
- *
- * TODO: Add bread crumbs / Add login
- * TODO save user state sorting / search for each table in cache
-*/
+// TODO add to state item remove button instead of uncheck
+// TODO add bans ips system
+// TODO token check
+// TODO image preview for List Mvc/ State Mvc
+// TODO Add bread crumbs
+// TODO Add login and auth system
+// TODO save in cache user state for each table sorting and view
+
 if (get('upload')){
-    new FileUpload(get('tbl').DS.get('fld').DS.get('id').DS);
+    header('Content-type: application/json');
+    echo ( new FileUpload(get('tbl').DS.get('fld').DS.get('id').DS) );
+    die ;
 }
 if(get('set_form_ajax') ) {
     echo Loader::Current()->Submit();
     die;
 }
 if (get('ajax') == 'form'){
-   // echo Loader::Current()->FormMvc->GetPanels();
 ?>
 <ul class="nav nav-tabs nav-justified" data-tabs="tabs">
             <li class="active"><a href="#tab-form-<?= Loader::Current()->name ?>-ajax" data-toggle="tab">Form</a></li>
@@ -51,7 +53,6 @@ if (get('ajax') == 'form'){
 
     <div class="tab-pane active" id="tab-form-<?= Loader::Current()->name ?>-ajax">
         <?= Loader::Current()->FormMvc->GetPanels(); ?>
-
     </div>
 
     <?= Loader::Current()->RelationMvc->GetTabsCont(); ?>
@@ -60,9 +61,11 @@ if (get('ajax') == 'form'){
 <?
     die;
 }
+
 if (get('ajax') == 'list') {
-    //sleep(1);
-    Loader::Current()->GetListing();
+    //header('Content-type: application/json');
+   echo Loader::Current()->GetListing();
+   die ;
 }
 
 
@@ -99,14 +102,15 @@ if (get('ajax') == 'list') {
         <link href="bs/bootstrap-wysihtml5.css" rel="stylesheet"/>
         <script src="bs/bootstrap-wysihtml5.js"></script>
 -->
-        <script src="js/jquery-deparam.js"></script>
+        <!--
+       <script src="js/jquery-deparam.js"></script>
+//TODO change bootstrap validator
+               <script src="bs/bootstrap-form-validator.min.js" ></script>
 
-        <script src="bs/bootstrap-form-validator.min.js" ></script>
-<!--
-        <link rel="stylesheet" type="text/css" href="bs/bootstrap3-wysihtml5.css" />
-        <script src="bs/wysihtml5x-toolbar.0.5.min.js"></script>
-        <script src="bs/bootstrap3-wysihtml5.js"></script>
--->
+               <link rel="stylesheet" type="text/css" href="bs/bootstrap3-wysihtml5.css" />
+               <script src="bs/wysihtml5x-toolbar.0.5.min.js"></script>
+               <script src="bs/bootstrap3-wysihtml5.js"></script>
+       -->
         <link href="bs/bootstrap-editable.css" rel="stylesheet"/>
         <script src="bs/bootstrap-editable.min.js"></script>
 
@@ -213,6 +217,7 @@ if (get('ajax') == 'list') {
 <div id="col-right">
     <div class="container-fluid primary-content">
 
+        <div id="message" class="alert alert-success" style="display: none;"><a href="#" class="close" onclick="$(this).parent().hide();">&times;</a><div class="alert-block"></div></div>
 <? if (Loader::Current()){ ?>
 
     <form class="main-form tabbable tabs" data-toggle="validator" method="post"

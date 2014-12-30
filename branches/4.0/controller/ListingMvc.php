@@ -24,9 +24,8 @@ class ListingMvc{
 
         $out = array('sql'=>$this->parent->Listing->sql_rows,'total'=> $this->parent->Listing->num_results,"status"=>200 ,'rows'=>$this->parent->Listing->_list);
 
-        //header('Content-type: application/json');
-        echo json_encode($out);
-        die ;
+        return json_encode($out);
+
     }
 
     public function GetPanel(){

@@ -181,12 +181,11 @@ class Loader{
     public $Postback ;
     public function Submit(){
         $this->Postback = new Postback($this);
-        $this->Postback->Set();
-        return $this->Postback->Message ;
+        return $this->Postback->Set();
     }
 
     public function GetListing(){
-        $this->ListingMvc->GetList();
+        return $this->ListingMvc->GetList();
     }
 
     /**

@@ -156,3 +156,6 @@ button.save{ background: none; height: 50px; border: none; padding: 15px; displa
 
 .debug-pre{margin-left: 230px; }
 .debug-pre:first-child{ margin-top: 54px; }
+
+
+#ModalFileManager{ z-index: 1050;}

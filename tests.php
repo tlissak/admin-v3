@@ -19,22 +19,33 @@
 
     <link href="css/admin.css" rel="stylesheet">
 
+    <script>
+        $(document).ready(function () {
+            $(document).on("click",'.input-group',function(){
+                console.log('group clicked') ;
+            })
+            $(document).on("click",'input', function () {
+                console.log('input clicked')
+            })
+        })
+    </script>
     </head>
 <body>
 
 <div class="col-xs-1">
     <div class="form-group">
-        <label>
+        <!--<label>-->
         <div class="input-group">
 
             <div class="input-group-addon"> <input type="checkbox" class="form-control" id="exampleInputAmount" placeholder="Amount"></div>
             <div class="input-group-addon input-group-addon-clean"> Ttitle</div>
 
         </div>
-        </label>
+       <!-- </label>-->
     </div>
 </div>
 </form>
+
 
 </body>
 

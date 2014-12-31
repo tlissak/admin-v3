@@ -3,7 +3,6 @@
  */
 
 
-//TODO make sure it will not be override when RTE is loaded and input Loaded
 function responsive_filemanager_callback(field_id){
     var f = $('#'+field_id);
     var url=f.val();
@@ -21,21 +20,17 @@ $(function () {
     })
 })
 
-
-
-//tinymce.init
-//
 $(function(){
-$("textarea.rte").tinymce({
-    script_url: 'tinymce/tinymce.gzip.php',  //  selector: "textarea.rte",
-    menubar: false,    toolbar_items_size: 'small',
-    plugins: [  "advlist autolink link image lists charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking save table contextmenu directionality emoticons paste textcolor colorpicker"    //responsivefilemanager
-    ],
-    relative_urls: false,                //browser_spellcheck : true ,
-    filemanager_title:"Responsive Filemanager",  external_filemanager_path:"filemanager/",
-    external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}, image_advtab: true,
-    toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | cut copy paste removeformat searchreplace | bullist numlist outdent indent | styleselect fontsizeselect  | image media link unlink anchor | fullscreen preview code charmap visualchars visualblocks | forecolor backcolor | table | hr ltr rtl"   //responsivefilemanager
-});
+    $("textarea.rte").tinymce({
+        script_url: 'tinymce/tinymce.gzip.php',  //  selector: "textarea.rte",
+        menubar: false,    toolbar_items_size: 'small',
+        plugins: [  "advlist autolink link image lists charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking save table contextmenu directionality emoticons paste textcolor colorpicker"    //responsivefilemanager
+        ],
+        relative_urls: false,                //browser_spellcheck : true ,
+        filemanager_title:"Responsive Filemanager",  external_filemanager_path:"filemanager/",
+        external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}, image_advtab: true,
+        toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | cut copy paste removeformat searchreplace | bullist numlist outdent indent | styleselect fontsizeselect  | image media link unlink anchor | fullscreen preview code charmap visualchars visualblocks | forecolor backcolor | table | hr ltr rtl"   //responsivefilemanager
+    });
 })
 
 $(window).on("beforeunload",function(){
@@ -46,8 +41,22 @@ $(window).on("beforeunload",function(){
 
 $(document).ready(function(){
 
+    $('.panel-relationlist .table').on('load-success.bs.table',function(e){
 
-    //TODO on relation list load set selected from STATE
+        //TODO !IMPORTANT on relation list load set selected from STATE
+        console.log(e,this);
+    })
+
+
+    $('.panel-mainlist .table').on('click-row.bs.table', function (e, row, $element) {
+        var _params = {
+            id : row.id,
+            tbl : (new RegExp('[\\?&]tbl=([^&#]*)').exec(window.location.search))[1]
+        }
+        window.location = '?' + ($.param(_params) ) ;
+    })
+
+
 
     $('form.main-form').on("submit",function() {
         $.ajax($(this).attr('action') ,{type:'POST'
@@ -90,13 +99,7 @@ $(document).ready(function(){
 
     })
 
-    $('.panel-mainlist .table').on('click-row.bs.table', function (e, row, $element) {
-            var _params = {
-                id : row.id,
-                tbl : (new RegExp('[\\?&]tbl=([^&#]*)').exec(window.location.search))[1]
-            }
-            window.location = '?' + ($.param(_params) ) ;
-        })
+
 
     $('.panel-relationlist .table').on('check.bs.table',  function (e, row, $element) {
         State.Add(this,row) ;

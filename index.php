@@ -25,7 +25,6 @@ include('Config.php');
 /*INIT*/
 Loader::Load() ;
 
-// TODO add to state item remove button instead of uncheck
 // TODO add bans ips system
 // TODO token check
 // TODO image preview for List Mvc/ State Mvc
@@ -80,10 +79,8 @@ if (get('ajax') == 'list') {
 
         <script src="js/jquery-2.1.1.min.js"></script>
 
-        <link href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" data-type="1.5.2">
-
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
+        <link href="css/ionicons.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
 
         <script src="bs/bootstrap.min.js"></script>
         <link href="bs/bootstrap.min.css" rel="stylesheet">
@@ -155,31 +152,12 @@ if (get('ajax') == 'list') {
 
 <body>
 
-
-
-<div class="modal fade " id="ModalFileManager" tabindex="-1" role="dialog" aria-labelledby="ModalFileManagerLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="ModalFileManagerLabel">File Manager</h4>
-            </div>
-            <div class="modal-body">
-                <iframe src="" style="zoom:0.40" frameborder="0" height="550" width="99.6%"></iframe>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="wrapper">
     <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
         <div class="logo-area">
             <a class="btn btn-link btn-nav-sidebar-minified pull-left"  onclick="$('.wrapper').toggleClass('main-nav-minified')"><i class="icon ion-arrow-swap"></i></a>
             <a class="btn btn-link btn-off-canvas pull-left" onclick="$('.wrapper').removeClass('main-nav-minified').toggleClass('off-canvas-active')"><i class="icon ion-navicon"></i></a>
-            <a class="navbar-brand" href="#" onclick="$('#admin-css').attr('href','css/clean.css');">ADMINPANEL</a>
+            <a class="navbar-brand" href="#" >ADMINPANEL</a>
 
         </div>
     </nav>
@@ -214,11 +192,17 @@ if (get('ajax') == 'list') {
     </div>
 
 
-<div id="col-right">
-    <div class="container-fluid primary-content">
 
-        <div id="message" class="alert alert-success" style="display: none;"><a href="#" class="close" onclick="$(this).parent().hide();">&times;</a><div class="alert-block"></div></div>
-<? if (Loader::Current()){ ?>
+<div id="col-right">
+
+
+    <? if (Loader::Current()){ ?>
+        <div class="container-fluid primary-content">
+            <div id="message" class="alert alert-success" style="display: none;"><a href="#" class="close" onclick="$(this).parent().hide();">&times;</a><div class="alert-block"></div></div>
+    <div id="listing">
+         <?= Loader::Current()->ListingMvc->GetPanel(); ?>
+    </div>
+
 
     <form class="main-form tabbable tabs" data-toggle="validator" method="post"
           action="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=<?= Loader::Current()->id ? 'mod' : 'add' ; ?>" >
@@ -226,51 +210,66 @@ if (get('ajax') == 'list') {
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-controls-navbar-collapse">
                         <i class="fa fa-pencil-square-o"></i>
                     </button>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-tabs-navbar-collapse">
+                        <i class="icon ion-navicon"></i> Panels
+                    </button>
+
+
                 </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                <div class="navbar-collapse collapse" id="bs-tabs-navbar-collapse">
+                    <ul  class="nav navbar-nav" data-tabs="tabs">
+                        <li>
+                            <label> <a data-toggle="collapse" data-target="#form-panel-listing-<?= Loader::Current()->name ?>">  <input type="checkbox">  Listing</a></label>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <li><a href="#tab-form-<?= Loader::Current()->name ?>" data-toggle="tab">Form</a></li>
+                        <?= Loader::Current()->RelationMvc->GetTabs(); ?>
+                    </ul>
+                </div>
+
+                <!-- Controls -->
+                <div class="collapse navbar-collapse" id="bs-controls-navbar-collapse">
                     <ul class="nav navbar-nav">
                         <li><button type="submit" class="save"><i class="glyphicon glyphicon-save"></i> Save</a></button></li>
 
-                        <? if (Loader::Current()->id){ ?>
+                <!-- TODO When ajax add ok show controls -->
 
                         <li class="nav-divider"></li>
                         <li><a href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=del"> <i class="glyphicon glyphicon-trash"></i> Delete</a></li>
                         <li class="nav-divider"></li>
                         <li><a href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=dup"> <i class="glyphicon glyphicon-plus"></i> Dupplicate</a></li>
 
-                        <? } ?>
+
                     </ul>
                 </div>
+                <!-- / Controls -->
             </div>
         </nav>
 
-        <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
 
-            <li class="active"><a href="#tab-list-<?= Loader::Current()->name ?>" data-toggle="tab">List</a></li>
-            <li><a href="#tab-form-<?= Loader::Current()->name ?>" data-toggle="tab">Form</a></li>
+
+        <ul id="tabs" class="nav nav-tabs nav-justified collapse in" data-tabs="tabs">
+            <li class="active"><a href="#tab-form-<?= Loader::Current()->name ?>" data-toggle="tab">Form</a></li>
             <?= Loader::Current()->RelationMvc->GetTabs(); ?>
         </ul>
 
         <div id="my-tab-content" class="tab-content">
 
-            <div class="tab-pane" id="tab-list-<?= Loader::Current()->name ?>">
-               <?= Loader::Current()->ListingMvc->GetPanel(); ?>
-            </div>
-            <div class="tab-pane" id="tab-form-<?= Loader::Current()->name ?>">
+            <div class="tab-pane active" id="tab-form-<?= Loader::Current()->name ?>">
                 <?= Loader::Current()->FormMvc->GetPanels(); ?>
-
             </div>
 
             <?= Loader::Current()->RelationMvc->GetTabsCont(); ?>
 
         </div>
     </form>
-<? } ?>
-
     </div>
+
+    <? } ?>
 </div>
 </div><!-- wrapper -->
 
@@ -297,6 +296,23 @@ if (get('ajax') == 'list') {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="ModalFileManager" tabindex="-1" role="dialog" aria-labelledby="ModalFileManagerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ModalFileManagerLabel">File Manager</h4>
+            </div>
+            <div class="modal-body">
+                <iframe src="" style="zoom:0.40" frameborder="0" height="550" width="99.6%"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -29,24 +29,17 @@ class RelationMvc{
         $out .= '<div class="state-cont">' ;
 
         if ( $this->parent->id) {
-
             if ($r->type == 'Simple' || $r->type == 'InnerSimple') {
-
-                $current_value = $r->parent->Form->data[$r->left_key] ? $r->parent->Form->data[$r->left_key] : 0 ;
+                $current_value = isset($r->parent->Form->data[$r->left_key]) ? $r->parent->Form->data[$r->left_key] : 0 ;
 
                 $sql = 'SELECT tbl.`'.$titleField.'` AS title_field FROM  `' . $r->name . '` AS tbl WHERE tbl.id = ' . $current_value;
-
                 //$out .= $this->wrap_input("sql",$sql) ;
-
                 $row = $db->fetchRow($sql);
-
                 if (count($row)) {
                     $out .= $this->wrap_input('<input type="radio" name="' . $r->left_key . '" value="' . $current_value . '" checked > ', $row['title_field']);
                 }
             }
-
             if ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect') {
-
                 $sql = 'SELECT tbl.`'.$titleField.'` AS title_field ,by_tbl.`' . $r->right_key . '` AS right_key ';
                 $sql .= ',by_tbl.`' . $r->left_key . '` AS left_key ' ;
                 $sql .= ' FROM  `' . $r->name . '` AS tbl,' . $r->by_tbl . ' AS by_tbl ';
@@ -57,20 +50,39 @@ class RelationMvc{
 
                 $results = $db->fetch($sql);
                 foreach ($results as $row) {
-                    $out .= $this->wrap_input('<input type="checkbox" name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'] );
+                    $out .= $this->wrap_input('<input type="checkbox" disabled name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'] );
+                }
+            }
+
+            //TODO important add $r->type == 'ManyToOneByKey'
+
+            if ($r->type == 'ManyToOne'){
+                //$sql = 'SELECT tbl.`'.$titleField.'` AS title_field FROM  `' . $r->name . '` AS tbl WHERE tbl.id = ' . $current_value;
+
+                //' WHERE `'. $obj->keys['left_key'] .'` =  ' . $this->id ;
+            }
+            if ($r->type == 'ManyToOneByKey') {
+
+                $current_value = isset($r->parent->Form->data[$r->right_key]) ? $r->parent->Form->data[$r->right_key] : 0;
+                $FLD = strpos($titleField , 'concat_ws') !== false ? $titleField : 'tbl.`' . $titleField . '`';
+                $sql = 'SELECT '.$FLD.' AS title_field,id AS left_key FROM `' . $r->by_tbl . '` AS tbl WHERE tbl.`' . $r->left_key . '` = ' . $current_value;
+
+                $results = $db->fetch($sql);
+                foreach ($results as $row) {
+                    $out .= $this->wrap_input('<input type="checkbox" disabled name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'],$r->RelatedTable->readonly);
                 }
             }
         }
 
-        //TODO : add $r->type == 'ManyToManySelect'
-        //TODO : add $r->type == 'ManyToOneByKey'
+
+
         $out .= '</div>' ;
 
         $out .= '<script type="text/template">' ;
         if ($r->type == 'Simple' || $r->type == 'InnerSimple') {
             $out .= $this->wrap_input('<input type="radio" name="{$left_key}" value="{$value}" checked >', '{$title}');
         }elseif ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect') {
-            $out .= $this->wrap_input('<input type="checkbox" name="{$left_key}" value="{$value}" checked >', '{$title}');
+            $out .= $this->wrap_input('<input type="checkbox" disabled name="{$left_key}" value="{$value}" checked >', '{$title}');
         }
         $out .= '</script>' ;
 
@@ -82,9 +94,12 @@ class RelationMvc{
     public function wrap_input($input,$title){
         return '
         <label>
-        <div class="input-group">
+        <div class="input-group test alert">
             <div class="input-group-addon"><span class="cbr"> '.$input.'<i class="fa fa-check"></i></span></div>
             <div class="input-group-addon input-group-addon-clean"> '.$title.'</div>
+            <div class="input-group-addon input-group-addon-clean" >
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" aria-hidden="true">&times;</button>
+            </div>
         </div>
         </label>' ;
     }
@@ -96,45 +111,30 @@ class RelationMvc{
         foreach($this->parent->relations_instances as $r){
 
 
+            $cont = $this->GetState($r, $this->parent->Form->data, $r->RelatedTable->titleField);
 
-            $r->RelatedTable->tmpRelation = $r ;
-
-            $tabs_cont[] = '<div class="tab-pane active" id="tab-relation-'.$r->name.(get("ajax") == 'form' ? '-ajax' : '').'">' ;
-
-
-            $tabs_cont[] = $this->GetState($r, $this->parent->Form->data, $r->RelatedTable->titleField);
-            //p($related_table->name  . '.' . $related_table->titleField );
-
-
-            $tabs_cont[] = '<a data-href="?tbl='.$r->name.'&ajax=form" data-action="add" class="btn btn-danger" data-toggle="modal" data-target="#modal">ADD RELATION</a>' ;
-
-
-            //set filter if relation is many to many ?
             if ($r->type == 'ManyToMany' || $r->type == 'ManyToOneByKey' ) {
 
-                $tabs_cont[] = '<div class="panel-relationlist"><div class="table"
- data-title-field="'.$r->RelatedTable->titleField.'"
-data-left-key="'.$r->left_key.'"
-data-selection-type="CHECKBOX">'. $r->RelatedTable->titleField . ' ' .$r->left_key . '  CHECKBOX ' .
-'</div></div>' ;
+                $cont .=  '<div class="panel-relationlist">
+                                <div class="table"  data-title-field="'.$r->RelatedTable->titleField.'"
+                                data-left-key="'.$r->left_key.'" data-selection-type="CHECKBOX"></div></div>' ;
+
             }else{
-                $tabs_cont[] = $this->GetListPanel($r->RelatedTable) ;
+                $r->RelatedTable->tmpRelation = $r ;
+                $cont .= $r->RelatedTable->ListingMvc->GetHeader() ;
+                $r->RelatedTable->tmpRelation = '' ;
             }
 
-
+            $tabs_cont[] = '<div class="tab-pane" id="tab-relation-'.$r->name.(get("ajax") == 'form' ? '-ajax' : '').'">' ;
+            $tabs_cont[] =  $this->parent->PanelMvc->RenderPanel('listing-'.$r->RelatedTable->name, $cont  ,'relationlist'
+                ,$r->RelatedTable->title.' R list ','glyphicon glyphicon-list' ,'<a data-toggle="modal" data-target="#modal" class="pull-right btn" data-href="?tbl='.$r->name.'&ajax=form" data-action="add"><i class="icon ion-plus"></i></a>') ;
             $tabs_cont[] = '</div>';
-
-            $r->RelatedTable->tmpRelation = '' ;
 
         }
         return implode(NL,$tabs_cont) ;
     }
 
-    public function GetListPanel(Loader &$r){
 
-        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$r->ListingMvc->GetHeader()
-            ,'relationlist',$this->parent->title.' R list','glyphicon glyphicon-list') ;
-    }
 
 }
 

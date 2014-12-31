@@ -37,7 +37,19 @@
         <!--<label>-->
         <div class="input-group">
 
-            <div class="input-group-addon"> <input type="checkbox" class="form-control" id="exampleInputAmount" placeholder="Amount"></div>
+            <div class="input-group-addon"> <input type="checkbox" value="1" class="form-control" id="exampleInputAmount" placeholder="Amount"></div>
+            <div class="input-group-addon input-group-addon-clean"> Ttitle</div>
+
+        </div>
+        <div class="input-group">
+
+            <div class="input-group-addon"> <input type="checkbox" value="2" class="form-control" id="exampleInputAmount" placeholder="Amount"></div>
+            <div class="input-group-addon input-group-addon-clean"> Ttitle</div>
+
+        </div>
+        <div class="input-group">
+
+            <div class="input-group-addon"> <input type="checkbox" value="3" class="form-control" id="exampleInputAmount" placeholder="Amount"></div>
             <div class="input-group-addon input-group-addon-clean"> Ttitle</div>
 
         </div>

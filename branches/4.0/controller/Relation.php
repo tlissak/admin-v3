@@ -62,7 +62,11 @@ class Relation {
             $this->right_key    = isset($data['right_key']) ? $data['right_key'] : null ;
             $this->by_tbl       = isset($data['by_tbl']) ? $data['by_tbl'] : null ;
         }
-
+        if ($this->type == 'ManyToOne') {
+            p('ManyToOne type not implemented yet');
+            p('See RelationMvc GetState and GetTabsCont if need listing ');
+            die ;
+        }
 
     }
 

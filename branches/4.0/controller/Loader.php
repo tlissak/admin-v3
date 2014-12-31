@@ -181,7 +181,12 @@ class Loader{
     public $Postback ;
     public function Submit(){
         $this->Postback = new Postback($this);
+        $this->Postback->VIRTUAL_MODE = true ;
         return $this->Postback->Set();
+    }
+
+    public function GetBreadcrumb(){
+        return '<li><a href="?">Admin</a></li> <li><a href="?tbl='.$this->name.'">' . $this->title . '</a></li> <li>'.( $this->id ? 'Edit #'.$this->id : 'Add') . '</li>' ;
     }
 
     public function GetListing(){

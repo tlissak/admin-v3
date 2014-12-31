@@ -25,11 +25,10 @@ include('Config.php');
 /*INIT*/
 Loader::Load() ;
 
-// TODO add bans ips system
-// TODO token check
+// TODO test Postback action add / mod / del / dup / relation / and there callbacks
 // TODO image preview for List Mvc/ State Mvc
-// TODO Add bread crumbs
-// TODO Add login and auth system
+// TODO State on click should open modal for editing
+// TODO login and auth system with tokens and bans ips
 // TODO save in cache user state for each table sorting and view
 
 if (get('upload')){
@@ -198,7 +197,14 @@ if (get('ajax') == 'list') {
 
     <? if (Loader::Current()){ ?>
         <div class="container-fluid primary-content">
+
+
+            <ol id="breadcrumb" class="breadcrumb">
+            <?= Loader::Current()->GetBreadcrumb(); ?>
+            </ol>
+
             <div id="message" class="alert alert-success" style="display: none;"><a href="#" class="close" onclick="$(this).parent().hide();">&times;</a><div class="alert-block"></div></div>
+
     <div id="listing">
          <?= Loader::Current()->ListingMvc->GetPanel(); ?>
     </div>

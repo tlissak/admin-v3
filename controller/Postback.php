@@ -13,8 +13,8 @@ class Postback{
     private $action ;
     private $_id ;
 
-    //TODO test relation add / mod / del / dup without virtual
-    private $VIRTUAL = true ;
+
+    public $VIRTUAL_MODE = true ;
 
     public function __construct(Loader &$p){
         $this->parent   = &$p ;
@@ -27,18 +27,19 @@ class Postback{
 
 
     public function deleteRelations() {
+        if ($this->VIRTUAL_MODE) return true;
         global $db ;
         foreach ($this->parent->relations_instances as $r){
             if ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect'){
 
                 $sql = 'DELETE  FROM `'. $r->by_tbl . '` WHERE `' .$r->right_key . '` = ' . $this->_id  ;
                 p($sql);
-                //$db->query($sql);
+                $db->query($sql);
             }
             if ($r->type == 'ManyToOne' ) {
               $sql =  'UPDATE `'. $r->name . '` SET `' .$r->left_key  . '` = 0 WHERE `' . $r->left_key . '` = ' . $this->_id ;
                 p($sql);
-                //$db->query( $sql);
+                $db->query( $sql);
             }
 
 
@@ -46,7 +47,7 @@ class Postback{
 				$sql =  'UPDATE `'. $r->name . '` SET `'.$r->left_key  . '` = 0
 					WHERE  `'. $r->name .'`.`'.$r->left_key .'` =  ' . ($this->form->data_posted[ $r->right_key ] ?  $this->form->data_posted[ $r->right_key ] : '0' ) ;
                 p($sql);
-                //$db->query($sql ) ;
+                $db->query($sql ) ;
 			}
 
         }
@@ -54,7 +55,7 @@ class Postback{
 
     }
     public function addRelations($duplicate = false) {
-
+        if ($this->VIRTUAL_MODE) return true;
         global $db;
         foreach ($this->parent->relations_instances as $r){
 
@@ -85,12 +86,12 @@ class Postback{
                         ($this->form->data_posted[ $r->right_key ] ?  $this->form->data_posted[ $r->right_key ] : '0' )
                         . ' WHERE id IN(' . implode(",",$ids_left_key) . ') ' ;
                     p($sql);
-                    //$db->query($sql);
+                    $db->query($sql);
                 }
                 $sql2 = 'DELETE  FROM `'. $r->name. '` WHERE `' . $r->left_key. '` =  0 '  ;
 
                 p($sql2);
-                //$db->query(  $sql2);
+                $db->query(  $sql2);
             }
 
             if ($r->type ==  'ManyToMany' || $r->type == 'ManyToManySelect'){
@@ -104,7 +105,7 @@ class Postback{
                             : ' UNION SELECT '.$id .','. $this->_id  ;
                     }
                     p($sql2);
-                   // $db->query($sql2 );
+                    $db->query($sql2 );
                 }
             }
 
@@ -112,11 +113,11 @@ class Postback{
                 if (count($ids_left_key)>0) {
                     $sql = 'UPDATE `'. $r->name. '` SET `' . $r->left_key . '` = ' . $this->_id . ' WHERE id IN(' . implode(",",$ids_left_key) . ') '  ;
                     p($sql);
-                    //$db->query($sql);
+                    $db->query($sql);
                 }
                 $sql2 = 'DELETE  FROM `'. $r->name. '` WHERE `' . $r->left_key. '` =  0 '  ;
                 p($sql2);
-                //$db->query( $sql2);
+                $db->query( $sql2);
             }
         }
 
@@ -147,7 +148,7 @@ class Postback{
         }
 
         if ($this->action == "add" || $this->action == 'mod' || $this->action == 'dup' ){
-            if ($this->VIRTUAL) {
+            if ($this->VIRTUAL_MODE) {
                 $out['row'] = $this->form->data_posted ;
                 $out['row']['id'] = 0 ;
             }else {
@@ -167,7 +168,7 @@ class Postback{
         global $db;
         $this->form->initPostData() ;
 
-        if ($this->VIRTUAL) return true;
+        if ($this->VIRTUAL_MODE) return true;
 
         $sql = SQL::build('INSERT',$this->name,$this->form->data_posted) ;
         if ($this->_id = $db->query($sql ) ){
@@ -184,7 +185,7 @@ class Postback{
         global $db;
         $this->form->initData();
 
-        if ($this->VIRTUAL) return true;
+        if ($this->VIRTUAL_MODE) return true;
 
         $data = array_filter( $this->form->data , function($kyes){ return $kyes !="id" ;},ARRAY_FILTER_USE_KEY ) ;
 
@@ -202,7 +203,7 @@ class Postback{
         global $db;
         $this->form->initPostData() ;
 
-        if ($this->VIRTUAL) return true;
+        if ($this->VIRTUAL_MODE) return true;
 
         $sql = SQL::build('UPDATE',$this->name,$this->form->data_posted,$this->_id );
 
@@ -219,7 +220,7 @@ class Postback{
     public function Delete(){
         global $db;
 
-        if ($this->VIRTUAL) return true;
+        if ($this->VIRTUAL_MODE) return true;
 
         $sql = 'DELETE  FROM `'.$this->name.'` WHERE id = '. $this->_id ;
         if ($db->query($sql) ){

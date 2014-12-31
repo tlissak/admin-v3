@@ -41,12 +41,6 @@ $(window).on("beforeunload",function(){
 
 $(document).ready(function(){
 
-    $('.panel-relationlist .table').on('load-success.bs.table',function(e){
-
-        //TODO !IMPORTANT on relation list load set selected from STATE
-        console.log(e,this);
-    })
-
 
     $('.panel-mainlist .table').on('click-row.bs.table', function (e, row, $element) {
         var _params = {
@@ -100,18 +94,43 @@ $(document).ready(function(){
     })
 
 
-
-    $('.panel-relationlist .table').on('check.bs.table',  function (e, row, $element) {
-        State.Add(this,row) ;
+    $('.panel-relationlist .table')
+    .on('load-success.bs.table',function(e){
+        State.Select(this) ;
     }).on('check.bs.table',  function (e, row, $element) {
+        State.Add(this,row) ;
+    }).on('uncheck.bs.table',  function (e, row, $element) {
         State.Del(this, row);
     })
 
 })
 
 var State ={
-    Del : function(el_list_relation,row){
-
+    Select:function(el_list_relation)  {
+        var states = $(el_list_relation).closest('.tab-pane').find(".state-cont").parent() ;
+        var state_value = states.find('input');
+        var rows_input = $(el_list_relation).find("input[name='_id']") ;
+        var selected = [];
+        rows_input.each(function(){
+            var that = $(this) ;
+            var found = 0 ;
+            for(var i=0;i<state_value.size();i++){
+                if (state_value.eq(i).val() == that.val()){
+                    found = 1 ;
+                }
+            }
+            if (found)
+                that.prop('checked',true) ;
+        })
+    }
+    ,Del : function(el_list_relation,row){
+        var states = $(el_list_relation).closest('.tab-pane').find(".state-cont").parent() ;
+        var state_value = states.find('input')
+        for (var i = 0; i< state_value.size() ; i++ ){
+            if (state_value.eq(i).val() == row.id){
+                state_value.eq(i).closest('.input-group').find('.close').trigger('click');
+            }
+        }
     }
     ,Add : function(el_list_relation,row){
 

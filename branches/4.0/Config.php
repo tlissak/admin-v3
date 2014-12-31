@@ -10,8 +10,8 @@ Loader('page','title_fr')
     ->FormControl('textarea','meta_desc','Meta desc',array('panel'=>'meta','required'=>1))
     ->FormControl('text','title_fr','Nom FR',array('required'=>1))
     ->FormControl('text','title_en','Nom EN',array('panel'=>'english'))
-    ->FormControl('rte','content_fr','Contenu FR')
-    ->FormControl('rte','content_en','Contenu EN',array('panel'=>'english','extends'=>' style="height:800px" '))
+    ->FormControl('rte','content_fr','Contenu FR',array('extends'=>' style="height:800px" '))
+    ->FormControl('rte','content_en','Contenu EN',array('panel'=>'english'))
     ->Attr("title",'CMS')
     ->Panel('meta','Meta','icon ion-compose')
     ->Panel('english','Contenu anglais','icon ion-compose')
@@ -19,7 +19,7 @@ Loader('page','title_fr')
 ;
 
 Loader('product','name_fr')
-    ->View(array('name_fr'=>"nom",'model'=>'Model','category_id_inner'=>'categorie','image'=>'Couver.','sort'=>'Ordre') )
+    ->View(array('name_fr'=>"nom",'model'=>'Model','category_id_inner'=>'categorie') ) /*,'image'=>'Couver.','sort'=>'Ordre'*/
     ->Relation( 'marque' , array( 'type'=>'InnerSimple','left_key'=>'marque_id') )
     ->Relation( 'category',	array( 'type'=>'InnerSimple','left_key'=>'category_id'))
 
@@ -39,6 +39,10 @@ Loader('product','name_fr')
 
     ->Panel('meta','Meta','icon ion-compose')
     ->Panel('rte','Content','icon ion-compose')
+
+    ->Attr('table_height',1350)
+    ->Attr('table_count',28)
+
     ;
 
 
@@ -65,8 +69,8 @@ Loader('marque','title')
 Loader('order','order_date')    //
     ->View(array('order_date'=>'Date','total'=>"Total",'client_id_inner'=>"Client",'status_inner'=>'Status') )
     ->Relation('country',array('type'=>'InnerSimple','left_key'=>'country_id'))
-    //->Relation( 'cart'		,array('type'=>'ManyToOneByKey','by_tbl'=>'order_cart','left_key'=>'id_guest',"right_key"=>'id_guest','readonly'=>1))
-    //->Relation( 'transaction'		,array('type'=>'ManyToOneByKey','left_key'=>'order_id',"right_key"=>'id','readonly'=>1))
+    ->Relation( 'cart'		,array('type'=>'ManyToOneByKey','by_tbl'=>'cart','left_key'=>'id_guest',"right_key"=>'id_guest','readonly'=>1))
+    ->Relation( 'transaction'		,array('type'=>'ManyToOneByKey','by_tbl'=>"transaction",'left_key'=>'order_id',"right_key"=>'id','readonly'=>1))
     ->Relation( 'client'		,array('type'=>'InnerSimple','left_key'=>'client_id'))
     ->Relation( 'order_status'		,array('type'=>'InnerSimple','left_key'=>'status'))
     ->FormControl('text' ,'order_date','Date de commande',array("readonly"=>1))
@@ -80,7 +84,7 @@ Loader('order','order_date')    //
 
 Loader('product_type','type')   ->View(array('type'=>"Type") )    ->Attr('Hide',1);
 
-Loader('images','path')->View(array('id'=>"id",'path'=>"Image") )    ->FormControl('file','path','Image')->Attr('Hide',0);
+Loader('images','path')->View(array('id'=>"id",'path'=>"Image") )  ->FormControl('file','path','Image')->Attr('Hide',0);
 Loader('file','path')->View(array('id'=>"id",'path'=>"Fichier") )->FormControl('file','path','Fichier')->FormControl('text','title','Titre')->Attr('Hide',0);
 Loader('video','path')->View(array('id'=>"id",'path'=>"Url Video") )->FormControl('text','path','Url Video')->Attr('Hide',0);
 
@@ -124,14 +128,14 @@ Loader('country','name_fr')
     ->FormControl('text','sort','Ordre')  ;
 
 
-Loader('cart','date_time')
+Loader('cart','concat_ws(\' \',\'product\',id_product,\'x\',quantity)')
     ->Relation('product', 	array( 'type'=>'InnerSimple','left_key'=>'id_product'))
     ->View(array('id'=>"id",'id_product'=>"ID Produit",'id_product_inner'=>"Produit",'quantity'=>'Quantité','date_time'=>'Date') )
     ->Attr("Hide",1)
     ;
 
 
-Loader('transaction','autorisation_id')
+Loader('transaction','concat_ws(\' \',response_code,capture_mode)')
     ->View(array('id'=>"id",'response_code'=>'response_code','transaction_id'=>"transaction n",'amount'=>'amount') )
     ->FormControl('text','datetime','datetime',array("readonly"=>1))
     ->FormControl('text','order_id','order_id',array("readonly"=>1))
@@ -166,11 +170,12 @@ Loader('transaction','autorisation_id')
     ->FormControl('text','capture_mode','capture_mode',array("readonly"=>1))
     ->FormControl('textarea','last_line','last_line',array("readonly"=>1))
     ->FormControl('textarea','data','data',array("readonly"=>1))
-    ->Attr('Hide',1);
+    ->Attr('Hide',0);
 
 
-Loader('order_status','title')->View(array('id'=>"id",'title'=>"Status"))
+Loader('order_status','title')
+    ->View(array('id'=>"id",'title'=>"Status"))
     ->FormControl('text','title','Status')
-->Attr('title','Status');
+    ->Attr('title','Status');
 
 ?>

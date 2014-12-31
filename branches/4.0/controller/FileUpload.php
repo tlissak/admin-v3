@@ -11,7 +11,6 @@ class FileUpload{
 
     public function create_dir($p_surfix){
         $psd = explode(DS,$p_surfix);
-        //TODO add some protection
         $root =P_PHOTO ;
         foreach($psd as $dir){
             $root .= $dir .DS ;

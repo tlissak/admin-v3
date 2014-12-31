@@ -70,7 +70,7 @@ $(document).ready(function(){
             ,data:$(this).serialize(),success:function(s){
                 json_data = $.parseJSON(s) ;
                 $('#message').show().find(".alert-block").html(json_data.message)
-                //$("#alert").modal('show').find(".modal-body").html(json_data.message) ;
+
                 if (json_data.status < 400 ){
                     window.changed = true ;
                     State.Add(context,json_data.row);
@@ -83,7 +83,7 @@ $(document).ready(function(){
 
     $("#modal").on('show.bs.modal', function (e) {
         $("form",this)
-            .data('context',$(e.relatedTarget).parent().find('.panel-relationlist .table[data-left-key]') )
+            .data('context',$(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]') )
             .attr("action",$(e.relatedTarget).data('href') + "&action=add&set_form_ajax=1");
 
         $.ajax($(e.relatedTarget).data('href'),{context:this,success:function(s){

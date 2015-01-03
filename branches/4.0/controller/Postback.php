@@ -62,6 +62,7 @@ class Postback{
             if (!$duplicate) {
                 $ids_left_key = post($r->left_key) ? post($r->left_key) : array() ;
             }else{
+                //duplicate relation value if item duplicate
                 $ids_left_key = array() ;
                 if ($r->type ==  'ManyToMany' ||  $r->type ==  'ManyToManySelect'){
                     $sql = 'SELECT `'.$r->left_key .'` AS k_id FROM `'. $r->name . '` WHERE `'.$r->right_key.'` = ' . $this->_id  ;
@@ -80,7 +81,7 @@ class Postback{
                 }
             }
 
-            if ($r->type ==  'ManyToOneByKey' ){
+            if ($r->type ==  'ManyToOneByKey' && !$duplicate ){
                 if (count($ids_left_key)>0) {
                     $sql = 'UPDATE `'. $r->name. '` SET `' . $r->left_key . '` = ' .
                         ($this->form->data_posted[ $r->right_key ] ?  $this->form->data_posted[ $r->right_key ] : '0' )
@@ -109,7 +110,7 @@ class Postback{
                 }
             }
 
-            if ($r->type ==  'ManyToOne'){
+            if ($r->type ==  'ManyToOne' && !$duplicate){
                 if (count($ids_left_key)>0) {
                     $sql = 'UPDATE `'. $r->name. '` SET `' . $r->left_key . '` = ' . $this->_id . ' WHERE id IN(' . implode(",",$ids_left_key) . ') '  ;
                     p($sql);

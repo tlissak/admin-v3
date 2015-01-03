@@ -63,7 +63,8 @@ Loader('marque','title')
     ->FormControl('text','title','Nom')
     ->FormControl('file','image','Image')
     ->FormControl('check','valid','Valide')
-    ->FormControl("rte",'content','Contenu') ;
+    ->FormControl("rte",'content','Contenu')
+    ->Attr('icon','fa fa-book');
 
 
 Loader('order','order_date')    //
@@ -79,14 +80,15 @@ Loader('order','order_date')    //
    // ->_Html('<p><label></label><a href="'. U_BASE .'_vieworder.php" target="_blank" class="btn-red btn-large fac-gen"><i class="icon-invoice"></i> Voir la facture</a></p>')
     ->Attr('sort_name','id')
     ->Attr('sort_order','DESC')
+    ->Attr('icon','fa fa-flag-checkered')
  ;
 
 
 Loader('product_type','type')   ->View(array('type'=>"Type") )    ->Attr('Hide',1);
 
-Loader('images','path')->View(array('id'=>"id",'path'=>"Image") )  ->FormControl('file','path','Image')->Attr('Hide',0);
-Loader('file','path')->View(array('id'=>"id",'path'=>"Fichier") )->FormControl('file','path','Fichier')->FormControl('text','title','Titre')->Attr('Hide',0);
-Loader('video','path')->View(array('id'=>"id",'path'=>"Url Video") )->FormControl('text','path','Url Video')->Attr('Hide',0);
+Loader('images','path')->View(array('id'=>"id",'path'=>"Image") )  ->FormControl('file','path','Image')->Attr('Hide',1)->Attr('icon','fa fa-camera');
+Loader('file','path')->View(array('id'=>"id",'path'=>"Fichier") )->FormControl('file','path','Fichier')->FormControl('text','title','Titre')->Attr('Hide',1)->Attr('icon','fa fa-file');
+Loader('video','path')->View(array('id'=>"id",'path'=>"Url Video") )->FormControl('text','path','Url Video')->Attr('Hide',1)->Attr('icon','fa fa-video-camera');
 
 
 Loader('client','email')->View(array('id'=>"id",'email'=>"Email",'last_name'=>'Nom','first_name'=>'prénom') )
@@ -117,7 +119,8 @@ Loader('client','email')->View(array('id'=>"id",'email'=>"Email",'last_name'=>'N
     ->FormControl('phone','fac_phone','Tél',array('panel'=>'facture'))
     ->FormControl('phone','fac_cell','Port.',array('panel'=>'facture'))
     ->FormControl('phone','fac_fax','Fax',array('panel'=>'facture'))
-    ->Panel('facture','Facturation','')    ;
+    ->Panel('facture','Facturation','')
+->Attr('icon','fa fa-user');
 
 
 Loader('country','name_fr')
@@ -125,13 +128,15 @@ Loader('country','name_fr')
     ->Relation( 'product',array('type'=>'ManyToMany','by_tbl'=>'shipping_country','left_key'=>'Shipping_id',"right_key"=>'Country_id'))
     ->FormControl('text','name_fr','Nom')
     ->FormControl('text','tva','TVA')
-    ->FormControl('text','sort','Ordre')  ;
+    ->FormControl('text','sort','Ordre')
+->Attr('icon','fa fa-globe');
 
 
 Loader('cart','concat_ws(\' \',\'product\',id_product,\'x\',quantity)')
     ->Relation('product', 	array( 'type'=>'InnerSimple','left_key'=>'id_product'))
     ->View(array('id'=>"id",'id_product'=>"ID Produit",'id_product_inner'=>"Produit",'quantity'=>'Quantité','date_time'=>'Date') )
     ->Attr("Hide",1)
+    ->Attr('icon','shopping-cart')
     ;
 
 
@@ -170,12 +175,14 @@ Loader('transaction','concat_ws(\' \',response_code,capture_mode)')
     ->FormControl('text','capture_mode','capture_mode',array("readonly"=>1))
     ->FormControl('textarea','last_line','last_line',array("readonly"=>1))
     ->FormControl('textarea','data','data',array("readonly"=>1))
-    ->Attr('Hide',0);
-
+    ->Attr('Hide',0)
+->Attr('icon','fa fa-credit-card')
+;
 
 Loader('order_status','title')
     ->View(array('id'=>"id",'title'=>"Status"))
     ->FormControl('text','title','Status')
-    ->Attr('title','Status');
+    ->Attr('title','Status')
+    ->Attr('Hide',1);
 
 ?>

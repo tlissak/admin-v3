@@ -25,11 +25,13 @@ include('Config.php');
 /*INIT*/
 Loader::Load() ;
 
+// TODO add collapse button to list/form
 // TODO test Postback action add / mod / del / dup / relation / and there callbacks
 // TODO image preview for List Mvc/ State Mvc
 // TODO State on click should open modal for editing
 // TODO login and auth system with tokens and bans ips
 // TODO save in cache user state for each table sorting and view
+// TODO Add form input validator
 
 if (get('upload')){
     header('Content-type: application/json');
@@ -92,24 +94,10 @@ if (get('ajax') == 'list') {
         <script src="js/jquery.tableExport/tableExport.js"></script>
         <script src="bs/bootstrap-table-export.min.js"></script>
 
-
 <!--
-        <script src="bs/wysihtml5-0.3.0.js"></script>
-        <link href="bs/bootstrap-wysihtml5.css" rel="stylesheet"/>
-        <script src="bs/bootstrap-wysihtml5.js"></script>
--->
-        <!--
-       <script src="js/jquery-deparam.js"></script>
-//TODO change bootstrap validator
-               <script src="bs/bootstrap-form-validator.min.js" ></script>
-
-               <link rel="stylesheet" type="text/css" href="bs/bootstrap3-wysihtml5.css" />
-               <script src="bs/wysihtml5x-toolbar.0.5.min.js"></script>
-               <script src="bs/bootstrap3-wysihtml5.js"></script>
-       -->
         <link href="bs/bootstrap-editable.css" rel="stylesheet"/>
         <script src="bs/bootstrap-editable.min.js"></script>
-
+-->
         <script src="bs/bootstrap-table-editable.min.js" data-dependeds="bootstrap-editable"></script>
 
         <link href="bs/bootstrap-colorpicker.css" rel="stylesheet"/>
@@ -121,32 +109,16 @@ if (get('ajax') == 'list') {
         <link href="bs/bootstrap-slider.css" rel="stylesheet"/>
         <script src="bs/bootstrap-slider.js" ></script>
 
-        <link href="bs/bootstrap-progressbar-3.3.0.css" rel="stylesheet"/>
-        <script src="bs/bootstrap-progressbar.js" ></script>
-
         <script src="tinymce/jquery.tinymce.min.js"></script>
 
-
-<!--
-
-        <script src="tinymce/tinymce.gzip.js"></script>
-<script src="tinymce/tinymce.min.js"></script>
-        <link href="js/jquery.fancybox.css" />
-        <script src="js/jquery.fancybox.pack.js"></script>
-        -->
-<!--
-        <link href="bs/fileinput.min.css" rel="stylesheet"/>
-        <script src="bs/fileinput.min.js" ></script>
--->
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-       <script src="bs/locale/bootstrap-table-fr-FR.min.js"></script>
+        <script src="bs/locale/bootstrap-table-fr-FR.min.js"></script>
         <link href="css/admin.css" id="admin-css" rel="stylesheet">
 
-
-            <script type="text/javascript" src="js/init.js"></script>
+        <script type="text/javascript" src="js/init.js"></script>
 </head>
 
 <body>
@@ -155,7 +127,7 @@ if (get('ajax') == 'list') {
     <nav role="navigation" class="navbar navbar-default navbar-fixed-top">
         <div class="logo-area">
             <a class="btn btn-link btn-nav-sidebar-minified pull-left"  onclick="$('.wrapper').toggleClass('main-nav-minified')"><i class="icon ion-arrow-swap"></i></a>
-            <a class="btn btn-link btn-off-canvas pull-left" onclick="$('.wrapper').removeClass('main-nav-minified').toggleClass('off-canvas-active')"><i class="icon ion-navicon"></i></a>
+            <a class="btn btn-link btn-off-canvas pull-left" onclick="$('.wrapper').removeClass('main-nav-minified').toggleClass('off-canvas-active')"><i class="icon ion-navicon-round"></i></a>
             <a class="navbar-brand" href="#" >ADMINPANEL</a>
 
         </div>
@@ -194,7 +166,7 @@ if (get('ajax') == 'list') {
 
 <div id="col-right">
 
-
+    <div id="message" ></div>
     <? if (Loader::Current()){ ?>
         <div class="container-fluid primary-content">
 
@@ -203,7 +175,7 @@ if (get('ajax') == 'list') {
             <?= Loader::Current()->GetBreadcrumb(); ?>
             </ol>
 
-            <div id="message" class="alert alert-success" style="display: none;"><a href="#" class="close" onclick="$(this).parent().hide();">&times;</a><div class="alert-block"></div></div>
+
 
     <div id="listing">
          <?= Loader::Current()->ListingMvc->GetPanel(); ?>
@@ -220,7 +192,7 @@ if (get('ajax') == 'list') {
                         <i class="fa fa-pencil-square-o"></i>
                     </button>
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-tabs-navbar-collapse">
-                        <i class="icon ion-navicon"></i> Panels
+                        <i class="ionicons ion-android-more-horizontal"></i>
                     </button>
 
 
@@ -240,14 +212,14 @@ if (get('ajax') == 'list') {
                 <!-- Controls -->
                 <div class="collapse navbar-collapse" id="bs-controls-navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><button type="submit" class="save"><i class="glyphicon glyphicon-save"></i> Save</a></button></li>
+                        <li><button type="submit" class="save"><i class="glyphicon glyphicon-save"></i> Enregistrer</a></button></li>
 
-                <!-- TODO When ajax add ok show controls -->
 
-                        <li class="nav-divider"></li>
-                        <li><a href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=del"> <i class="glyphicon glyphicon-trash"></i> Delete</a></li>
-                        <li class="nav-divider"></li>
-                        <li><a href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=dup"> <i class="glyphicon glyphicon-plus"></i> Dupplicate</a></li>
+
+                        <li data-controller="devider" class="nav-divider"></li>
+                        <li data-controller="del"><a data-confirm="Etes-vous certain de vouloir supprimer?" href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=del"> <i class="glyphicon glyphicon-trash" ></i> Supprimer</a></li>
+                        <li data-controller="devider" class="nav-divider"></li>
+                        <li data-controller="dup"><a data-confirm="Etes-vous certain de vouloir dupliquer?" href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=dup"> <i class="glyphicon glyphicon-plus"></i> Dupliquer</a></li>
 
 
                     </ul>

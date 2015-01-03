@@ -2,6 +2,28 @@
  * Created by IR on 12/24/2014.
  */
 
+jQuery.deparam = function (querystring) {
+    querystring = querystring.substring(querystring.indexOf('?')+1).split('&');
+    var params = {}, pair, d = decodeURIComponent, i;
+    for (i = querystring.length; i > 0;) {
+        pair = querystring[--i].split('=');
+        params[d(pair[0])] = d(pair[1]);
+    }
+    return params;
+};
+
+$(function() {
+    $('a[data-confirm]').click(function(ev) {
+        var href = $(this).attr('href');
+        if (!$('#dataConfirmModal').length) {
+            $('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Merci de confirmer</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Non</button><a class="btn btn-danger" id="dataConfirmOK">Oui</a></div></div></div></div>');
+        }
+        $('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+        $('#dataConfirmOK').attr('href', href);
+        $('#dataConfirmModal').modal({show:true});
+        return false;
+    });
+});
 
 function responsive_filemanager_callback(field_id){
     var f = $('#'+field_id);
@@ -35,67 +57,57 @@ $(function(){
 
 $(window).on("beforeunload",function(){
     if (window.changed){
-        return "Document not save ! are you sure ? ";
+        return "Document modified ";
     }
 })
 
 $(document).ready(function(){
 
 
+    $(document).on('click','#dataConfirmOK',function(e) {
+        e.preventDefault();
+        $('#dataConfirmModal').modal('hide');
+        $.ajax($(this).attr("href"),{success:function(s){
+            Callback.Postback(s) ;
+        }})
+    })
+
     $('.panel-mainlist .table').on('click-row.bs.table', function (e, row, $element) {
         var _params = {
             id : row.id,
-            tbl : (new RegExp('[\\?&]tbl=([^&#]*)').exec(window.location.search))[1]
+            tbl : $.deparam(window.location.search).tbl
         }
         window.location = '?' + ($.param(_params) ) ;
     })
 
-
-
     $('form.main-form').on("submit",function() {
-        $.ajax($(this).attr('action') ,{type:'POST'
-            ,data:$(this).serialize(),success:function(s){
-                window.changed = false ;
-                json_data = $.parseJSON(s) ;
-                $('#message').show().find(".alert-block").html(json_data.message)
-            } }) ;
+        $.ajax($(this).attr('action') ,{type:'POST',data:$(this).serialize(),success:function(s){
+            Callback.Mainform(s);
+        }}) ;
         return false;
     })
 
+
     $('#modal form').on("submit",function() {
-
+        //TODO $.ajax.context  = ccontextTable ?
         var context = $(this).data('context') ;
-
-        $.ajax($(this).attr('action') ,{type:'POST'
-            ,data:$(this).serialize(),success:function(s){
-                json_data = $.parseJSON(s) ;
-                $('#message').show().find(".alert-block").html(json_data.message)
-
-                if (json_data.status < 400 ){
-                    window.changed = true ;
-                    State.Add(context,json_data.row);
-                    $("#modal").modal('hide') ;
-                    context.bootstrapTable("refresh")
-                }
+        $.ajax($(this).attr('action') ,{type:'POST' ,data:$(this).serialize(),success:function(s){
+                Callback.Relation(s,context) ;
             } }) ;
         return false;
     })
 
     $("#modal").on('show.bs.modal', function (e) {
-        $("form",this)
-            .data('context',$(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]') )
+        $("form",this).data('context',$(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]') )
             .attr("action",$(e.relatedTarget).data('href') + "&action=add&set_form_ajax=1");
-
         $.ajax($(e.relatedTarget).data('href'),{context:this,success:function(s){
             $(".modal-body",this).html(s);
             $('.table',this).bootstrapTable();
         }})
-
     })
 
 
-    $('.panel-relationlist .table')
-    .on('load-success.bs.table',function(e){
+    $('.panel-relationlist .table').on('load-success.bs.table',function(e){
         State.Select(this) ;
     }).on('check.bs.table',  function (e, row, $element) {
         State.Add(this,row) ;
@@ -103,13 +115,121 @@ $(document).ready(function(){
         State.Del(this, row);
     })
 
+    Callback.Init($.deparam($('.main-form').attr('action')))
 })
+
+
+var Callback = {
+    ChangeAttribute:function(elm,atr,keys,obj){
+        //use $.extend ?
+        var n_obj = $.deparam(elm.attr(atr));
+        for(var i = 0;i<keys.length;i++){
+            n_obj[keys[i]] = obj[keys[i]] ;
+        }
+        elm.attr(atr, '?'+$.param(n_obj)) ;
+    }
+    ,Init : function(o){
+        //Uodates :
+        // * Controls & Href
+        // * Mainform Action
+        // * Breadcrumbs Text
+
+        if (o.id > 0 ) {
+            $("li[data-controller]").show();
+            this.ChangeAttribute($("li[data-controller='del'] a"),'href',['id'],o);
+            this.ChangeAttribute($("li[data-controller='dup'] a"),'href',['id'],o);
+            this.ChangeAttribute($(".main-form"),'action',['id','action'], $.extend(o,{action:'mod'}));
+
+            $('#breadcrumb .active').text("Edit #"+ o.id);
+
+        }else{
+            $("li[data-controller]").hide();
+            this.ChangeAttribute($(".main-form"),'action',['id','action'], $.extend(o,{action:'add'}));
+            $('#breadcrumb .active').text("Add");
+        }
+    }
+    ,Message : function(cls,msg) {
+        $('html, body').animate({scrollTop:0},500);
+        $("#message").prepend('<div class="alert alert-'+cls+'" ><a href="#" class="close" data-dismiss="alert">&times;</a>'+msg+'</div>' );
+    }
+    ,GetJson : function(s){
+        try {
+            return $.parseJSON(s);
+        }catch (e){
+            return false ;
+        }
+    }
+    ,Postback : function(s) {
+        window.changed = false ;
+        o = this.GetJson(s)
+        if (! o){
+            this.Message('danger',s) ;
+            return;
+        }
+        if (o.status < 300) {
+            if (o.action == 'del'){
+                this.Message('info','Object deleted successfuly') ;
+            }
+            if (o.action == 'dup'){
+                this.Message('success','Object duplicated successfuly') ;
+            }
+            this.Init(o) ;
+        } else {
+            this.Message('warning', 'Object changed with error #' + o.status + '<br>' + o.message) ;
+        }
+    }
+    ,Mainform : function(s){
+        window.changed = false ;
+        o = this.GetJson(s)
+        if (! o){
+            this.Message('danger',s) ;
+            return;
+        }
+        if (o.status < 300) {
+            if (o.action == 'mod'){
+                this.Message('info','Object modified successfuly') ;
+            }
+            if (o.action == 'add'){
+                this.Message('success','Object add successfuly') ;
+            }
+            this.Init(o) ;
+        } else {
+            this.Message('warning', 'Object saved with error #' + o.status + '<br>' + o.message) ;
+        }
+    }
+    ,Relation : function(s,context){
+        o = this.GetJson(s)
+        if (! o){
+            this.Message('danger',s) ;
+            return;
+        }
+        window.changed = true ;
+
+        if (o.status < 300) {
+            if (o.action == 'mod'){
+                this.Message('info','Relation Object modified successfuly') ;
+                State.Add(context,o.row);
+            }
+            if (o.action == 'add'){
+                this.Message('success','Relation Object add successfuly') ;
+                State.Add(context,o.row);
+            }
+            $("#modal").modal('hide') ;
+            context.bootstrapTable("refresh") ;
+        } else {
+            this.Message('warning', 'Relation object saved with error #' + o.status + '<br>' + o.message) ;
+        }
+    }
+}
+
+
+
 
 var State ={
     Select:function(el_list_relation)  {
         var states = $(el_list_relation).closest('.tab-pane').find(".state-cont").parent() ;
         var state_value = states.find('input');
-        var rows_input = $(el_list_relation).find("input[name='_id']") ;
+        var rows_input = $(el_list_relation).find("tr input") ; //[name='_id']
         var selected = [];
         rows_input.each(function(){
             var that = $(this) ;

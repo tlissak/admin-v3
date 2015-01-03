@@ -30,7 +30,8 @@ class ListingMvc{
 
     public function GetPanel(){
 
-        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$this->GetHeader(),'mainlist',$this->parent->title.' list','glyphicon glyphicon-list') ;
+        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$this->GetHeader(),'mainlist',$this->parent->title.' list','glyphicon glyphicon-list'
+            ,'<a  class="pull-right btn" href="?tbl='.$this->parent->name.'" ><i class="icon ion-plus"></i></a>') ;
     }
 
     public function GetHeader(){
@@ -38,7 +39,7 @@ class ListingMvc{
         $fields = array();
         $opts = array('silent' => ''
 
-            , 'select-item-name' => '_id'
+            , 'select-item-name' => '' // should stay empty or with table prefix to evite while selecting input remove checked in diffrent table
             , 'id-field'=>"_id"
 
             , 'title-field' => $this->parent->titleField

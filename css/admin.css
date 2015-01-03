@@ -86,7 +86,7 @@ h3.panel-title a{  border-left: #EEE 1px solid; }
 .nav-tabs.nav-justified > .active > a, .nav-tabs.nav-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:focus{ border-bottom-color:#FCFCFC }
 .tab-pane{ padding: 20px; background: #FCFCFC; border-left: #DDD 1px solid;}
 
-
+#message{ margin: 0 15px;}
 /*
 .visible-md.collapse.in{ display: block !important; visibility: visible !important;}
 */
@@ -104,7 +104,10 @@ h3.panel-title a{  border-left: #EEE 1px solid; }
     .main-form .navbar .navbar-nav{ float: right}
     .main-form .navbar-nav li.nav-divider{ height: 33px; width: 1px; background: #F5F5F5}
 }
-
+.main-form .navbar-nav > li a:hover,.main-form .navbar-nav > li button:hover{ background: #F8F8F8}
+.main-form .navbar-nav > li > label{ display: block; margin: 0; cursor: pointer;}
+.main-form .navbar-nav > li > label > a{ display: block;line-height:20px; padding: 10px 15px;}
+.navbar-toggle i{ font-size: 16px;}
 /* Debug */
 @media screen and (min-width:768px) {    .debug-pre {        margin-left: 230px;    }}
 .debug-pre:first-child{ margin-top: 54px; }

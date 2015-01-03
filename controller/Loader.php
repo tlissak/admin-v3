@@ -186,7 +186,7 @@ class Loader{
     }
 
     public function GetBreadcrumb(){
-        return '<li><a href="?">Admin</a></li> <li><a href="?tbl='.$this->name.'">' . $this->title . '</a></li> <li>'.( $this->id ? 'Edit #'.$this->id : 'Add') . '</li>' ;
+        return '<li><a href="?">Admin</a></li> <li><a href="?tbl='.$this->name.'">' . $this->title . '</a></li> <li class="active">'.( $this->id ? 'Edit #'.$this->id : 'Add') . '</li>' ;
     }
 
     public function GetListing(){

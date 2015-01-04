@@ -180,46 +180,8 @@ class FormMvc
         }
         if ($type == 'file') {
             $out .= '<a class="btn" data-toggle="modal" data-target="#ModalFileManager"
-             data-href="filemanager/dialog.php?type=2&field_id=fld_fld_' . $fld . '&base=">Open file manager</a>' ;
-            /*
-            $upload_url = 'index.php?upload=1&amp;tbl='.$this->parent->name.'&amp;fld='.$fld ;
-            $upload_url .=  ($this->parent->id) ? '&amp;id='.$this->parent->id : '&amp;id=0' ;
-
-//_'.$fld.'
-            $out .= '<input type="file" class="file" id="fld_'.$fld.'" name="image"
-            data-preview-file-type="any"
-            data-upload-url="'.$upload_url.'"
-            data-browse-label="Select.."
-            data-remove-label="Sup."
-            data-drop-zone-title="Glissez le fichier ici.."
-            '.$extends.'
-            >' ;
-
-
-            $out .= '<script>
-
-$("#fld_'.$fld.'")
-.on(\'fileuploaded\', function(event, data, previewId, index) {
-                var formdata = data.form, files = data.files,extradata = data.extra, responsedata = data.response;
-                    $("#fld_fld_'.$fld.'").val(responsedata.files.image[0].uploaded) ;
-               // }
-             }).fileinput({
-             slugCallback: function(filename) {
-                   return filename.replace("(", "_");
-             }
-
- ';
-
-            if ($this->parent->id && $value) {
-                $image = (! is_file(P_PHOTO . $value) ) ? 'img/gray_jean.png' : U_PHOTO . $value ;
-                $out .= ' , initialPreview: ["<img src=\''.$image .'\' class=\'file-preview-image\'>"]
-                ,initialPreviewConfig: [{ caption:\'' . $value . '\', width: \'120px\', url: \'#\'}]  ';
-            }
-
-            $out .= '}) </script>';
-            */
+             data-href="filemanager/dialog.php?type=2&field_id=fld_fld_' . $fld . '&base=&akey=7B6YhaP5en6B6lcxD5l3Bg">Open file manager</a>' ;
             $out .= '<input class="form-control change" readonly type="text" name="' . $fld . '" id="fld_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';
-
         }
         if ($type == 'hidden') {
             $out .= '<input type="hidden" name="' . $fld . '" id="hdn_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';

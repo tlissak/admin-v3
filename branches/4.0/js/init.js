@@ -49,7 +49,7 @@ $(function(){
         plugins: [  "advlist autolink link image lists charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking save table contextmenu directionality emoticons paste textcolor colorpicker"    //responsivefilemanager
         ],
         relative_urls: false,                //browser_spellcheck : true ,
-        filemanager_title:"Responsive Filemanager",  external_filemanager_path:"filemanager/",
+        filemanager_title:"Responsive Filemanager",  external_filemanager_path:"filemanager/","filemanager_access_key":"7B6YhaP5en6B6lcxD5l3Bg" ,
         external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}, image_advtab: true,
         toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | cut copy paste removeformat searchreplace | bullist numlist outdent indent | styleselect fontsizeselect  | image media link unlink anchor | fullscreen preview code charmap visualchars visualblocks | forecolor backcolor | table | hr ltr rtl"   //responsivefilemanager
     });

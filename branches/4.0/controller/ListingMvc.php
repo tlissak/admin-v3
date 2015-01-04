@@ -30,7 +30,9 @@ class ListingMvc{
 
     public function GetPanel(){
 
-        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$this->GetHeader(),'mainlist',$this->parent->title.' list','glyphicon glyphicon-list'
+        return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$this->GetHeader(),'mainlist'
+            ,$this->parent->title.' list'
+            ,'glyphicon glyphicon-list'
             ,'<a  class="pull-right btn" href="?tbl='.$this->parent->name.'" ><i class="icon ion-plus"></i></a>') ;
     }
 

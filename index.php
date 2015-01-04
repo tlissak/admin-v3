@@ -15,9 +15,6 @@ include('controller/FormMvc.php');
 include('controller/Relation.php');
 include('controller/RelationMvc.php');
 include('controller/Loader.php');
-
-include('controller/FileUpload.php');
-
 include('controller/Postback.php');
 
 include('Config.php');
@@ -25,19 +22,14 @@ include('Config.php');
 /*INIT*/
 Loader::Load() ;
 
-// TODO add collapse button to list/form
+// TODO Home screen google analytics widget
 // TODO test Postback action add / mod / del / dup / relation / and there callbacks
 // TODO image preview for List Mvc/ State Mvc
 // TODO State on click should open modal for editing
-// TODO login and auth system with tokens and bans ips
+// TODO login and auth system with tokens and bans ips protect file manager
 // TODO save in cache user state for each table sorting and view
 // TODO Add form input validator
 
-if (get('upload')){
-    header('Content-type: application/json');
-    echo ( new FileUpload(get('tbl').DS.get('fld').DS.get('id').DS) );
-    die ;
-}
 if(get('set_form_ajax') ) {
     echo Loader::Current()->Submit();
     die;
@@ -173,6 +165,9 @@ if (get('ajax') == 'list') {
 
             <ol id="breadcrumb" class="breadcrumb">
             <?= Loader::Current()->GetBreadcrumb(); ?>
+                <div class="toggle-c-view" onclick="$('#col-right').toggleClass('c-view')">
+                    <i class="fa fa-columns"></i>
+                </div>
             </ol>
 
 

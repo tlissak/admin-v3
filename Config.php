@@ -175,7 +175,7 @@ Loader('transaction','concat_ws(\' \',response_code,capture_mode)')
     ->FormControl('text','capture_mode','capture_mode',array("readonly"=>1))
     ->FormControl('textarea','last_line','last_line',array("readonly"=>1))
     ->FormControl('textarea','data','data',array("readonly"=>1))
-    ->Attr('Hide',0)
+    ->Attr('Hide',1)
 ->Attr('icon','fa fa-credit-card')
 ;
 

@@ -7,10 +7,16 @@ body {     background:none repeat scroll 0 0 #232323;    font-size:13px;}
 #col-left,.top-bar>:first-child {    width:220px;}
 #col-right {     margin-left:220px;    background:#D9D9D9 url("../img/gray_jean.png");    min-height:585px;    padding:70px 0 30px 0;}
 
+.toggle-c-view{ cursor: pointer; float: right;}
+@media screen and (max-width:1200px) {    #breadcrumb .toggle-c-view { display: none;    }}
+
 @media screen and (min-width:1200px) {
     #listing {         min-height: 585px;        width: 500px;        float: left; padding-right:15px;   }
+
     .main-form {        margin-left: 500px;    }
     #tabs:after, .panel-body:after {        clear: none;    }
+    #col-right.c-view #listing{ display: none;}
+    #col-right.c-view .main-form{ margin-left: 0px;}
 }
 
 @media screen and (max-width:1200px) {    #col-right {        overflow:hidden;    } }
@@ -108,6 +114,7 @@ h3.panel-title a{  border-left: #EEE 1px solid; }
 .main-form .navbar-nav > li > label{ display: block; margin: 0; cursor: pointer;}
 .main-form .navbar-nav > li > label > a{ display: block;line-height:20px; padding: 10px 15px;}
 .navbar-toggle i{ font-size: 16px;}
+
 /* Debug */
 @media screen and (min-width:768px) {    .debug-pre {        margin-left: 230px;    }}
 .debug-pre:first-child{ margin-top: 54px; }

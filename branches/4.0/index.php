@@ -241,7 +241,118 @@ if (get('ajax') == 'list') {
     </form>
     </div>
 
-    <? } ?>
+    <? }else{ ?>
+
+
+<div style="width: 80%; margin: 0 auto">
+<div id="embed-api-auth-container"></div><div id="view-selector-container"></div>
+<div id="chart-container"></div>
+
+<div id="chart-1-container"></div>
+<div id="chart-2-container"></div>
+<div id="chart-3-container"></div>
+
+</div>
+
+<script>
+    (function(w,d,s,g,js,fs){
+        g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
+        js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
+        js.src='https://apis.google.com/js/platform.js';
+        fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
+    }(window,document,'script'));
+</script>
+<script>
+
+    gapi.analytics.ready(function() {
+
+        gapi.analytics.auth.authorize({
+            container: 'embed-api-auth-container',
+            //from : https://console.developers.google.com/project/290171304204/apiui/credential?authuser=0
+            clientid: '290171304204-aq4f7d1mahkhntlvsdem1c94miqomrnt.apps.googleusercontent.com',
+        });
+
+        var viewSelector = new gapi.analytics.ViewSelector({
+            container: 'view-selector-container'
+        });
+
+        viewSelector.execute();
+
+        var dataChart = new gapi.analytics.googleCharts.DataChart({
+            query: {
+                metrics: 'ga:sessions',
+                dimensions: 'ga:date',
+                'start-date': '30daysAgo',
+                'end-date': 'yesterday'
+            },
+            chart: {
+                container: 'chart-container',
+                type: 'LINE',
+                options: {
+                    width: '100%'
+                }
+            }
+        });
+
+        var dataChart1 = new gapi.analytics.googleCharts.DataChart({
+            query: {
+                metrics: 'ga:pageviews',
+                dimensions: 'ga:date',
+                'start-date': '7daysAgo',
+                'end-date': 'yesterday'
+            },
+            chart: {
+                container: 'chart-1-container',
+                type: 'LINE',
+                options: {
+                    width: '100%'
+                }
+            }
+        });
+        var dataChart2 = new gapi.analytics.googleCharts.DataChart({
+            query: {
+                metrics: 'ga:pageviews',
+                dimensions: 'ga:date',
+                'start-date': '15daysAgo',
+                'end-date': '8daysAgo'
+            },
+            chart: {
+                container: 'chart-2-container',
+                type: 'LINE',
+                options: {
+                    width: '100%'
+                }
+            }
+        });
+
+        var dataChart3 = new gapi.analytics.googleCharts.DataChart({
+            query: {
+                metrics: 'ga:sessions',
+                dimensions: 'ga:country',
+                'start-date': '30daysAgo',
+                'end-date': 'yesterday',
+                'max-results': 6,
+                sort: '-ga:sessions'
+            },
+            chart: {
+                container: 'chart-3-container',
+                type: 'PIE',
+                options: {
+                    width: '100%'
+                }
+            }
+        });
+
+        viewSelector.on('change', function(ids) {
+            dataChart.set({query: {ids: ids}}).execute();
+            dataChart1.set({query: {ids: ids}}).execute();
+            dataChart2.set({query: {ids: ids}}).execute();
+            dataChart3.set({query: {ids: ids}}).execute();
+        });
+
+    });
+</script>
+	<? } ?>
 </div>
 </div><!-- wrapper -->
 

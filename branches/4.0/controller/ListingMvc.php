@@ -22,6 +22,18 @@ class ListingMvc{
             }
         }
 
+        if (count($this->parent->fileField)){
+            foreach($this->parent->Listing->_list as &$r){
+                foreach($this->parent->fileField as $f){
+                    if ($file = $r[$f] ) {
+                        if (is_image(P_PHOTO . $file)) {
+                            $r[$f] = '<img src="'.U_PHOTO . $file.'" class="image_preview">';
+                        }
+                    }
+                }
+            }
+        }
+
         $out = array('sql'=>$this->parent->Listing->sql_rows,'total'=> $this->parent->Listing->num_results,"status"=>200 ,'rows'=>$this->parent->Listing->_list);
 
         return json_encode($out);

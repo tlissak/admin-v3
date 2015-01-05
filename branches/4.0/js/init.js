@@ -63,7 +63,6 @@ $(window).on("beforeunload",function(){
 
 $(document).ready(function(){
 
-
     $(document).on('click','#dataConfirmOK',function(e) {
         e.preventDefault();
         $('#dataConfirmModal').modal('hide');
@@ -79,6 +78,13 @@ $(document).ready(function(){
         }
         window.location = '?' + ($.param(_params) ) ;
     })
+
+    //Act readonly as disabled becouse disabled dosent serialize()
+    $(document).on('click','input[readonly]', function (e) {  e.preventDefault();  })
+
+    $(document).on('click','.state-cont .close', function(e) {
+        window.changed = true;
+    });
 
     $('form.main-form').on("submit",function() {
         $.ajax($(this).attr('action') ,{type:'POST',data:$(this).serialize(),success:function(s){
@@ -249,6 +255,7 @@ var State ={
         for (var i = 0; i< state_value.size() ; i++ ){
             if (state_value.eq(i).val() == row.id){
                 state_value.eq(i).closest('.input-group').find('.close').trigger('click');
+                window.changed = true ;
             }
         }
     }
@@ -280,6 +287,8 @@ var State ={
                     return false ;
                 }
             }
+
+            window.changed = true ;
 
             if (d.selectionType == 'RADIO' ) {
                 vars = {

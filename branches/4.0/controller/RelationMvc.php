@@ -18,13 +18,20 @@ class RelationMvc{
         return implode(NL,$tabs) ;
     }
 
+    private function filePreview(Relation $r,&$row) {
+        if (count($r->RelatedTable->fileField) && in_array($r->RelatedTable->titleField,$r->RelatedTable->fileField)){
+            if (is_image(P_PHOTO . $row['title_field'])){
+                $row['title_field'] = '<img src="'.U_PHOTO .$row['title_field'] .'">' ;
+            }
+        }
+    }
 
-
-    public function GetState(Relation $r,$data,$titleField){
+    public function GetState(Relation $r,$data){
 
 
         global $db ;
         $out = '';
+        $titleField = $r->RelatedTable->titleField ;
 
         $out .= '<div class="state-cont">' ;
 
@@ -36,6 +43,7 @@ class RelationMvc{
                 //$out .= $this->wrap_input("sql",$sql) ;
                 $row = $db->fetchRow($sql);
                 if (count($row)) {
+                    $this->filePreview($r,$row) ;
                     $out .= $this->wrap_input('<input type="radio" name="' . $r->left_key . '" value="' . $current_value . '" checked > ', $row['title_field']);
                 }
             }
@@ -50,7 +58,8 @@ class RelationMvc{
 
                 $results = $db->fetch($sql);
                 foreach ($results as $row) {
-                    $out .= $this->wrap_input('<input type="checkbox" disabled name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'] );
+                    $this->filePreview($r,$row) ;
+                    $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'] );
                 }
             }
 
@@ -69,7 +78,8 @@ class RelationMvc{
 
                 $results = $db->fetch($sql);
                 foreach ($results as $row) {
-                    $out .= $this->wrap_input('<input type="checkbox" disabled name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'],$r->RelatedTable->readonly);
+                    $this->filePreview($r,$row) ;
+                    $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'],$r->RelatedTable->readonly);
                 }
             }
         }
@@ -82,11 +92,11 @@ class RelationMvc{
         if ($r->type == 'Simple' || $r->type == 'InnerSimple') {
             $out .= $this->wrap_input('<input type="radio" name="{$left_key}" value="{$value}" checked >', '{$title}');
         }elseif ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect') {
-            $out .= $this->wrap_input('<input type="checkbox" disabled name="{$left_key}" value="{$value}" checked >', '{$title}');
+            $out .= $this->wrap_input('<input type="checkbox" readonly name="{$left_key}" value="{$value}" checked >', '{$title}');
         }
         $out .= '</script>' ;
 
-        $out = $this->parent->PanelMvc->RenderPanel('state-'.$r->RelatedTable->name,$out,'state',$r->RelatedTable->title . ' state','') ;
+        $out = $this->parent->PanelMvc->RenderPanel('state-'.$r->RelatedTable->name,$out,'state',$r->RelatedTable->title . ' state',$r->RelatedTable->icon) ;
         return  $out ;
 
     }
@@ -111,7 +121,7 @@ class RelationMvc{
         foreach($this->parent->relations_instances as $r){
 
 
-            $cont = $this->GetState($r, $this->parent->Form->data, $r->RelatedTable->titleField);
+            $cont = $this->GetState($r, $this->parent->Form->data);
 
             if ($r->type == 'ManyToMany' || $r->type == 'ManyToOneByKey' ) {
 
@@ -127,7 +137,7 @@ class RelationMvc{
 
             $tabs_cont[] = '<div class="tab-pane" id="tab-relation-'.$r->name.(get("ajax") == 'form' ? '-ajax' : '').'">' ;
             $tabs_cont[] =  $this->parent->PanelMvc->RenderPanel('listing-'.$r->RelatedTable->name, $cont  ,'relationlist'
-                ,$r->RelatedTable->title.' R list ','glyphicon glyphicon-list' ,'<a data-toggle="modal" data-target="#modal" class="pull-right btn" data-href="?tbl='.$r->name.'&ajax=form" data-action="add"><i class="icon ion-plus"></i></a>') ;
+                ,$r->RelatedTable->title.' R list ',$r->RelatedTable->icon ,'<a data-toggle="modal" data-target="#modal" class="pull-right btn" data-href="?tbl='.$r->name.'&ajax=form" data-action="add"><i class="icon ion-plus"></i></a>') ;
             $tabs_cont[] = '</div>';
 
         }

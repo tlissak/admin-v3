@@ -54,7 +54,7 @@ class FormMvc
 
         $out = '';
         foreach($this->parent->formPanel as $key=>&$pnl){
-            $out .= $this->parent->PanelMvc->RenderPanel($key.'-form',$panelFields[$key],'form',$this->parent->title . ' form' ,'') ;
+            $out .= $this->parent->PanelMvc->RenderPanel($key.'-form',$panelFields[$key],'form',$pnl['title']. ' form' ,'') ;
         }
 
         return $out ;
@@ -182,6 +182,10 @@ class FormMvc
             $out .= '<a class="btn" data-toggle="modal" data-target="#ModalFileManager"
              data-href="filemanager/dialog.php?type=2&field_id=fld_fld_' . $fld . '&base=&akey=7B6YhaP5en6B6lcxD5l3Bg">Open file manager</a>' ;
             $out .= '<input class="form-control change" readonly type="text" name="' . $fld . '" id="fld_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';
+            if (is_image(P_PHOTO . $value)){
+                $out .= '<p><img src="'.U_PHOTO.$value.'" class="image_preview"></p>' ;
+            }
+
         }
         if ($type == 'hidden') {
             $out .= '<input type="hidden" name="' . $fld . '" id="hdn_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';

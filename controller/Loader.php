@@ -20,6 +20,7 @@ class Loader{
     public $current = false;
 
     public $formFields = array();
+    public $fileField = array();
     public $formPanel = array();
     public $dbFields = array();
     public $viewFields = array();
@@ -142,6 +143,8 @@ class Loader{
                     $loader->titleField = 'name' ;
                 elseif (in_array('name_fr',$loader->dbFields))
                     $loader->titleField = 'name_fr' ;
+                else
+                    die('Loader::Load() No titleField for table '. $loader->name) ;
             }
 
             // title field is obligatory
@@ -151,7 +154,11 @@ class Loader{
             if (count($loader->viewFields) == 0)
                 $loader->View(array($loader->titleField=>'title'));
 
-
+            foreach($loader->formFields as $f){
+                if ($f['type'] == 'file'){
+                    $loader->fileField[] = $f['name'] ;
+                }
+            }
 
         }
 
@@ -181,7 +188,7 @@ class Loader{
     public $Postback ;
     public function Submit(){
         $this->Postback = new Postback($this);
-        $this->Postback->VIRTUAL_MODE = true ;
+        $this->Postback->VIRTUAL_MODE = false ;
         return $this->Postback->Set();
     }
 

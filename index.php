@@ -23,12 +23,11 @@ include('Config.php');
 Loader::Load() ;
 
 // TODO Home screen google analytics widget
-// TODO test Postback action add / mod / del / dup / relation / and there callbacks
-// TODO image preview for List Mvc/ State Mvc
+// TODO test Postback action relation (add / mod / del / dup) / and there callbacks
 // TODO State on click should open modal for editing
 // TODO login and auth system with tokens and bans ips protect file manager
 // TODO save in cache user state for each table sorting and view
-// TODO Add form input validator
+// TODO Add form input validator AND input chnaged should change window.changed = true
 
 if(get('set_form_ajax') ) {
     echo Loader::Current()->Submit();

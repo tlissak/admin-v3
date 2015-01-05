@@ -16,6 +16,8 @@ class Postback{
 
     public $VIRTUAL_MODE = true ;
 
+    public $sql = array();
+
     public function __construct(Loader &$p){
         $this->parent   = &$p ;
         $this->name     = &$p->name ;
@@ -33,12 +35,12 @@ class Postback{
             if ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect'){
 
                 $sql = 'DELETE  FROM `'. $r->by_tbl . '` WHERE `' .$r->right_key . '` = ' . $this->_id  ;
-                p($sql);
+                $this->sql[] = $sql;
                 $db->query($sql);
             }
             if ($r->type == 'ManyToOne' ) {
-              $sql =  'UPDATE `'. $r->name . '` SET `' .$r->left_key  . '` = 0 WHERE `' . $r->left_key . '` = ' . $this->_id ;
-                p($sql);
+                $sql =  'UPDATE `'. $r->name . '` SET `' .$r->left_key  . '` = 0 WHERE `' . $r->left_key . '` = ' . $this->_id ;
+                $this->sql[] = $sql;
                 $db->query( $sql);
             }
 
@@ -46,16 +48,17 @@ class Postback{
             if ($r->type == 'ManyToOneByKey'){
 				$sql =  'UPDATE `'. $r->name . '` SET `'.$r->left_key  . '` = 0
 					WHERE  `'. $r->name .'`.`'.$r->left_key .'` =  ' . ($this->form->data_posted[ $r->right_key ] ?  $this->form->data_posted[ $r->right_key ] : '0' ) ;
-                p($sql);
+                $this->sql[] = $sql;
                 $db->query($sql ) ;
 			}
 
         }
-
-
     }
+
+
     public function addRelations($duplicate = false) {
         if ($this->VIRTUAL_MODE) return true;
+
         global $db;
         foreach ($this->parent->relations_instances as $r){
 
@@ -65,6 +68,7 @@ class Postback{
                 //duplicate relation value if item duplicate
                 $ids_left_key = array() ;
                 if ($r->type ==  'ManyToMany' ||  $r->type ==  'ManyToManySelect'){
+
                     $sql = 'SELECT `'.$r->left_key .'` AS k_id FROM `'. $r->name . '` WHERE `'.$r->right_key.'` = ' . $this->_id  ;
                     $keys = $db->fetch($sql);
                     foreach($keys as $k){	$ids_left_key[] = $k['k_id'] ;		}
@@ -80,22 +84,27 @@ class Postback{
                     foreach($keys as $k){	$ids_left_key[] = $k['k_id'] ;		}
                 }
             }
+            //p('Keys to save: ');
+            //p($ids_left_key) ;
+            //p($_POST);
 
             if ($r->type ==  'ManyToOneByKey' && !$duplicate ){
+               // p("Processing Relation ". $r->name . ' of type '. $r->type ) ;
                 if (count($ids_left_key)>0) {
                     $sql = 'UPDATE `'. $r->name. '` SET `' . $r->left_key . '` = ' .
                         ($this->form->data_posted[ $r->right_key ] ?  $this->form->data_posted[ $r->right_key ] : '0' )
                         . ' WHERE id IN(' . implode(",",$ids_left_key) . ') ' ;
-                    p($sql);
+                    $this->sql[] = $sql;
                     $db->query($sql);
                 }
                 $sql2 = 'DELETE  FROM `'. $r->name. '` WHERE `' . $r->left_key. '` =  0 '  ;
 
-                p($sql2);
+                $this->sql[] = $sql2;
                 $db->query(  $sql2);
             }
 
             if ($r->type ==  'ManyToMany' || $r->type == 'ManyToManySelect'){
+               // p("Processing Relation ". $r->name . ' of type '. $r->type ) ;
                 if (count($ids_left_key)){
 
                     $sql2 = '';
@@ -105,23 +114,23 @@ class Postback{
                                 SELECT '.$id.','.$this->_id
                             : ' UNION SELECT '.$id .','. $this->_id  ;
                     }
-                    p($sql2);
+                    $this->sql[] = $sql2;
                     $db->query($sql2 );
                 }
             }
 
             if ($r->type ==  'ManyToOne' && !$duplicate){
+               // p("Processing Relation ". $r->name . ' of type '. $r->type ) ;
                 if (count($ids_left_key)>0) {
                     $sql = 'UPDATE `'. $r->name. '` SET `' . $r->left_key . '` = ' . $this->_id . ' WHERE id IN(' . implode(",",$ids_left_key) . ') '  ;
-                    p($sql);
+                    $this->sql[] = $sql;
                     $db->query($sql);
                 }
                 $sql2 = 'DELETE  FROM `'. $r->name. '` WHERE `' . $r->left_key. '` =  0 '  ;
-                p($sql2);
+                $this->sql[] = $sql2;
                 $db->query( $sql2);
             }
         }
-
     }
 
     public function Set(){
@@ -160,6 +169,7 @@ class Postback{
                 $out['row'] = $this->form->data ; // Should contains ID key
             }
         }
+        $out['sql'] = $this->sql ;
 
         return json_encode($out);
 

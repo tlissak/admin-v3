@@ -44,7 +44,9 @@ class RelationMvc{
                 $row = $db->fetchRow($sql);
                 if (count($row)) {
                     $this->filePreview($r,$row) ;
-                    $out .= $this->wrap_input('<input type="radio" name="' . $r->left_key . '" value="' . $current_value . '" checked > ', $row['title_field']);
+                    $out .= $this->wrap_input('<input type="radio" name="' . $r->left_key . '" value="' . $current_value . '" checked > '
+                        , $row['title_field']
+                        ,$r->name);
                 }
             }
             if ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect') {
@@ -59,7 +61,9 @@ class RelationMvc{
                 $results = $db->fetch($sql);
                 foreach ($results as $row) {
                     $this->filePreview($r,$row) ;
-                    $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'] );
+                    $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >'
+                        , $row['title_field']
+                        ,$r->name);
                 }
             }
 
@@ -79,7 +83,7 @@ class RelationMvc{
                 $results = $db->fetch($sql);
                 foreach ($results as $row) {
                     $this->filePreview($r,$row) ;
-                    $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'],$r->RelatedTable->readonly);
+                    $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'],$r->name);
                 }
             }
         }
@@ -90,9 +94,9 @@ class RelationMvc{
 
         $out .= '<script type="text/template">' ;
         if ($r->type == 'Simple' || $r->type == 'InnerSimple') {
-            $out .= $this->wrap_input('<input type="radio" name="{$left_key}" value="{$value}" checked >', '{$title}');
+            $out .= $this->wrap_input('<input type="radio" name="{$left_key}" value="{$value}" checked >', '{$title}',$r->name);
         }elseif ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect') {
-            $out .= $this->wrap_input('<input type="checkbox" readonly name="{$left_key}" value="{$value}" checked >', '{$title}');
+            $out .= $this->wrap_input('<input type="checkbox" readonly name="{$left_key}" value="{$value}" checked >', '{$title}',$r->name);
         }
         $out .= '</script>' ;
 
@@ -101,11 +105,18 @@ class RelationMvc{
 
     }
 
-    public function wrap_input($input,$title){
+    public function wrap_input($input,$title,$_tbl){
         return '
         <label>
-        <div class="input-group test alert">
+        <div class="input-group alert">
             <div class="input-group-addon"><span class="cbr"> '.$input.'<i class="fa fa-check"></i></span></div>
+            <div class="input-group-addon input-group-addon-clean state-item"
+            data-action="mod"
+            data-target="#modal"
+            data-toggle="modal"
+                data-href="?tbl='.$_tbl.'&amp;ajax=form" >
+                <i class="fa fa-eye"></i>
+            </div>
             <div class="input-group-addon input-group-addon-clean"> '.$title.'</div>
             <div class="input-group-addon input-group-addon-clean" >
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" aria-hidden="true">&times;</button>

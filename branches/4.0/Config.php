@@ -1,9 +1,5 @@
 <?php
-
-#region INIT
-
-
-
+#region Page
 Loader('page','title_fr')
     ->View(array('title_fr'=>"nom") )
     ->FormControl('text','meta_title','Meta titre',array('panel'=>'meta','required'=>1))
@@ -17,16 +13,16 @@ Loader('page','title_fr')
     ->Panel('english','Contenu anglais','icon ion-compose')
     ->Attr('icon',"fa fa-file-o")
 ;
+#endregion
 
+#region Product
 Loader('product','name_fr')
     ->View(array('name_fr'=>"nom",'model'=>'Model','category_id_inner'=>'categorie') ) /*,'image'=>'Couver.','sort'=>'Ordre'*/
     ->Relation( 'marque' , array( 'type'=>'InnerSimple','left_key'=>'marque_id') )
     ->Relation( 'category',	array( 'type'=>'InnerSimple','left_key'=>'category_id'))
-
     ->Relation('images',array('type'=>'ManyToMany','by_tbl'=>'product_image','left_key'=>'id_image',"right_key"=>'id_product'))
     ->Relation("video",array( 'type'=>"ManyToManySelect",'by_tbl'=>'product_video' ,'left_key'=>'id_video',"right_key"=>'id_product'))
     ->Relation("file",array('type'=>'ManyToManySelect','by_tbl'=>'product_file','left_key'=>'id_file',"right_key"=>'id_product'))
-
     ->FormControl('text','name_fr','Nom')
     ->FormControl('text','model','Model')
     ->FormControl('rte','description_fr','Résumé',array('panel'=>'rte'))
@@ -35,17 +31,14 @@ Loader('product','name_fr')
     ->FormControl('text','url_alias','Url simplifier' ,array('panel'=>'meta')) //,'required'=>1
     ->FormControl('textarea','keywords','Meta keywords',array('panel'=>'meta'))
     ->Attr('icon','fa fa-sitemap')
-
-
     ->Panel('meta','Meta','icon ion-compose')
     ->Panel('rte','Content','icon ion-compose')
-
     ->Attr('table_height',1350)
     ->Attr('table_count',28)
-
     ;
+#endregion
 
-
+#region Category
 Loader('category','title_fr')
     ->View(array('title_fr'=>'Nom','parent_id_inner'=>"parent",'level'=>'niveau') )
     ->Relation(	'category',array('type'=>'InnerSimple','by_tbl'=>'category','left_key'=>'parent_id') )
@@ -53,11 +46,13 @@ Loader('category','title_fr')
     ->FormControl('sort','sort','Sort')
     ->FormControl('number','level','Niveau',array('required'=>1))
     //->Attr('badge','')
+
     ->Attr('icon','glyphicon glyphicon-th')
 
 ;
+#endregion
 
-
+#region Marque
 Loader('marque','title')
     ->View(array('title'=>"Nom",'image'=>'Image') )
     ->FormControl('text','title','Nom')
@@ -65,10 +60,10 @@ Loader('marque','title')
     ->FormControl('check','valid','Valide')
     ->FormControl("rte",'content','Contenu')
     ->Attr('icon','fa fa-book');
+#endregion
 
-
-Loader('order','order_date')    //
-    ->View(array('order_date'=>'Date','total'=>"Total",'client_id_inner'=>"Client",'status_inner'=>'Status') )
+#region Order
+Loader('order','order_date')->View(array('order_date'=>'Date','total'=>"Total",'client_id_inner'=>"Client",'status_inner'=>'Status') )
     ->Relation('country',array('type'=>'InnerSimple','left_key'=>'country_id'))
     ->Relation( 'cart'		,array('type'=>'ManyToOneByKey','by_tbl'=>'cart','left_key'=>'id_guest',"right_key"=>'id_guest','readonly'=>1))
     ->Relation( 'transaction'		,array('type'=>'ManyToOneByKey','by_tbl'=>"transaction",'left_key'=>'order_id',"right_key"=>'id','readonly'=>1))
@@ -77,20 +72,24 @@ Loader('order','order_date')    //
     ->FormControl('text' ,'order_date','Date de commande',array("readonly"=>1))
     ->FormControl('number' ,'id_guest', 'ID Session',array("readonly"=>1))
     ->FormControl('text' ,'total','Total',array("readonly"=>1))
-   // ->_Html('<p><label></label><a href="'. U_BASE .'_vieworder.php" target="_blank" class="btn-red btn-large fac-gen"><i class="icon-invoice"></i> Voir la facture</a></p>')
+    ->FormControl('html' ,'<a href="'. U_BASE .'_vieworder.php" target="_blank" class="btn btn-danger fac-gen-1"><i class="icon-invoice"></i> Voir la facture</a>'
+        ,'Facture',array('panel'=>'controls'))
+    ->FormControl('html' ,'<a href="'. U_BASE .'_vieworder.php" target="_blank" class="btn btn-danger fac-gen-2"><i class="icon-invoice"></i> Voir la facture</a>'
+        ,'Facture Clean',array('panel'=>'controls'))
     ->Attr('sort_name','id')
     ->Attr('sort_order','DESC')
     ->Attr('icon','fa fa-flag-checkered')
- ;
 
+    ->Panel('controls','Controls Print','icon ion-compose')
+ ;
+#endregion
 
 Loader('product_type','type')   ->View(array('type'=>"Type") )    ->Attr('Hide',1);
-
 Loader('images','path')->View(array('id'=>"id",'path'=>"Image") )  ->FormControl('file','path','Image')->Attr('Hide',1)->Attr('icon','fa fa-camera');
 Loader('file','path')->View(array('id'=>"id",'path'=>"Fichier") )->FormControl('file','path','Fichier')->FormControl('text','title','Titre')->Attr('Hide',1)->Attr('icon','fa fa-file');
 Loader('video','path')->View(array('id'=>"id",'path'=>"Url Video") )->FormControl('text','path','Url Video')->Attr('Hide',1)->Attr('icon','fa fa-video-camera');
 
-
+#region Client
 Loader('client','email')->View(array('id'=>"id",'email'=>"Email",'last_name'=>'Nom','first_name'=>'prénom') )
     ->Relation( 'country',	array( 'type'=>'InnerSimple','left_key'=>'country_id'))
     ->Relation( 'country',	array( 'type'=>'InnerSimple','left_key'=>'fac_country_id'))
@@ -121,8 +120,9 @@ Loader('client','email')->View(array('id'=>"id",'email'=>"Email",'last_name'=>'N
     ->FormControl('phone','fac_fax','Fax',array('panel'=>'facture'))
     ->Panel('facture','Facturation','')
 ->Attr('icon','fa fa-user');
+#endregion
 
-
+#region Country
 Loader('country','name_fr')
     ->View(array('id'=>"id",'name_fr'=>"Nom",'tva'=>'TVA') )
     ->Relation( 'product',array('type'=>'ManyToMany','by_tbl'=>'shipping_country','left_key'=>'Shipping_id',"right_key"=>'Country_id'))
@@ -130,16 +130,19 @@ Loader('country','name_fr')
     ->FormControl('text','tva','TVA')
     ->FormControl('text','sort','Ordre')
 ->Attr('icon','fa fa-globe');
+#endregion
 
-
+#region Cart
 Loader('cart','concat_ws(\' \',\'product\',id_product,\'x\',quantity)')
     ->Relation('product', 	array( 'type'=>'InnerSimple','left_key'=>'id_product'))
     ->View(array('id'=>"id",'id_product'=>"ID Produit",'id_product_inner'=>"Produit",'quantity'=>'Quantité','date_time'=>'Date') )
+    ->FormControl('number','quantity','Qty.')
     ->Attr("Hide",1)
     ->Attr('icon','shopping-cart')
     ;
+#endregion
 
-
+#region Transaction
 Loader('transaction','concat_ws(\' \',response_code,capture_mode)')
     ->View(array('id'=>"id",'response_code'=>'response_code','transaction_id'=>"transaction n",'amount'=>'amount') )
     ->FormControl('text','datetime','datetime',array("readonly"=>1))
@@ -178,11 +181,10 @@ Loader('transaction','concat_ws(\' \',response_code,capture_mode)')
     ->Attr('Hide',1)
 ->Attr('icon','fa fa-credit-card')
 ;
+#endregion
 
-Loader('order_status','title')
-    ->View(array('id'=>"id",'title'=>"Status"))
-    ->FormControl('text','title','Status')
-    ->Attr('title','Status')
-    ->Attr('Hide',1);
+Loader('order_status','title') ->View(array('id'=>"id",'title'=>"Status")) ->FormControl('text','title','Status') ->Attr('title','Status') ->Attr('Hide',1);
 
+
+Hook::Add('js','<script src="hook.js"></script>') ;
 ?>

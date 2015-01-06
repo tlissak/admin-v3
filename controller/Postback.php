@@ -43,11 +43,10 @@ class Postback{
                 $this->sql[] = $sql;
                 $db->query( $sql);
             }
-
-
             if ($r->type == 'ManyToOneByKey'){
 				$sql =  'UPDATE `'. $r->name . '` SET `'.$r->left_key  . '` = 0
-					WHERE  `'. $r->name .'`.`'.$r->left_key .'` =  ' . ($this->form->data_posted[ $r->right_key ] ?  $this->form->data_posted[ $r->right_key ] : '0' ) ;
+					WHERE  `'. $r->name .'`.`'.$r->left_key .'` =  ' .
+                    (isset($this->form->data_posted[ $r->right_key ]) && $this->form->data_posted[ $r->right_key ] ?  $this->form->data_posted[ $r->right_key ] : '0' ) ;
                 $this->sql[] = $sql;
                 $db->query($sql ) ;
 			}
@@ -183,7 +182,7 @@ class Postback{
 
         $sql = SQL::build('INSERT',$this->name,$this->form->data_posted) ;
         if ($this->_id = $db->query($sql ) ){
-            $this->deleteRelations() ;
+            //$this->deleteRelations() ;
             $this->addRelations() ;
             return true;
         }else{

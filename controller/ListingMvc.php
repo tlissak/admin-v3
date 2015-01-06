@@ -81,11 +81,10 @@ class ListingMvc{
             // ,'click-to-select'=>'true'
         );
 
-        // data-align="center" data-formatter="actionFormatter" data-events="actionEvents"
-        //$this->parent->view_type = '-' ;
 
         if ($this->parent->tmpRelation) {
 
+            $opts['tbl'] = $this->parent->tmpRelation->name ;
             $opts['selection-type'] = $this->parent->tmpRelation->view_type ;
             $opts['title-field'] = $this->parent->titleField ;
             $opts['left-key'] = $this->parent->tmpRelation->left_key ;
@@ -107,6 +106,9 @@ class ListingMvc{
             $fields[] =  ' >' . $title .'</th>' ;
         }
 
+        if ($this->parent->tmpRelation) { //TODO : add if table ->readonly
+            $fields[] = '<th data-field="operate" class="oprate" data-halign="center" data-align="center" >-</th>';
+        }
         $out =  '<table class="table" ' ;
 
         foreach ($opts as $k =>$v){

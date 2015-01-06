@@ -16,18 +16,20 @@ include('controller/Relation.php');
 include('controller/RelationMvc.php');
 include('controller/Loader.php');
 include('controller/Postback.php');
+include('controller/Hook.php');
 
 include('Config.php');
 
 /*INIT*/
 Loader::Load() ;
 
-// TODO Home screen google analytics widget
-// TODO test Postback action relation (add / mod / del / dup) / and there callbacks
-// TODO State on click should open modal for editing
+Hook::Action();
+
 // TODO login and auth system with tokens and bans ips protect file manager
 // TODO save in cache user state for each table sorting and view
 // TODO Add form input validator AND input chnaged should change window.changed = true
+// TODO add module list sort editable
+// TODO Add option todo Relation selection require sometime
 
 if(get('set_form_ajax') ) {
     echo Loader::Current()->Submit();
@@ -54,7 +56,6 @@ if (get('ajax') == 'form'){
 }
 
 if (get('ajax') == 'list') {
-    //header('Content-type: application/json');
    echo Loader::Current()->GetListing();
    die ;
 }
@@ -110,6 +111,11 @@ if (get('ajax') == 'list') {
         <link href="css/admin.css" id="admin-css" rel="stylesheet">
 
         <script type="text/javascript" src="js/init.js"></script>
+
+<?
+echo Hook::Css();
+echo Hook::Js();
+?>
 </head>
 
 <body>
@@ -119,8 +125,7 @@ if (get('ajax') == 'list') {
         <div class="logo-area">
             <a class="btn btn-link btn-nav-sidebar-minified pull-left"  onclick="$('.wrapper').toggleClass('main-nav-minified')"><i class="icon ion-arrow-swap"></i></a>
             <a class="btn btn-link btn-off-canvas pull-left" onclick="$('.wrapper').removeClass('main-nav-minified').toggleClass('off-canvas-active')"><i class="icon ion-navicon-round"></i></a>
-            <a class="navbar-brand" href="#" >ADMINPANEL</a>
-
+            <a class="navbar-brand" href="?" >ADMINPANEL</a>
         </div>
     </nav>
 
@@ -128,7 +133,7 @@ if (get('ajax') == 'list') {
     <div class="col-left" id="col-left">
         <nav class="main-nav" id="main-nav">
 
-            <h3>MAIN</h3>
+            <h3><a href="?"><i class="fa fa-dashboard"></i> Home</a></h3>
             <ul class="main-menu">
                 <li class="has-submenu active">
                     <a class="submenu-toggle" href="javascript:void(0)"  data-toggle="collapse" data-target="#menu-list" aria-expanded="true" aria-controls="menu-list">
@@ -148,6 +153,8 @@ if (get('ajax') == 'list') {
                         } ?>
 
                     </ul>
+
+                    <?= Hook::Menu(); ?>
                 </li>
             </ul>
         </nav>
@@ -189,7 +196,6 @@ if (get('ajax') == 'list') {
                         <i class="ionicons ion-android-more-horizontal"></i>
                     </button>
 
-
                 </div>
 
                 <div class="navbar-collapse collapse" id="bs-tabs-navbar-collapse">
@@ -200,6 +206,7 @@ if (get('ajax') == 'list') {
                         <li class="nav-divider"></li>
                         <li><a href="#tab-form-<?= Loader::Current()->name ?>" data-toggle="tab">Form</a></li>
                         <?= Loader::Current()->RelationMvc->GetTabs(); ?>
+                        <?= Hook::Tabs(); ?>
                     </ul>
                 </div>
 
@@ -215,6 +222,7 @@ if (get('ajax') == 'list') {
                         <li data-controller="devider" class="nav-divider"></li>
                         <li data-controller="dup"><a data-confirm="Etes-vous certain de vouloir dupliquer?" href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=dup"> <i class="glyphicon glyphicon-plus"></i> Dupliquer</a></li>
 
+                        <?= Hook::Controls(); ?>
 
                     </ul>
                 </div>
@@ -227,6 +235,7 @@ if (get('ajax') == 'list') {
         <ul id="tabs" class="nav nav-tabs nav-justified collapse in" data-tabs="tabs">
             <li class="active"><a href="#tab-form-<?= Loader::Current()->name ?>" data-toggle="tab">Form</a></li>
             <?= Loader::Current()->RelationMvc->GetTabs(); ?>
+            <?= Hook::Tabs(); ?>
         </ul>
 
         <div id="my-tab-content" class="tab-content">
@@ -236,122 +245,21 @@ if (get('ajax') == 'list') {
             </div>
 
             <?= Loader::Current()->RelationMvc->GetTabsCont(); ?>
+            <?= Hook::TabsCont(); ?>
 
         </div>
+
+        <?= Hook::Footer(); ?>
+
     </form>
     </div>
 
     <? }else{ ?>
 
+<?= Hook::Dashboard(); ?>
+<div class="ga-dash clearfix"> </div>
+<script src="js/gadash.js" type="text/javascript"></script>
 
-<div style="width: 80%; margin: 0 auto">
-<div id="embed-api-auth-container"></div><div id="view-selector-container"></div>
-<div id="chart-container"></div>
-
-<div id="chart-1-container"></div>
-<div id="chart-2-container"></div>
-<div id="chart-3-container"></div>
-
-</div>
-
-<script>
-    (function(w,d,s,g,js,fs){
-        g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
-        js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
-        js.src='https://apis.google.com/js/platform.js';
-        fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
-    }(window,document,'script'));
-</script>
-<script>
-
-    gapi.analytics.ready(function() {
-
-        gapi.analytics.auth.authorize({
-            container: 'embed-api-auth-container',
-            //from : https://console.developers.google.com/project/290171304204/apiui/credential?authuser=0
-            clientid: '290171304204-aq4f7d1mahkhntlvsdem1c94miqomrnt.apps.googleusercontent.com',
-        });
-
-        var viewSelector = new gapi.analytics.ViewSelector({
-            container: 'view-selector-container'
-        });
-
-        viewSelector.execute();
-
-        var dataChart = new gapi.analytics.googleCharts.DataChart({
-            query: {
-                metrics: 'ga:sessions',
-                dimensions: 'ga:date',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday'
-            },
-            chart: {
-                container: 'chart-container',
-                type: 'LINE',
-                options: {
-                    width: '100%'
-                }
-            }
-        });
-
-        var dataChart1 = new gapi.analytics.googleCharts.DataChart({
-            query: {
-                metrics: 'ga:pageviews',
-                dimensions: 'ga:date',
-                'start-date': '7daysAgo',
-                'end-date': 'yesterday'
-            },
-            chart: {
-                container: 'chart-1-container',
-                type: 'LINE',
-                options: {
-                    width: '100%'
-                }
-            }
-        });
-        var dataChart2 = new gapi.analytics.googleCharts.DataChart({
-            query: {
-                metrics: 'ga:pageviews',
-                dimensions: 'ga:date',
-                'start-date': '15daysAgo',
-                'end-date': '8daysAgo'
-            },
-            chart: {
-                container: 'chart-2-container',
-                type: 'LINE',
-                options: {
-                    width: '100%'
-                }
-            }
-        });
-
-        var dataChart3 = new gapi.analytics.googleCharts.DataChart({
-            query: {
-                metrics: 'ga:sessions',
-                dimensions: 'ga:country',
-                'start-date': '30daysAgo',
-                'end-date': 'yesterday',
-                'max-results': 6,
-                sort: '-ga:sessions'
-            },
-            chart: {
-                container: 'chart-3-container',
-                type: 'PIE',
-                options: {
-                    width: '100%'
-                }
-            }
-        });
-
-        viewSelector.on('change', function(ids) {
-            dataChart.set({query: {ids: ids}}).execute();
-            dataChart1.set({query: {ids: ids}}).execute();
-            dataChart2.set({query: {ids: ids}}).execute();
-            dataChart3.set({query: {ids: ids}}).execute();
-        });
-
-    });
-</script>
 	<? } ?>
 </div>
 </div><!-- wrapper -->
@@ -400,6 +308,7 @@ if (get('ajax') == 'list') {
         </div>
     </div>
 </div>
+<div class="scrolltop" style=" position:fixed;" onclick=" $('html, body').animate({scrollTop:0},300);"><i class="fa fa-arrow-up"></i></div>
 
 </body>
 </html>

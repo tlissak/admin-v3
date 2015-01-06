@@ -78,8 +78,9 @@ class FormMvc
 
         $label = isset($a['title']) ?$a['title'] : false;
         $opt = isset($a['opts'] ) ? $a['opts'] : false ;
+        $value = false ;
 
-        if ($fld != 'set_form_ajax' && $fld != 'tbl' ) // && $fld != 'id'
+        if ($fld != 'set_form_ajax' && $fld != 'tbl' && $type != 'html' ) // && $fld != 'id'
             $value = post('set_form_ajax') ? $this->parent->Form->data_posted[$fld] : $this->parent->Form->data[$fld]  ;
 
         $value = isset($a['value']) ? $a['value'] : $value ;
@@ -89,15 +90,16 @@ class FormMvc
 
         $out = "";
 
-        if ($label) {
-            $out .= '<div class="form-group"><label class="col-sm-4 control-label" for="fld_' . $fld . '">' . $label . ' :</label>' . NL;
-            $out .= '<div class="input-group col-sm-8">';
+        if($label){
+            $out .= '<div class="form-group"><label class="col-sm-4 control-label" for="fld_' . ($type == 'html' ? '' : $fld) . '">' . $label . ' :</label>' . NL;
+            $out .= '<div class="input-group col-sm-8">' .NL;
         }
-        $extends = ' autocomplete="off" ';
 
-        if ($type == 'file'){
-            $extends .= ' data-url="?tbl=' . $this->parent->name . '&fld=' . $fld . '&upload=1" ' ;
+        if ($type == 'html'){
+            $out .= $fld ;
         }
+
+        $extends = ' autocomplete="off" ';
 
         if ($opt) {
             if (isset($opt['required'])) {
@@ -195,9 +197,9 @@ class FormMvc
             $out .= ' step="1" data-limit="11" max="' . $opt['max'] . '" min="' . $opt['min'] . '" ' . $extends . ' /><span>' . $value . '</span>';
         }
         if ($label) {
-            $out .= '</div></div>';
+            $out .= NL . '</div></div>' ;
         }
-        return $out;
+        return $out . NL;
     }
 
 

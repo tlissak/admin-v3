@@ -13,7 +13,7 @@ jQuery.deparam = function (querystring) {
 };
 
 $(function() {
-    $('a[data-confirm]').click(function(ev) {
+    $(document).on('click','a[data-confirm]' ,function(ev) {
         var href = $(this).attr('href');
         if (!$('#dataConfirmModal').length) {
             $('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Merci de confirmer</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Non</button><a class="btn btn-danger" id="dataConfirmOK">Oui</a></div></div></div></div>');
@@ -61,7 +61,33 @@ $(window).on("beforeunload",function(){
     }
 })
 
+function AddListControls(tbl) {
+    var _tbl = $(tbl).data().tbl ;
+    var $trs = $(tbl).find('tr') ;
+    $trs.each(function(){
+        $(this).find('td.oprate').html([
+            '<input type="hidden" value="'+$(this).find('input').val()+'">',
+            '<a class="edit" data-action="mod" data-target="#modal"  data-toggle="modal" '
+            ,'data-href="?tbl='+_tbl+'&amp;ajax=form"  href="javascript:void(0)" title="Edit">',
+            '<i class="glyphicon glyphicon-edit"></i></a>',
+            ' &nbsp; ',
+            '<a class="remove" data-confirm="Etes-vous certain de vouloir supprimer?" '
+            ,' href="?tbl='+_tbl+'&action=del&id='+$(this).find('input').val()+'&set_form_ajax=1&relation=1" >',
+            '<i class="glyphicon glyphicon-remove"></i></a>'
+        ].join(''))
+    })
+}
+
 $(document).ready(function(){
+
+    var touchScreen = 'ontouchstart' in window /* works on most browsers */ || 'onmsgesturechange' in window; /* works on ie10*/;
+    if (touchScreen) $("body").addClass('touch') ;
+    $( window ).scroll(function() {
+        if (window.scroll_timeout) clearTimeout (scroll_timeout);
+        window.scroll_timeout = setTimeout(function(){
+            $(document.body).toggleClass( 'scrolled', $(this).scrollTop() > 100 );
+        },100) ;
+    }).trigger("scroll");
 
     $(document).on('click','#dataConfirmOK',function(e) {
         e.preventDefault();
@@ -95,7 +121,6 @@ $(document).ready(function(){
 
 
     $('#modal form').on("submit",function() {
-        //TODO $.ajax.context  = ccontextTable ?
         var context = $(this).data('context') ;
         $.ajax($(this).attr('action') ,{type:'POST' ,data:$(this).serialize(),success:function(s){
                 Callback.Relation(s,context) ;
@@ -104,16 +129,33 @@ $(document).ready(function(){
     })
 
     $("#modal").on('show.bs.modal', function (e) {
-        $("form",this).data('context',$(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]') )
-            .attr("action",$(e.relatedTarget).data('href') + "&action=add&set_form_ajax=1");
-        $.ajax($(e.relatedTarget).data('href'),{context:this,success:function(s){
-            $(".modal-body",this).html(s);
-            $('.table',this).bootstrapTable();
-        }})
+
+        if ($(e.relatedTarget).data('action') == 'add') { //Add button clicked
+            var _href = $(e.relatedTarget).data('href') ;
+            $("form", this).data('context', $(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]'))
+                .attr("action", _href + "&action=add&set_form_ajax=1");
+            $.ajax(_href, {
+                context: this, success: function (s) {
+                    $(".modal-body", this).html(s);
+                    $('.table', this).bootstrapTable();
+                }
+            })
+        }else if($(e.relatedTarget).data('action') == 'mod'){ //Edit button clicked
+            var _href = $(e.relatedTarget).data('href') + '&id='+ $(e.relatedTarget).parent().find('input').val() ;
+            $("form", this).data('context', $(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]'))
+                .attr("action",  _href + "&action=mod&set_form_ajax=1");
+            $.ajax(_href, {
+                context: this, success: function (s) {
+                    $(".modal-body", this).html(s);
+                    $('.table', this).bootstrapTable();
+                }
+            })
+        }
     })
 
 
     $('.panel-relationlist .table').on('load-success.bs.table',function(e){
+        AddListControls(this,e);
         State.Select(this) ;
     }).on('check.bs.table',  function (e, row, $element) {
         State.Add(this,row) ;
@@ -121,7 +163,9 @@ $(document).ready(function(){
         State.Del(this, row);
     })
 
-    Callback.Init($.deparam($('.main-form').attr('action')))
+    if ($('.main-form').size()) {
+        Callback.Init($.deparam($('.main-form').attr('action')))
+    }
 })
 
 
@@ -229,13 +273,11 @@ var Callback = {
 }
 
 
-
-
 var State ={
     Select:function(el_list_relation)  {
         var states = $(el_list_relation).closest('.tab-pane').find(".state-cont").parent() ;
         var state_value = states.find('input');
-        var rows_input = $(el_list_relation).find("tr input") ; //[name='_id']
+        var rows_input = $(el_list_relation).find("tr input") ;
         var selected = [];
         rows_input.each(function(){
             var that = $(this) ;

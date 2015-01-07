@@ -5,7 +5,10 @@ include('inc/func.php');
 define('NL',"\r\n") ;
 
 $db = new Db();
-$cookie = new Cookie('x_admin_user');
+
+include('controller/Auth.php');
+$auth = new Auth();
+$auth->isAuth() ;
 
 include('controller/PanelMvc.php');
 include('controller/Listing.php');
@@ -21,15 +24,18 @@ include('controller/Hook.php');
 include('Config.php');
 
 /*INIT*/
+
 Loader::Load() ;
 
 Hook::Action();
 
-// TODO login and auth system with tokens and bans ips protect file manager
+// TODO Auth tokens , Auth protect file manager
+// TODO GA dash add key
 // TODO save in cache user state for each table sorting and view
 // TODO Add form input validator AND input chnaged should change window.changed = true
 // TODO add module list sort editable
 // TODO Add option todo Relation selection require sometime
+// TODO Add temp database to undo any changes
 
 if(get('set_form_ajax') ) {
     echo Loader::Current()->Submit();
@@ -68,7 +74,7 @@ if (get('ajax') == 'list') {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Admin V4</title>
+        <title>Admin v3.4</title>
 
         <script src="js/jquery-2.1.1.min.js"></script>
 
@@ -89,8 +95,8 @@ if (get('ajax') == 'list') {
 <!--
         <link href="bs/bootstrap-editable.css" rel="stylesheet"/>
         <script src="bs/bootstrap-editable.min.js"></script>
--->
         <script src="bs/bootstrap-table-editable.min.js" data-dependeds="bootstrap-editable"></script>
+-->
 
         <link href="bs/bootstrap-colorpicker.css" rel="stylesheet"/>
         <script src="bs/bootstrap-colorpicker.js" ></script>
@@ -125,7 +131,7 @@ echo Hook::Js();
         <div class="logo-area">
             <a class="btn btn-link btn-nav-sidebar-minified pull-left"  onclick="$('.wrapper').toggleClass('main-nav-minified')"><i class="icon ion-arrow-swap"></i></a>
             <a class="btn btn-link btn-off-canvas pull-left" onclick="$('.wrapper').removeClass('main-nav-minified').toggleClass('off-canvas-active')"><i class="icon ion-navicon-round"></i></a>
-            <a class="navbar-brand" href="?" >ADMINPANEL</a>
+            <a class="navbar-brand" href="?" ><i class="glyphicon glyphicon-dashboard"></i> ADMINPANEL</a>
         </div>
     </nav>
 
@@ -157,6 +163,7 @@ echo Hook::Js();
                     <?= Hook::Menu(); ?>
                 </li>
             </ul>
+            <h3><a href="?logout=1"><i class="glyphicon glyphicon-log-out"></i> Deconnexion</a></h3>
         </nav>
     </div>
 

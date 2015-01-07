@@ -111,8 +111,8 @@ class Cookie{
 			return setcookie($this->_name, $content, $time, $this->_path, $this->_domain, 0);
 		else
 			return setcookie($this->_name, $content, $time, $this->_path, $this->_domain, 0, true);
-	}	
-	function write(){
+	}
+	public function write(){
 		if (!$this->_modified || headers_sent()) 	return;
 		$cookie = '';
 		if (isset($this->_content['checksum'])) unset($this->_content['checksum']);

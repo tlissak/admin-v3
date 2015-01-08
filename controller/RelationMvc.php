@@ -152,7 +152,7 @@ class RelationMvc{
 
             $tabs_cont[] = '<div class="tab-pane" id="tab-relation-'.$r->name.(get("ajax") == 'form' ? '-ajax' : '').'">' ;
             $tabs_cont[] =  $this->parent->PanelMvc->RenderPanel('listing-'.$r->RelatedTable->name, $cont  ,'relationlist'
-                ,$r->RelatedTable->title.' R list ',$r->RelatedTable->icon ,'<a data-toggle="modal" data-target="#modal" class="pull-right btn" data-href="?tbl='.$r->name.'&ajax=form" data-action="add"><i class="icon ion-plus"></i></a>') ;
+                ,$r->RelatedTable->title.' R list ',$r->RelatedTable->icon ,'<a data-toggle="modal" data-target="#modal" class="pull-right btn add-new" data-href="?tbl='.$r->name.'&ajax=form" data-action="add"><i class="icon ion-plus"></i></a>') ;
             $tabs_cont[] = '</div>';
 
         }

@@ -3,7 +3,7 @@
 (function(){
     var panels = [
         {
-            html  : '<div class="alert"><div id="embed-api-auth-container" class="alert"></div></div><div class="alert" id="view-selector-container"></div>'
+            html  : '<div class="alert"><div id="embed-api-auth-container" ></div></div><div id="view-selector-container"></div>'
             ,id : 0  ,cls : 'col-md-2' ,title:'Config'
         }
         , {

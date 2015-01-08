@@ -49,6 +49,7 @@ define('PDO_PASS','metallica');
 }
 
 define('V2_IMG' , false ) ;
+define('NL',"\r\n") ;
 
 define('_CIPHER_ALGORITHM_',true);
 define('_BLOWFISH_KEY_', '43S6COfkycXO38GNCHdSMIV5142Ran4gUvC7bj3ukwPo91jgubLJFN91');

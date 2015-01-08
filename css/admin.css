@@ -88,19 +88,26 @@ ul.main-menu .sub-menu li .sub-menu .text {    padding-left:50px;}
 h3.panel-title{text-transform: uppercase;font-size: 1.0em;line-height: 2.2em;}
 h3.panel-title a{  border-left: #EEE 1px solid; }
 .collapsed .ion-ios-arrow-up:before{content:"\f3d0" !important;}
-
+.add-new { border-left: #F1F1F1 1px solid; border-right: #F1F1F1 1px solid;}
 /* Tabs */
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{background: #FCFCFC;}
 .nav-tabs.nav-justified > .active > a, .nav-tabs.nav-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:focus{ border-bottom-color:#FCFCFC }
 .tab-pane{ padding: 20px; background: #FCFCFC; border-left: #DDD 1px solid;}
 
-#message{ margin: 0 15px;}
+#message{ position: fixed; z-index: 1040; top: 5px; left:15px; margin-left: inherit;right: 30%;}
+#message .alert{padding: 8px 15px;animation: bounceIn 0.5s;
+    -moz-animation: bounceIn 0.5s; /* Firefox */
+    -webkit-animation: fadein 2s; /* Safari and Chrome */
+    -o-animation: fadein 2s; /* Opera */}
+#message .alert .close{ margin:-6px -10px 0 0; border-radius: 50%; color: #000; background: #FFF; opacity: 0.8; padding: 6px 10px 10px;}
+
 /*
 .visible-md.collapse.in{ display: block !important; visibility: visible !important;}
 */
 @media screen and (max-width:768px) {    #tabs{ display: none;} }
 @media screen and (min-width:768px) {    #bs-tabs-navbar-collapse{ display: none !important;} }
 
+@keyframes fadein{from{opacity:0}to{opacity:1}}@-moz-keyframes fadein{from{opacity:0}to{opacity:1}}@-webkit-keyframes fadein{from{opacity:0}to{opacity:1}}@-o-keyframes fadein{from{opacity:0}to{opacity:1}}@-webkit-keyframes bounceIn{0%,100%,20%,40%,60%,80%{-webkit-transition-timing-function:cubic-bezier(0.215,.61,.355,1);transition-timing-function:cubic-bezier(0.215,.61,.355,1)}0%{opacity:0;-webkit-transform:scale3d(.3,.3,.3);transform:scale3d(.3,.3,.3)}20%{-webkit-transform:scale3d(1.1,1.1,1.1);transform:scale3d(1.1,1.1,1.1)}40%{-webkit-transform:scale3d(.9,.9,.9);transform:scale3d(.9,.9,.9)}60%{opacity:1;-webkit-transform:scale3d(1.03,1.03,1.03);transform:scale3d(1.03,1.03,1.03)}80%{-webkit-transform:scale3d(.97,.97,.97);transform:scale3d(.97,.97,.97)}100%{opacity:1;-webkit-transform:scale3d(1,1,1);transform:scale3d(1,1,1)}}@keyframes bounceIn{0%,100%,20%,40%,60%,80%{-webkit-transition-timing-function:cubic-bezier(0.215,.61,.355,1);transition-timing-function:cubic-bezier(0.215,.61,.355,1)}0%{opacity:0;-webkit-transform:scale3d(.3,.3,.3);transform:scale3d(.3,.3,.3)}20%{-webkit-transform:scale3d(1.1,1.1,1.1);transform:scale3d(1.1,1.1,1.1)}40%{-webkit-transform:scale3d(.9,.9,.9);transform:scale3d(.9,.9,.9)}60%{opacity:1;-webkit-transform:scale3d(1.03,1.03,1.03);transform:scale3d(1.03,1.03,1.03)}80%{-webkit-transform:scale3d(.97,.97,.97);transform:scale3d(.97,.97,.97)}100%{opacity:1;-webkit-transform:scale3d(1,1,1);transform:scale3d(1,1,1)}}
 
 /* NAV BAR */
 .navbar {     background-color:#fff;}
@@ -144,7 +151,7 @@ th {    border-radius:2px;}
 @media screen and (max-width:768px){.input-group{ width: 100% ;}}
 
 /* Input Group */
-.input-group-addon{ font-size: 12px; background: #dcebf8;}
+.input-group-addon{ font-size: 12px; }
 .input-group-addon:first-child{ width: 45px;}
 .input-group-addon-clean{ background: #FFF;}
 button.save{ background: none; height: 50px; border: none; padding: 15px; display: block; cursor: pointer; width: 100%; text-align: left; }

@@ -1,22 +1,37 @@
 <?php
 
 class Listing{
+    /**
+     * @var Loader
+     */
+    public $parent ;
+
+    /**
+     * @var Db
+     */
+    private $db ;
+
     public $sql_count = '' ;
     public $sql_rows = '' ;
     public $_list = array();
     public $num_results = 0;
 
     private $sql = array('left_joins'=>'','inner_joins'=>'','search'=>'');
-    /**
-     * @var Loader
-     */
-    public $parent ;
+
     private $selected_db_fileds = array();
 
     function __construct(Loader &$p){
-        $this->parent = $p;
+        $this->parent   = &$p;
+        $this->db       = &$p->db ;
     }
 
+    public function getList() {
+        $this->initSql();
+        $list_count = $this->db->fetchRow($this->sql_count);
+        $this->num_results = (int)($list_count["cn"]);
+        $this->_list = $this->db->fetch($this->sql_rows);
+    }
+    
     public function initSql(){
 
         foreach($this->parent->viewFields as $k=>$t ){
@@ -73,13 +88,6 @@ class Listing{
             . $this->sql['order']  .NL
             . $this->sql['limit']  .NL ;
 
-    }
-    public function getList() {
-        global $db;
-        $this->initSql();
-        $list_count = $db->fetchRow($this->sql_count);
-        $this->num_results = (int)($list_count["cn"]);
-        $this->_list = $db->fetch($this->sql_rows);
     }
 }
 

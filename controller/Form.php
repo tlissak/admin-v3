@@ -6,6 +6,16 @@ class Form{
      */
     private $parent ;
 
+    /**
+     * @var Db
+     */
+    private $db ;
+
+    public function __construct(&$p)    {
+        $this->parent   = $p;
+        $this->db       = &$p->db ;
+    }
+
     public $data = array() ;
     public $data_posted = array() ;
 
@@ -15,11 +25,10 @@ class Form{
         }
     }
     function initDbData(){
-        global $db ;
         if (! $this->parent->id )
             return ;
         $sql = 'SELECT ' . implode(NL.',',$this->parent->dbFields) . ' FROM `' . $this->parent->name . '` WHERE `'.$this->parent->name.'`.id = '.$this->parent->id  ;
-        $res = $db->fetchRow($sql);
+        $res = $this->db->fetchRow($sql);
         if(count($res)){
             $this->data = $res;
         }else{
@@ -32,10 +41,6 @@ class Form{
                 $this->data_posted[$k]	 = post($k);
             }
         }
-    }
-
-    public function __construct(Loader &$p){
-        $this->parent = $p ;
     }
 
 

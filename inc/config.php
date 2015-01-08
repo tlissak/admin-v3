@@ -2,7 +2,7 @@
 define('DS', DIRECTORY_SEPARATOR);
 define('P_BASE', dirname(dirname(__FILE__)).DS);
 define('P_ADMIN',P_BASE ) ; // admin version
-define('P_SITE',P_BASE .DS . 'glasman.php'); //per site configuration
+define('P_SITE',P_BASE .DS . 'Config.php'); //per site configuration
 
 /*P:PATH allways end with DS*/
 define('D_ROOT',$_SERVER["DOCUMENT_ROOT"]) ;

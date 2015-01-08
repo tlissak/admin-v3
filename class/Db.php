@@ -1,15 +1,18 @@
 <?php
 class Db{
+
 	public $db ;
 	public $errors = array() ;
 	public $querys = array() ;
 	public $last_error =  "" ;
-	private $pdo_type  ;
-	private $pdo_dsn  ;
+	public $pdo_type  ;
+	public $pdo_dsn  ;
+	public $columns = array();
+
 	function __construct($p_dsn = PDO_DSN , $p_type= PDO_TYPE ){
 
 		$this->pdo_type 	= $p_type;
-		$this->pdo_dsn 	= $p_dsn;
+		$this->pdo_dsn 		= $p_dsn;
 		try {
 			$p_user = defined("PDO_USER") ? PDO_USER : "" ;
 			$p_pass = defined("PDO_PASS") ? PDO_PASS : "" ;
@@ -22,25 +25,30 @@ class Db{
 			die('Unable to connect to database');
 		}
 	}
+
 	function __destruct(){
 		$this->db = null ;	
 	}
+
 	static function iso2utf8(&$value, $key){
 		$value = iconv('ISO-8859-1','UTF-8', $value);
 	}
+
 	function debug($sql){
 		$this->querys[] = $sql ;	
 	}
-	function error($e,$q){
 
+	function error($e,$q){
         $er  = (implode(', ',$e) .' :: '. $q );
         $this->last_error = $er ;
         $this->errors[] = $er;
-        p($er);
-        p($q);
-		die ;
-			
+		if (DEV_MODE) {
+			p($er);
+			p($q);
+			die;
+		}
 	}
+
 	function fetch($q){
 		$this->debug($q);
 		if ($sth = $this->db->prepare($q) ){
@@ -56,6 +64,7 @@ class Db{
 			return array() ;	
 		}
 	}
+
 	function fetchRow($q){
 		$this->debug($q);
 		if ($sth = $this->db->prepare($q)){
@@ -87,25 +96,65 @@ class Db{
 			return false;	
 		}		
 	}
+
 	function ctypes($tbl) {
-		if (PDO_TYPE == 'mysql'){
+		if (isset($this->columns[$tbl] )){			return $this->columns[$tbl] ;		}
+		if ($this->pdo_type == 'mysql'){
 			$columns = $this->fetch("SHOW COLUMNS FROM `$tbl`");
 			$output = array() ;
 			foreach($columns as $cl) {
 					$output[$cl['Field']] = strtoupper( preg_replace('/\(.+\)/','',$cl['Type'] ) );
 			}
+			$this->columns[$tbl] = $output ;
 			return $output ;
 		}
-		if (PDO_TYPE == 'sqlite'){			
+		if ($this->pdo_type == 'sqlite'){
 			$columns = $this->fetch("PRAGMA table_info($tbl)");	
 			$output = array();		
 			foreach($columns as $cl){
 				$output[$cl['name']] = strtoupper( preg_replace('/\(.+\)/','',$cl['type'] ) );
 			}
+			$this->columns[$tbl] = $output ;
 			return $output ;
 		}
 		die("Db::ctypes($tbl) : db pdo type get fields not handled ". PDO_TYPE );
 	}
+	static function strpos_arr($haystack, $needle) {	if(!is_array($needle)) $needle = array($needle);
+		foreach($needle as $what) { 	if(($pos = strpos($haystack, $what))!==false) return $pos;}	return -1;
+	}
+	function build($type,$tbl,$pairs  = array(),$id=0) {
+		$types_int = array('BOOLEAN' ,'BIT' ,'INTEGER','FLOAT','NUMERIC' ,'REAL','DOUBLE','DECIMAL') ;
+		$sql_pairs 		= array() ;
+		$sql_values		= array() ;
+		$pairs_txt 		= array() ;
+		$pairs_int 		= array() ;
+		$types 			= $this->ctypes($tbl );
+		foreach($pairs as $key=>$val){
+			if(self::strpos_arr( $types[$key] , $types_int ) == 0){
+				$pairs_int[$key] = $val ;
+			}else{
+				$pairs_txt[$key] = $val ;
+			}
+		}
+		if ($type == 'UPDATE'){
+			$sql = 'UPDATE `'.$tbl.'` SET ' ;
+			foreach($pairs_txt as $key=>$val){$sql_pairs[] = '`'.$key.'`='.SQL::v2txt($val);}
+			foreach($pairs_int as $key=>$val){$sql_pairs[] = '`'.$key.'`='. SQL::v2int($val);}
+			$sql .=  join($sql_pairs,','). ' WHERE id = '.$id ;
+		}elseif($type=='INSERT'){
+			$sql = 'INSERT INTO `'.$tbl .'`' ;
+			foreach($pairs_txt as $key=>$val){$sql_pairs[] = '`'.$key.'`'; $sql_values[]=SQL::v2txt($val);}
+			foreach($pairs_int as $key=>$val){$sql_pairs[] = '`'.$key.'`'; $sql_values[]=SQL::v2int($val);}
+			$sql .= '('.    join($sql_pairs,',')  . ') VALUES ('.    join($sql_values,',')     .') ' ;
+		}elseif($type=='DUPLICATE'){
+			foreach($pairs_txt as $key=>$val){$sql_pairs[] = '`'.$key.'`'; }
+			foreach($pairs_int as $key=>$val){$sql_pairs[] = '`'.$key.'`'; }
+			$sql = 'INSERT INTO `'.$tbl.'`  ('. join($sql_pairs,',') .')
+						SELECT '. join($sql_pairs,',') .' FROM `'.$tbl.'`	WHERE id = '. $id  ;
+		}
+		return $sql ;
+	}
+
 }
 
 

@@ -2,12 +2,10 @@
 include('inc/config.php');
 include('inc/func.php');
 
+include "controller/Config.php" ;
 include "controller/Auth.php" ;
-include "Users.php" ;
 
-$auth = new Auth();
-$auth->Login();
-
+$config = new Config(true);
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -67,9 +65,9 @@ $auth->Login();
         <div class="panel">
             <div class="panel-body" style="padding-top:30px">
 
-                <? if ($auth->cb){ ?>
+                <? if ($config->auth->cb){ ?>
                 <div class="alert alert-danger col-sm-12" id="login-alert">
-                    Login faild .. you have another <?= $auth->attamps_left ?> retries
+                    Login faild .. you have another <?= $config->role_max_attamps ?> retries
                 </div>
                 <? } ?>
                 <form role="form" method="post" enctype="multipart/form-data" >

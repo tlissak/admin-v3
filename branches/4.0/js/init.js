@@ -129,28 +129,26 @@ $(document).ready(function(){
     })
 
     $("#modal").on('show.bs.modal', function (e) {
+        var action = $(e.relatedTarget).data('action') ;
 
-        if ($(e.relatedTarget).data('action') == 'add') { //Add button clicked
+        if (action == 'add') { //Add button clicked
             var _href = $(e.relatedTarget).data('href') ;
-            $("form", this).data('context', $(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]'))
-                .attr("action", _href + "&action=add&set_form_ajax=1");
-            $.ajax(_href, {
-                context: this, success: function (s) {
-                    $(".modal-body", this).html(s);
-                    $('.table', this).bootstrapTable();
-                }
-            })
-        }else if($(e.relatedTarget).data('action') == 'mod'){ //Edit button clicked
-            var _href = $(e.relatedTarget).data('href') + '&id='+ $(e.relatedTarget).parent().find('input').val() ;
-            $("form", this).data('context', $(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]'))
-                .attr("action",  _href + "&action=mod&set_form_ajax=1");
-            $.ajax(_href, {
-                context: this, success: function (s) {
-                    $(".modal-body", this).html(s);
-                    $('.table', this).bootstrapTable();
-                }
-            })
+        }else if(action == 'mod') { //Edit button clicked
+            var _href = $(e.relatedTarget).data('href') + '&id=' + $(e.relatedTarget).parent().find('input').val();
+        }else{
+            console(e.relatedTarget , $(e.relatedTarget).data()) ;
+            throw 'unknown action ' ;
         }
+
+        $("form", this).data('context', $(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]'))
+            .attr("action", _href + "&action="+ action +"&set_form_ajax=1");
+        $.ajax(_href, {
+            context: this, success: function (s) {
+                $(".modal-body", this).html(s);
+                $('.table', this).bootstrapTable();
+            }
+        })
+
     })
 
 
@@ -192,10 +190,12 @@ var Callback = {
 
             $('#breadcrumb .active').text("Edit #"+ o.id);
 
+            $('.panel-mainlist .table').bootstrapTable("refresh") ;
         }else{
             $("li[data-controller]").hide();
             this.ChangeAttribute($(".main-form"),'action',['id','action'], $.extend(o,{action:'add'}));
             $('#breadcrumb .active').text("Add");
+            //TODO : reset form !
         }
     }
     ,Message : function(cls,msg) {

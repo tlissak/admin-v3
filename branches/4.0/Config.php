@@ -1,4 +1,6 @@
 <?php
+
+
 #region Page
 Loader('page','title_fr')
     ->View(array('title_fr'=>"nom") )

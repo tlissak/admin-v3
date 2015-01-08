@@ -8,8 +8,8 @@ class ListingMvc{
 
 
 
-    public function __construct(&$p){
-        $this->parent = $p;
+    public function __construct(Loader &$p){
+        $this->parent = &$p;
     }
 
     public  function GetList(){

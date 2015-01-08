@@ -5,8 +5,14 @@ class RelationMvc{
      */
     private $parent ;
 
+    /**
+     * @var Db
+     */
+    private $db ;
+
     public function __construct(&$p)    {
         $this->parent = $p;
+        $this->db = &$p->db ;
     }
     public function GetTabs(){
         $tabs = array();
@@ -28,8 +34,6 @@ class RelationMvc{
 
     public function GetState(Relation $r,$data){
 
-
-        global $db ;
         $out = '';
         $titleField = $r->RelatedTable->titleField ;
 
@@ -41,7 +45,7 @@ class RelationMvc{
 
                 $sql = 'SELECT tbl.`'.$titleField.'` AS title_field FROM  `' . $r->name . '` AS tbl WHERE tbl.id = ' . $current_value;
                 //$out .= $this->wrap_input("sql",$sql) ;
-                $row = $db->fetchRow($sql);
+                $row = $this->db->fetchRow($sql);
                 if (count($row)) {
                     $this->filePreview($r,$row) ;
                     $out .= $this->wrap_input('<input type="radio" name="' . $r->left_key . '" value="' . $current_value . '" checked > '
@@ -58,7 +62,7 @@ class RelationMvc{
 
                // $out .= $this->wrap_input("sql",$sql) ;
 
-                $results = $db->fetch($sql);
+                $results = $this->db->fetch($sql);
                 foreach ($results as $row) {
                     $this->filePreview($r,$row) ;
                     $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >'
@@ -80,7 +84,7 @@ class RelationMvc{
                 $FLD = strpos($titleField , 'concat_ws') !== false ? $titleField : 'tbl.`' . $titleField . '`';
                 $sql = 'SELECT '.$FLD.' AS title_field,id AS left_key FROM `' . $r->by_tbl . '` AS tbl WHERE tbl.`' . $r->left_key . '` = ' . $current_value;
 
-                $results = $db->fetch($sql);
+                $results = $this->db->fetch($sql);
                 foreach ($results as $row) {
                     $this->filePreview($r,$row) ;
                     $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'],$r->name);

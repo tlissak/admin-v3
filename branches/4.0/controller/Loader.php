@@ -15,9 +15,15 @@ class Loader{
      */
     public $id ;
 
-    public $tmpRelation ;
+    /**
+     * @var Db
+     */
+    public $db ;
 
+    public $loaded = false ;
     public $current = false;
+
+
 
     public $formFields = array();
     public $fileField = array();
@@ -27,7 +33,6 @@ class Loader{
     public $relationFields = array();
 
     public $titleField = false;
-    //Html();
 
     public $relation_data = array();
     /**
@@ -35,7 +40,11 @@ class Loader{
      */
     public $relations_instances = array();
 
-    public $loaded = false ;
+    /**
+     * @var Relation
+     */
+    public $tmpRelation ;
+
     private $attr = array();
 
     public function __construct($name,$title ){        $this->name = $name ; if ($title)  $this->titleField = $title ;   }
@@ -116,12 +125,16 @@ class Loader{
      */
     public $RelationMvc ;
 
-    public static function Load(){
+    public static function Load(Db &$_db){
 
-        global $db;
 
         foreach(self::$instances as &$loader){
+
+            if ($loader->loaded)
+                continue ;
+
             $loader->loaded = true ;
+            $loader->db = &$_db ;
 
             if ($loader->name == get('tbl')){
                 $loader->id = get('id');
@@ -131,8 +144,11 @@ class Loader{
             if (! $loader->icon){                 $loader->icon = 'fa fa-circle-o';            }
             if (! $loader->title){                $loader->title = ucfirst( $loader->name );            }
 
-            $loader->dbFields = array_keys( $db->ctypes( $loader->name ) ) ;
-
+            $loader->dbFields = array_keys( $_db->ctypes( $loader->name ) ) ;
+            if (count($loader->dbFields) == 0 ){
+                p('no columns in table '. $loader->name . '.. may not found in db '.$loader->db->pdo_dsn) ;
+                die ;
+            }
 
             if (! $loader->titleField) {
                 if (in_array('title',$loader->dbFields))
@@ -146,9 +162,6 @@ class Loader{
                 else
                     die('Loader::Load() No titleField for table '. $loader->name) ;
             }
-
-            // title field is obligatory
-            //if (! $loader->titleField) {                $loader->titleField = 'id' ;            }
 
             // if loader dosent have any view fields add the id and the titleField
             if (count($loader->viewFields) == 0)
@@ -167,8 +180,6 @@ class Loader{
                 $relation->Load($loader);
             }
         }
-
-
 
         //relation need to be loaded
         foreach(self::$instances as &$loader) {

@@ -56,13 +56,12 @@
 
 gapi.analytics.ready(function() {
 
+    // query editor :  https://ga-dev-tools.appspot.com/explorer/
+    /* for best keywords : ga:searchKeyword  , ga:sessions , -ga:sessions on -yearAgo*/
+    if (!GA_KEY) return;
     gapi.analytics.auth.authorize({
         container: 'embed-api-auth-container',
-        //from : https://console.developers.google.com/project/290171304204/apiui/credential?authuser=0
-        //290171304204-aq4f7d1mahkhntlvsdem1c94miqomrnt.apps.googleusercontent.com
-        // query editor :  https://ga-dev-tools.appspot.com/explorer/
-        /* for best keywords : ga:searchKeyword  , ga:sessions , -ga:sessions on -yearAgo*/
-        clientid: '921646434115-4ub1v8m4rmo1qn4odstbjhpcuev4qoms.apps.googleusercontent.com'
+        clientid: GA_KEY
     });
     var viewSelector = new gapi.analytics.ViewSelector({container: 'view-selector-container'});
     viewSelector.execute();

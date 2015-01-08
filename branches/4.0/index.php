@@ -4,11 +4,7 @@ include('inc/func.php');
 
 define('NL',"\r\n") ;
 
-$db = new Db();
-
-include('controller/Auth.php');
-$auth = new Auth();
-$auth->isAuth() ;
+$db = null ;
 
 include('controller/PanelMvc.php');
 include('controller/Listing.php');
@@ -20,12 +16,11 @@ include('controller/RelationMvc.php');
 include('controller/Loader.php');
 include('controller/Postback.php');
 include('controller/Hook.php');
-
-include('Config.php');
+include('controller/Config.php');
+include('controller/Auth.php');
 
 /*INIT*/
-
-Loader::Load() ;
+$config = new Config(); //contains Auth->init() and Loader::Load(Db);
 
 Hook::Action();
 
@@ -36,6 +31,7 @@ Hook::Action();
 // TODO add module list sort editable
 // TODO Add option todo Relation selection require sometime
 // TODO Add temp database to undo any changes
+// TODO Verify duble by ref func(&param ){ $d = &$param} effecting code
 
 if(get('set_form_ajax') ) {
     echo Loader::Current()->Submit();
@@ -265,6 +261,10 @@ echo Hook::Js();
 
 <?= Hook::Dashboard(); ?>
 <div class="ga-dash clearfix"> </div>
+
+<script>
+    var GA_KEY = '<?= $config->cookie->ga_key ; ?>' ;
+</script>
 <script src="js/gadash.js" type="text/javascript"></script>
 
 	<? } ?>

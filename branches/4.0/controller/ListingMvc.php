@@ -45,7 +45,7 @@ class ListingMvc{
         return $this->parent->PanelMvc->RenderPanel('listing-'.$this->parent->name,$this->GetHeader(),'mainlist'
             ,$this->parent->title.' list'
             ,'glyphicon glyphicon-list'
-            ,'<a  class="pull-right btn" href="?tbl='.$this->parent->name.'" ><i class="icon ion-plus"></i></a>') ;
+            ,'<a  class="pull-right btn add-new" href="?tbl='.$this->parent->name.'" ><i class="icon ion-plus"></i></a>') ;
     }
 
     public function GetHeader(){

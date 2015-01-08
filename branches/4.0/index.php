@@ -2,10 +2,6 @@
 include('inc/config.php');
 include('inc/func.php');
 
-define('NL',"\r\n") ;
-
-$db = null ;
-
 include('controller/PanelMvc.php');
 include('controller/Listing.php');
 include('controller/ListingMvc.php');
@@ -19,13 +15,11 @@ include('controller/Hook.php');
 include('controller/Config.php');
 include('controller/Auth.php');
 
-/*INIT*/
-$config = new Config(); //contains Auth->init() and Loader::Load(Db);
+$config = new Config();
 
 Hook::Action();
 
 // TODO Auth tokens , Auth protect file manager
-// TODO GA dash add key
 // TODO save in cache user state for each table sorting and view
 // TODO Add form input validator AND input chnaged should change window.changed = true
 // TODO add module list sort editable
@@ -70,7 +64,7 @@ if (get('ajax') == 'list') {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Admin v3.4</title>
+        <title>Admin v<?= Config::$version ?></title>
 
         <script src="js/jquery-2.1.1.min.js"></script>
 
@@ -97,8 +91,8 @@ if (get('ajax') == 'list') {
         <link href="bs/bootstrap-colorpicker.css" rel="stylesheet"/>
         <script src="bs/bootstrap-colorpicker.js" ></script>
 
-        <link href="bs/bootstrap-datepicker.css" rel="stylesheet"/>
-        <script src="bs/bootstrap-datepicker.js" ></script>
+        <link href="bs/bootstrap-datetimepicker.css" rel="stylesheet"/>
+        <script src="bs/bootstrap-datetimepicker.js" ></script>
 
         <link href="bs/bootstrap-slider.css" rel="stylesheet"/>
         <script src="bs/bootstrap-slider.js" ></script>
@@ -263,7 +257,7 @@ echo Hook::Js();
 <div class="ga-dash clearfix"> </div>
 
 <script>
-    var GA_KEY = '<?= $config->cookie->ga_key ; ?>' ;
+    var GA_KEY = '<?= $config->GetGoogleAnalyticsKEY() ; ?>' ;
 </script>
 <script src="js/gadash.js" type="text/javascript"></script>
 

@@ -80,6 +80,10 @@ function AddListControls(tbl) {
 
 $(document).ready(function(){
 
+    //$.fn.datepicker.defaults.format = "dd/mm/yy";
+    $('.date_picker').parent().datetimepicker({format:'dd/MM/yyyy'});//
+    $('.color_picker').colorpicker();
+
     var touchScreen = 'ontouchstart' in window /* works on most browsers */ || 'onmsgesturechange' in window; /* works on ie10*/;
     if (touchScreen) $("body").addClass('touch') ;
     $( window ).scroll(function() {
@@ -200,7 +204,9 @@ var Callback = {
     }
     ,Message : function(cls,msg) {
         $('html, body').animate({scrollTop:0},500);
-        $("#message").prepend('<div class="alert alert-'+cls+'" ><a href="#" class="close" data-dismiss="alert">&times;</a>'+msg+'</div>' );
+        $("#message").html('<div class="alert alert-'+cls+'" ><a href="#" class="close btn btn-default" data-dismiss="alert">&times;</a>' +
+        '<div class="collapse in">'+msg+'</div>' +
+        '</div>' );//prepend
     }
     ,GetJson : function(s){
         try {
@@ -225,7 +231,7 @@ var Callback = {
             }
             this.Init(o) ;
         } else {
-            this.Message('warning', 'Object changed with error #' + o.status + '<br>' + o.message) ;
+            this.Message('warning', 'Object changed with error #' + o.status + ' details : ' + o.message) ;
         }
     }
     ,Mainform : function(s){
@@ -244,7 +250,7 @@ var Callback = {
             }
             this.Init(o) ;
         } else {
-            this.Message('warning', 'Object saved with error #' + o.status + '<br>' + o.message) ;
+            this.Message('warning', 'Object saved with error #' + o.status + ' details : ' + o.message) ;
         }
     }
     ,Relation : function(s,context){
@@ -267,7 +273,7 @@ var Callback = {
             $("#modal").modal('hide') ;
             context.bootstrapTable("refresh") ;
         } else {
-            this.Message('warning', 'Relation object saved with error #' + o.status + '<br>' + o.message) ;
+            this.Message('warning', 'Relation object saved with error #' + o.status + ' details : ' + o.message) ;
         }
     }
 }

@@ -125,8 +125,9 @@ class FormMvc
             $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control color_picker"   data-type="color"  data-limit="7" ' . $extends . '  />';
         }
         if ($type == 'date') {
-            $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i> </span>';
-            $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control date_picker"  data-type="date" data-limit="10" ' . $extends . ' />';
+            $out .= '<span class="input-group-addon add-on">
+                    <i class="glyphicon glyphicon-calendar" data-time-icon="glyphicon glyphicon-time" data-date-icon="glyphicon glyphicon-calendar"></i> </span>';
+            $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control date_picker" data-type="date" data-limit="10" ' . $extends . ' />';
         }
         if ($type == 'text') {
             $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-font"></i> </span>';

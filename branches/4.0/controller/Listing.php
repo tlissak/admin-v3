@@ -66,7 +66,7 @@ class Listing{
 
         /* SORT */
         if (get('sort') &&  get('order')) {
-            $this->sql['order']  = ' ORDER BY ' . get('sort') . ' ' . get('order');
+            $this->sql['order']  = ' ORDER BY ' . get('sort') . ' ' . get('order'); //`'.$this->parent->name.'`.
         }
 
         /* PAGING */

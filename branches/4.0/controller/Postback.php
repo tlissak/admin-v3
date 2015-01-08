@@ -56,7 +56,8 @@ class Postback{
             if ($r->type == 'ManyToOneByKey'){
 				$sql =  'UPDATE `'. $r->name . '` SET `'.$r->left_key  . '` = -1
 					WHERE  `'. $r->name .'`.`'.$r->left_key .'` =  ' .
-                    (isset($this->form->data_posted[ $r->right_key ]) && $this->form->data_posted[ $r->right_key ] ?  $this->form->data_posted[ $r->right_key ] : '-1' ) ;
+                    (isset($this->form->data_posted[ $r->right_key ]) && $this->form->data_posted[ $r->right_key ] && !is_array($this->form->data_posted[ $r->right_key ])
+                        ?  $this->form->data_posted[ $r->right_key ] : '-1' ) ;
                 $this->sql[] = $sql;
                 $this->db->query($sql ) ;
 			}
@@ -95,7 +96,10 @@ class Postback{
                 $this->debug[] = "Processing Relation ". $r->name . ' of type '. $r->type  ;
                 if (count($ids_left_key)>0) {
                     $sql = 'UPDATE `'. $r->name. '` SET `' . $r->left_key . '` = ' .
-                        ($this->form->data_posted[ $r->right_key ] ?  $this->form->data_posted[ $r->right_key ] : '-1' )
+                        (isset($this->form->data_posted[ $r->right_key ])
+                        && $this->form->data_posted[ $r->right_key ]
+                        && !is_array($this->form->data_posted[ $r->right_key ])
+                            ?  $this->form->data_posted[ $r->right_key ] : '-1' )
                         . ' WHERE id IN(' . implode(",",$ids_left_key) . ') ' ;
                     $this->sql[] = $sql;
                     $this->db->query($sql);
@@ -143,10 +147,10 @@ class Postback{
 
         $this->action = get('action');
 
-        if ($this->parent->protected) {   return '{"error":"Table is protected","details":"'.$this->parent->name.'"->protected"}'; }
+        if ($this->parent->protected) {   return '{"status":403,"message":"Table is protected '.$this->parent->name.'->protected"}'; }
 
         if (!in_array($this->action,$this->PostAction)){
-            return '{"error":"Action type not set in form","details":"get(action) == ('.$this->action.')"}';
+            return '{"status":100,"message":"Action type not set in form get(action) == ('.$this->action.')"}';
         }
 
         $out = array("id"=>$this->_id,"tbl"=>$this->parent->name,'left-key'=>$this->parent->name,"action"=>$this->action);
@@ -189,6 +193,7 @@ class Postback{
 
         $sql = $this->db->build('INSERT',$this->name,$this->form->data_posted) ;
         if ($this->_id = $this->db->query($sql ) ){
+            Config::Log(1,'ADD '.$this->name.' '.$this->_id) ;
             $this->addRelations() ;
             return true;
         }else{
@@ -198,7 +203,7 @@ class Postback{
     }
 
     public function Dup(){
-
+        Config::Log(1,'DUPLICATE '.$this->name.' '.$this->_id) ;
         $this->form->initData();
 
         if ($this->VIRTUAL_MODE) return true;
@@ -216,7 +221,7 @@ class Postback{
     }
 
     public function Edit(){
-
+        Config::Log(1,'EDIT '.$this->name.' '.$this->_id) ;
         $this->form->initPostData() ;
 
         if ($this->VIRTUAL_MODE) return true;
@@ -234,7 +239,7 @@ class Postback{
     }
 
     public function Delete(){
-
+        Config::Log(1,'DELETE '.$this->name.' '.$this->_id) ;
         if ($this->VIRTUAL_MODE) return true;
 
         $sql = 'DELETE  FROM `'.$this->name.'` WHERE id = '. $this->_id ;

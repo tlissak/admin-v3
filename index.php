@@ -1,5 +1,6 @@
 <?php // v4
-include('inc/config.php');
+include('inc/_config.php');
+include('inc/settings.php');
 include('inc/func.php');
 
 include('controller/PanelMvc.php');

@@ -9,20 +9,17 @@ class Db{
 	public $pdo_dsn  ;
 	public $columns = array();
 
-	function __construct($p_dsn = PDO_DSN , $p_type= PDO_TYPE ){
-
+	function __construct($p_dsn , $p_type  ,$p_user="",$p_password=""){
 		$this->pdo_type 	= $p_type;
 		$this->pdo_dsn 		= $p_dsn;
 		try {
-			$p_user = defined("PDO_USER") ? PDO_USER : "" ;
-			$p_pass = defined("PDO_PASS") ? PDO_PASS : "" ;
 			$this->db = new PDO( $p_dsn,$p_user,$p_pass);	
 			$this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 			$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 			if ($this->pdo_type == 'mysql'){	$this->db->query("SET NAMES 'utf8'");} //$this->db->exec("set names utf8");
 			return ;	
 		}catch (PDOException $err) {
-			die('Unable to connect to database');
+			die('Unable to connect to database '.$err );
 		}
 	}
 

@@ -20,6 +20,7 @@ class Config{
     public $show_login_message = false ;
 
     public function __construct($login_page = false ){
+		if (!defined('SETTINGS')) die ("No settings loaded");
         if (!self::$db){             self::initDb();        }
         if (!self::$cookie){         self::$cookie =  new Cookie('admin_auth');       }
 
@@ -127,7 +128,8 @@ class Config{
 
     public function LoadConfig(){
         include(P_SITE);
-        $db =  new Db(); //Info Config file
+		p(PDO_DSN);
+        $db =  new Db(PDO_DSN , PDO_TYPE); //Info Config file
         Loader::Load($db);
     }
 

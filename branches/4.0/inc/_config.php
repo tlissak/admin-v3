@@ -11,7 +11,6 @@ define('P_SELF',$_SERVER["SCRIPT_NAME"]) ;
 define('P_INC',P_BASE. 'inc'.DS)  ;
 define('P_CONTROLS',P_BASE. 'controller'.DS)  ; 
 define('P_CLASS',P_BASE. 'class'.DS)  ; 
-define('P_CLASS_OVER',P_ADMIN. 'class'.DS)  ; 
 
 /*U:URL ends with / */
 define('U_HOST',  (isset($_SERVER['HTTP_X_FORWARDED_HOST']) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') );
@@ -36,8 +35,6 @@ if (!defined('PHP_VERSION_ID')){    $version = explode('.', PHP_VERSION);    def
 function __autoload($ClassName){	
 	if (is_file(P_CLASS.$ClassName.'.php')){
 		include P_CLASS .$ClassName.'.php' ;
-	}elseif(is_file(P_CLASS_OVER.$ClassName.'.php') ){
-		include P_CLASS_OVER .$ClassName.'.php' ;
 	}else{
 		echo '__autoload('. P_CLASS.$ClassName.').php not found ' .__FILE__ .__LINE__; 	die ;	
 	}

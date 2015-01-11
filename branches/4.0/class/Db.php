@@ -9,7 +9,7 @@ class Db{
 	public $pdo_dsn  ;
 	public $columns = array();
 
-	function __construct($p_dsn , $p_type  ,$p_user="",$p_password=""){
+	function __construct($p_dsn , $p_type  ,$p_user="",$p_pass=""){
 		$this->pdo_type 	= $p_type;
 		$this->pdo_dsn 		= $p_dsn;
 		try {

@@ -1,6 +1,6 @@
 <?
 include('inc/_config.php');
-include('inc/_settings.php');
+include('inc/settings.php');
 include('inc/func.php');
 
 include "controller/Config.php" ;

@@ -128,8 +128,7 @@ class Config{
 
     public function LoadConfig(){
         include(P_SITE);
-		p(PDO_DSN);
-        $db =  new Db(PDO_DSN , PDO_TYPE); //Info Config file
+		$db =  new Db(PDO_DSN , PDO_TYPE , PDO_USER , PDO_PASS); 
         Loader::Load($db);
     }
 

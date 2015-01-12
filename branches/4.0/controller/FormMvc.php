@@ -188,7 +188,6 @@ class FormMvc
             if (is_image(P_PHOTO . $value)){
                 $out .= '<p><img src="'.U_PHOTO.$value.'" class="image_preview"></p>' ;
             }
-
         }
         if ($type == 'hidden') {
             $out .= '<input type="hidden" name="' . $fld . '" id="hdn_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';

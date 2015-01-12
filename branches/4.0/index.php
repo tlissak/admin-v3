@@ -20,6 +20,7 @@ $config = new Config();
 
 Hook::Action();
 
+// TODO Filemanager when lots of files freeze
 // TODO Auth tokens , Auth protect file manager
 // TODO save in cache user state for each table sorting and view
 // TODO Add form input validator AND input chnaged should change window.changed = true

@@ -22,12 +22,14 @@ class ListingMvc{
             }
         }
 
-        if (count($this->parent->fileField)){
+        if (count($this->parent->fileField)  ){
             foreach($this->parent->Listing->_list as &$r){
                 foreach($this->parent->fileField as $f){
-                    if ($file = $r[$f] ) {
-                        if (is_image(P_PHOTO . $file)) {
-                            $r[$f] = '<img src="'.U_PHOTO . $file.'" class="image_preview">';
+                    if (in_array($f,array_keys($this->parent->viewFields))) {
+                        if ($file = $r[$f]) {
+                            if (is_image(P_PHOTO . $file)) {
+                                $r[$f] = '<img src="' . U_PHOTO . $file . ',width=100" class="image_preview">';
+                            }
                         }
                     }
                 }

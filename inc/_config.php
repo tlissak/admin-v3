@@ -1,6 +1,7 @@
 <?php
 define('DS', DIRECTORY_SEPARATOR);
-define('P_BASE', dirname(dirname(__FILE__)).DS);
+define('P_BASE', dirname(dirname(dirname(__FILE__))).DS);
+define('P_ADMIN', dirname(dirname(__FILE__)).DS);
 
 /*P:PATH end with DS*/
 define('D_ROOT',$_SERVER["DOCUMENT_ROOT"]) ;
@@ -8,9 +9,7 @@ define('P_ROOT',D_ROOT .( substr(D_ROOT, -1) !== '/' ? '/' : '' )) ;
 define('P_CONF', str_replace('\\','/',__FILE__));
 define('P_SCRIPT',$_SERVER["SCRIPT_FILENAME"]) ;
 define('P_SELF',$_SERVER["SCRIPT_NAME"]) ;
-define('P_INC',P_BASE. 'inc'.DS)  ;
-define('P_CONTROLS',P_BASE. 'controller'.DS)  ; 
-define('P_CLASS',P_BASE. 'class'.DS)  ; 
+define('P_CLASS',P_ADMIN. 'class'.DS)  ;
 
 /*U:URL ends with / */
 define('U_HOST',  (isset($_SERVER['HTTP_X_FORWARDED_HOST']) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') );

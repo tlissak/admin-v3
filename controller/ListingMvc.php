@@ -16,6 +16,9 @@ class ListingMvc{
 
         $this->parent->Listing->getList() ;
 
+        foreach($this->parent->Listing->_list as &$r){
+            $r['_tbl'] = $this->parent->name ;
+        }
         if (get('relation')){
             foreach($this->parent->Listing->_list as &$r){
                 $r['_id'] = $r['id'] ;
@@ -83,10 +86,10 @@ class ListingMvc{
             // ,'click-to-select'=>'true'
         );
 
+        $opts['tbl'] = $this->parent->name ;
 
         if ($this->parent->tmpRelation) {
 
-            $opts['tbl'] = $this->parent->tmpRelation->name ;
             $opts['selection-type'] = $this->parent->tmpRelation->view_type ;
             $opts['title-field'] = $this->parent->titleField ;
             $opts['left-key'] = $this->parent->tmpRelation->left_key ;
@@ -103,13 +106,14 @@ class ListingMvc{
         }
 
         foreach( $this->parent->viewFields as $key=>$title) {
-            $fields[] = '<th data-field="'.$key.'" data-sortable="true" ' ;
-            $fields[] = ($key == 'id' ? ' data-visible="false" ' : '' ) ;
-            $fields[] =  ' >' . $title .'</th>' ;
+            $fields[] = '<th data-field="'.$key.'" data-sortable="true" '
+                . ($key == 'id' ? ' data-visible="false" ' : '' )
+                .  (($this->parent->tmpRelation) ?  '' : ' data-formatter="mainFormater" ')
+                . ' >' . $title .'</th>' ;
         }
 
         if ($this->parent->tmpRelation) { //TODO : add if table ->readonly
-            $fields[] = '<th data-field="operate" class="oprate" data-halign="center" data-align="center" >-</th>';
+            $fields[] = '<th data-field="operate" data-formatter="relationFormater"  class="oprate" data-halign="center" data-align="center" >-</th>';
         }
         $out =  '<table class="table" ' ;
 
@@ -118,10 +122,8 @@ class ListingMvc{
         }
 
         $out .= ' ><thead><tr>'.NL;
+        $out .= implode(NL,$fields);
 
-        foreach ($fields as $f){
-            $out .= $f . NL;
-        }
         $out .=  '</tr></thead></table>' ;
         return $out ;
     }

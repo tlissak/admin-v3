@@ -99,7 +99,7 @@ h3.panel-title a{  border-left: #EEE 1px solid; }
     -moz-animation: bounceIn 0.5s; /* Firefox */
     -webkit-animation: fadein 2s; /* Safari and Chrome */
     -o-animation: fadein 2s; /* Opera */}
-#message .alert .close{ margin:-6px -10px 0 0; border-radius: 50%; color: #000; background: #FFF; opacity: 0.8; padding: 6px 10px 10px;}
+#message .alert .close{ margin:-2px -8px 0 0; opacity: 0.5; padding: 4px 6px 4px;}
 
 /*
 .visible-md.collapse.in{ display: block !important; visibility: visible !important;}
@@ -138,7 +138,7 @@ h3.panel-title a{  border-left: #EEE 1px solid; }
 .state-item{    cursor: pointer; border-right: 0;}
 /* BootstrapTable */
 th {    border-radius:2px;}
-.table tr{    cursor: pointer;}
+.panel-relationlist .table tr{    cursor: pointer;}
 .fixed-table-container{ clear: none;}
 .fixed-table-toolbar .columns{ margin:15px 20px 0; }
 .fixed-table-pagination ul.pagination{ margin:5px 0;}

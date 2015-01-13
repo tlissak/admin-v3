@@ -223,8 +223,8 @@ function base_url()
 {
     return sprintf(
         "%s://%s",
-        isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
-        $_SERVER['HTTP_HOST']
+        (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http'),
+        (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'DOMAIN')
     );
 }
 

@@ -31,6 +31,7 @@ function responsive_filemanager_callback(field_id){
     if (url.indexOf("/photos/") === 0) {
         f.val( url.replace("/photos/",''))
     } ;
+    //TODO : Add image preview
     $('#ModalFileManager').modal('hide');
 }
 
@@ -61,23 +62,20 @@ $(window).on("beforeunload",function(){
     }
 })
 
-function AddListControls(tbl) {
-    var _tbl = $(tbl).data().tbl ;
-    var $trs = $(tbl).find('tr') ;
-    $trs.each(function(){
-        $(this).find('td.oprate').html([
-            '<input type="hidden" value="'+$(this).find('input').val()+'">',
-            '<a class="edit" data-action="mod" data-target="#modal"  data-toggle="modal" '
-            ,'data-href="?tbl='+_tbl+'&amp;ajax=form"  href="javascript:void(0)" title="Edit">',
-            '<i class="glyphicon glyphicon-edit"></i></a>',
-            ' &nbsp; ',
-            '<a class="remove" data-confirm="Etes-vous certain de vouloir supprimer?" '
-            ,' href="?tbl='+_tbl+'&action=del&id='+$(this).find('input').val()+'&set_form_ajax=1&relation=1" >',
-            '<i class="glyphicon glyphicon-remove"></i></a>'
-        ].join(''))
-    })
+function mainFormater(value,row){
+    return '<a href="?tbl='+ row._tbl +'&id='+row.id+'">' + value + '</a>';
 }
-
+function relationFormater(value,row){
+    return ([
+        '<a class="edit" data-action="mod" data-target="#modal"  data-toggle="modal" '
+        ,'data-href="?tbl='+row._tbl+'&amp;ajax=form&id='+row.id+'"  href="#tbl='+row._tbl+'&amp;ajax=form&id='+row.id+'" title="Edit">',
+        '<i class="glyphicon glyphicon-edit"></i></a>',
+        ' &nbsp; ',
+        '<a class="remove" data-confirm="Etes-vous certain de vouloir supprimer?" '
+        ,' href="?tbl='+row._tbl+'&action=del&id='+row.id+'&set_form_ajax=1&relation=1" >',
+        '<i class="glyphicon glyphicon-remove"></i></a>'
+    ].join('')) ;
+}
 $(document).ready(function(){
 
     //$.fn.datepicker.defaults.format = "dd/mm/yy";
@@ -99,14 +97,6 @@ $(document).ready(function(){
         $.ajax($(this).attr("href"),{success:function(s){
             Callback.Postback(s) ;
         }})
-    })
-
-    $('.panel-mainlist .table').on('click-row.bs.table', function (e, row, $element) {
-        var _params = {
-            id : row.id,
-            tbl : $.deparam(window.location.search).tbl
-        }
-        window.location = '?' + ($.param(_params) ) ;
     })
 
     //Act readonly as disabled becouse disabled dosent serialize()
@@ -133,31 +123,19 @@ $(document).ready(function(){
     })
 
     $("#modal").on('show.bs.modal', function (e) {
-        var action = $(e.relatedTarget).data('action') ;
-
-        if (action == 'add') { //Add button clicked
-            var _href = $(e.relatedTarget).data('href') ;
-        }else if(action == 'mod') { //Edit button clicked
-            var _href = $(e.relatedTarget).data('href') + '&id=' + $(e.relatedTarget).parent().find('input').val();
-        }else{
-            console(e.relatedTarget , $(e.relatedTarget).data()) ;
-            throw 'unknown action ' ;
-        }
-
         $("form", this).data('context', $(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]'))
-            .attr("action", _href + "&action="+ action +"&set_form_ajax=1");
-        $.ajax(_href, {
+            .attr("action", $(e.relatedTarget).data('href') + "&action="+ $(e.relatedTarget).data('action') +"&set_form_ajax=1");
+        $.ajax($(e.relatedTarget).data('href'), {
             context: this, success: function (s) {
                 $(".modal-body", this).html(s);
                 $('.table', this).bootstrapTable();
+                //TODO: Load rte
             }
         })
-
     })
 
 
     $('.panel-relationlist .table').on('load-success.bs.table',function(e){
-        AddListControls(this,e);
         State.Select(this) ;
     }).on('check.bs.table',  function (e, row, $element) {
         State.Add(this,row) ;

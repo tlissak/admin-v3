@@ -1,5 +1,5 @@
 var version = "9.8.1";
-var active_contextmenu = true;
+var active_contextmenu = false;
 var copy_count=0;
 $(document).ready(function(){
 	// Right click menu
@@ -277,7 +277,6 @@ $(document).ready(function(){
 			    $('#filter').trigger('click');
 			}
     });
-
     // filtering
     $('#filter').on('click',function(){
 	var val=fix_filename($('#filter-input').val());
@@ -308,7 +307,7 @@ $(document).ready(function(){
 	    }));
 	});
     $('.upload-btn').on('click',function(){
-	    $('.uploader').show(500);
+	    $('.uploader').show();
     });
 
     var sortDescending=$('#descending').val();
@@ -343,7 +342,7 @@ $(document).ready(function(){
 		});
 
 		$('.close-uploader').on('click',function(){
-			$('.uploader').hide(500);
+			$('.uploader').hide();
 			setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},420);
 			});
 
@@ -473,11 +472,15 @@ $(document).ready(function(){
 	});
 
 	if (!Modernizr.touch) {
+		//tlissak
+		/*
 	    $('.tip').tooltip({placement: "bottom"});
 	    $('.tip-top').tooltip({placement: "top"});
 	    $('.tip-left').tooltip({placement: "left"});
 	    $('.tip-right').tooltip({placement: "right"});
+		 */
 	    $('body').addClass('no-touch');
+
 	}else {
 
 	    $('#help').show();
@@ -551,6 +554,7 @@ $(document).ready(function(){
 	else {
 		toggle_clipboard(false);
 	}
+	//tlissak
 
 	// Drag & Drop
 	$('li.dir, li.file').draggable({

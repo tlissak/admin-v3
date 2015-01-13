@@ -1,7 +1,7 @@
 <?php
 
-include('../inc/_config.php');
-include('../inc/settings.php');
+include( dirname(__FILE__) . '/../../inc/_config.php');
+include(dirname(__FILE__) . '/../../inc/settings.php');
 if (!defined('SETTINGS')) die ('No settings');
 
 session_start();
@@ -34,7 +34,7 @@ $base_url = isset($_GET['base']) ? $_GET['base'] :
 	// Get domain portion
 	$_SERVER['HTTP_HOST']; // DON'T TOUCH (base url (only domain) of site (without final /)).
 	 ;
-$base_url = $_SERVER['HTTP_HOST']  ; //U_BASE ;
+$base_url = '';//$_SERVER['HTTP_HOST']  ; //U_BASE ;
 
 $upload_dir = '/photos/'; // path from base_url to base of upload folder (with start and final /)
 $current_path = '../../photos/'; // relative path from filemanager folder to upload folder (with final /)
@@ -77,7 +77,8 @@ if ((int)(ini_get('post_max_size')) < $MaxSizeUpload){
 
 $default_language 	= "fr_FR"; //default language file name
 $icon_theme 		= "ico"; //ico or ico_dark you can cusatomize just putting a folder inside filemanager/img
-$show_folder_size	= TRUE; //Show or not show folder size in list view feature in filemanager (is possible, if there is a large folder, to greatly increase the calculations)
+//ATTENTION VERY GOURMAND :
+$show_folder_size	= FALSE; //Show or not show folder size in list view feature in filemanager (is possible, if there is a large folder, to greatly increase the calculations)
 $show_sorting_bar	= TRUE; //Show or not show sorting feature in filemanager
 $transliteration 	= FALSE; //active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
 $convert_spaces  	= FALSE; //convert all spaces on files name and folders name with $replace_with variable
@@ -189,7 +190,7 @@ $ext = array_merge($ext_img, $ext_file, $ext_misc, $ext_video,$ext_music); //all
 /******************
  * AVIARY config
 *******************/
-$aviary_active 	= TRUE;
+$aviary_active 	= FALSE;
 $aviary_secret	= "m6xaym5q42rpw433";
 // Add or modify the Aviary options below as needed - they will be json encoded when added to the configuration so arrays can be utilized as needed
 // For a list of options see: https://developers.aviary.com/docs/web/setup-guide#constructor-config

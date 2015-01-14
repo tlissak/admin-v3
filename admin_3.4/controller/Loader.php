@@ -70,7 +70,7 @@ class Loader{
 
     /*View no need id field its default*/
     public function View($st= array()){ $st = array_merge(array('id'=>'id'),$st) ; $this->viewFields = $st;  return $this ;   }
-    public function Relation($name,$st=array()){ $this->relations_instances[$name] = new Relation($name,$st)  ; return $this;}
+    public function Relation($name,$st=array()){ $this->relations_instances[] = new Relation($name,$st,count($this->relations_instances))  ; return $this;}
 
 
     /**

@@ -17,7 +17,7 @@ class RelationMvc{
     public function GetTabs(){
         $tabs = array();
         foreach($this->parent->relations_instances as $r){
-            $tabs[ ] = '<li><a href="#tab-relation-'.$r->name . (get("ajax") == 'form' ? '-ajax' : '').'" data-toggle="tab">' ;
+            $tabs[ ] = '<li><a href="#tab-relation-'.$r->id_html .'" data-toggle="tab">' ;
             $tabs[ ] = Loader::Get($r->name)->title ;
             $tabs[ ] = '</a></li>';
         }
@@ -104,7 +104,7 @@ class RelationMvc{
         }
         $out .= '</script>' ;
 
-        $out = $this->parent->PanelMvc->RenderPanel('state-'.$r->RelatedTable->name,$out,'state',$r->RelatedTable->title . ' state',$r->RelatedTable->icon) ;
+        $out = $this->parent->PanelMvc->RenderPanel('state-'.$r->id_html,$out,'state',$r->RelatedTable->title . ' state',$r->RelatedTable->icon) ;
         return  $out ;
 
     }
@@ -150,8 +150,8 @@ class RelationMvc{
                 $r->RelatedTable->tmpRelation = '' ;
             }
 
-            $tabs_cont[] = '<div class="tab-pane" id="tab-relation-'.$r->name.(get("ajax") == 'form' ? '-ajax' : '').'">' ;
-            $tabs_cont[] =  $this->parent->PanelMvc->RenderPanel('listing-'.$r->RelatedTable->name, $cont  ,'relationlist'
+            $tabs_cont[] = '<div class="tab-pane" id="tab-relation-'.$r->id_html.'">' ;
+            $tabs_cont[] =  $this->parent->PanelMvc->RenderPanel('listing-'.$r->id_html, $cont  ,'relationlist'
                 ,$r->RelatedTable->title.' R list ',$r->RelatedTable->icon ,'<a data-toggle="modal" data-target="#modal" class="pull-right btn add-new" data-href="?tbl='.$r->name.'&ajax=form" data-action="add"><i class="icon ion-plus"></i></a>') ;
             $tabs_cont[] = '</div>';
 

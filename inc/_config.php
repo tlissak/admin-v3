@@ -15,7 +15,7 @@ define('P_CLASS',P_ADMIN. 'class'.DS)  ;
 define('U_HOST',  (isset($_SERVER['HTTP_X_FORWARDED_HOST']) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') );
 define('U_SELF',$_SERVER['PHP_SELF']); // used to gate page name
 define('U_URI',$_SERVER['REQUEST_URI'] );
-define('U_DIRURI',dirname(dirname(str_replace(P_ROOT,'',P_CONF))) );
+define('U_DIRURI',dirname(dirname(dirname(str_replace(P_ROOT,'',P_CONF)))) );
 define('U_ROOT' , U_DIRURI == "." ? "/" : U_DIRURI  .( substr(U_DIRURI, -1) !== '/' ? '/' : '' ) ) ;
 define('U_PROTOCOLE', ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ||  $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://" );
 
@@ -35,7 +35,9 @@ function __autoload($ClassName){
 	if (is_file(P_CLASS.$ClassName.'.php')){
 		include P_CLASS .$ClassName.'.php' ;
 	}else{
-		echo '__autoload('. P_CLASS.$ClassName.').php not found ' .__FILE__ .__LINE__; 	die ;	
+		echo '__autoload('. P_CLASS.$ClassName.').php not found ' ;
+		var_dump(debug_backtrace()) ;
+		die ;
 	}
 }
 

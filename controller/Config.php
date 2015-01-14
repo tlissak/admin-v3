@@ -135,14 +135,14 @@ class Config{
 
 
     public function getLeftAttamps(){
-        $row = self::$db->fetchRow('SELECT count(*) AS c FROM config_ban WHERE ip = '. SQL::v2txt(IP) . ' AND date_time > '. (date('YmdHis')  - $this->role_max_attamps_time) ) ;
+        $row = self::$db->fetchRow('SELECT count(*) AS c FROM config_ban WHERE ip = '. Db::v2txt(IP) . ' AND date_time > '. (date('YmdHis')  - $this->role_max_attamps_time) ) ;
         return $this->role_max_attamps = $this->role_max_attamps - $row['c'] ;
     }
     public function addAttamp($up){
-        self::$db->query('INSERT INTO config_ban (ip,date_time,user_pass) VALUES ('.SQL::v2txt(IP).','.SQL::v2txt(date('YmdHis')) .','. SQL::v2txt( $up ) .');' );
+        self::$db->query('INSERT INTO config_ban (ip,date_time,user_pass) VALUES ('.Db::v2txt(IP).','.Db::v2txt(date('YmdHis')) .','. Db::v2txt( $up ) .');' );
     }
     public function getLoginRow($u,$p){
-       return self::$db->fetchRow('SELECT * FROM config_users WHERE user = '.SQL::v2txt($u).' AND pass = '. SQL::v2txt(md5($p)) .' AND valid = 1' ) ;
+       return self::$db->fetchRow('SELECT * FROM config_users WHERE user = '.Db::v2txt($u).' AND pass = '. Db::v2txt(md5($p)) .' AND valid = 1' ) ;
     }
 
     public static function Log($priority,$event){

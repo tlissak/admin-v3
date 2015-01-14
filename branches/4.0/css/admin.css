@@ -178,3 +178,7 @@ button.save{ background: none; height: 50px; border: none; padding: 15px; displa
 
 .scrolltop{ border: #DDD 1px solid; border-radius: 4px; background: #FFF; color: #CCC;  height: 38px; width: 38px; line-height: 38px; text-align: center; font-size: 18px; cursor: pointer; bottom: 0%; right: 2%; position: fixed; display: none; z-index: 999; }
 .scrolled .scrolltop{ display: block;}
+
+
+.panel-compact .pagination-detail{    float: left;}
+.panel-compact .pagination{  float: right;}

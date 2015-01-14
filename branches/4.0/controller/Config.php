@@ -7,8 +7,11 @@ class Config{
     /**
      * @var Db
      */
-    public static  $db = null ;
+    public static $db = null ;
     public static $db_file = 'config.sqlite' ;
+
+    public static $db_loader = null ;
+
     /**
      * @var Cookie
      */
@@ -42,6 +45,10 @@ class Config{
             header('Location: login.php?no_auth');
             die ;
         };
+
+        foreach (glob (P_ADMIN . 'module' . DS . '*.php')  as $module ){
+            include($module) ;
+        }
 
         if (self::$cookie->id_user === "0" ){
             $this->LoadConfigAdmin() ;
@@ -128,8 +135,8 @@ class Config{
 
     public function LoadConfig(){
         include(P_SITE);
-		$db =  new Db(PDO_DSN , PDO_TYPE , PDO_USER , PDO_PASS); 
-        Loader::Load($db);
+        self::$db_loader =  new Db(PDO_DSN , PDO_TYPE , PDO_USER , PDO_PASS);
+        Loader::Load(self::$db_loader);
     }
 
 

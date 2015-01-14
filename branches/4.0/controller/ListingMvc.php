@@ -107,7 +107,7 @@ class ListingMvc{
 
         foreach( $this->parent->viewFields as $key=>$title) {
             $fields[] = '<th data-field="'.$key.'" data-sortable="true" '
-                . ($key == 'id' ? ' data-visible="false" ' : '' )
+                . ($key == 'id' ? ($this->parent->show_list_id ? '' : ' data-visible="false" ') : ''  )
                 .  (($this->parent->tmpRelation) ?  '' : ' data-formatter="mainFormater" ')
                 . ' >' . $title .'</th>' ;
         }

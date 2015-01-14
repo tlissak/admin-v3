@@ -754,7 +754,7 @@
         }
 
         html.push(
-            '<div class="pull-left pagination-detail">',
+            '<div class="pagination-detail">',
                 '<span class="pagination-info">',
                     this.options.formatShowingRows(this.pageFrom, this.pageTo, this.options.totalRows),
                 '</span>');
@@ -793,7 +793,7 @@
         html.push('</span>');
 
         html.push('</div>',
-            '<div class="pull-right pagination">',
+            '<div class="pagination">',
                 '<ul class="pagination">',
                     '<li class="page-first"><a href="javascript:void(0)">&lt;&lt;</a></li>',
                     '<li class="page-pre"><a href="javascript:void(0)">&lt;</a></li>');

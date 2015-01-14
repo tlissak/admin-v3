@@ -4,6 +4,7 @@ class Config{
 
     public static $version = '3.4.1' ;
 
+    private static $IV = 'IvCrypt34' ;
     /**
      * @var Db
      */
@@ -103,21 +104,32 @@ class Config{
             ->FormControl('text','title','title')
             ->FormControl('text','user','user')
             ->FormControl('text','pass','pass')
+            ->FormControl("hidden","IV","IV",array('value'=>self::$IV))
             ->FormControl('html' ,'<a id="crypt-user-password" href="#" class="btn btn-danger"><i class="icon-invoice"></i> Crypter </a>' ,'Crypter Password')
             ->FormControl('textarea',"ga_key",'GA Key')
             ->FormControl('html','<a href="https://console.developers.google.com/project/ABC/apiui/credential?authuser=0" class="btn btn-danger" target="_blank">Generate</a>',"Generate GA Key")
             ->FormControl('check','valid','valid')
             ->Attr('title',"Config Users");
 
+        Hook::Add('js','<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>');
+        Hook::Add('js','<script>$(function(){
+                $("#crypt-user-password").click(function(e){
+                    if (!$("#fld_pass").val()) {alert("password empty"); return; }
+                    $("#fld_pass").val(CryptoJS.MD5($("#hdn_fld_IV").val() + $("#fld_pass").val()));
+                    e.preventDefault();
+                })
+            })</script>') ;
+
+
         Loader('config_ban','ip')->View(array('ip'=>'ip','date_time'=>'date_time'))
             ->FormControl('text','ip','ip')
             ->FormControl('date','date_time','date_time')
             ->FormControl('text','user_pass','user $ pass')
+
+
+
             ->Attr('title',"Config Attamps Ban");
-        Hook::Add('js','<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>');
-        Hook::Add('js','<script>$(function(){
-                $("#crypt-user-password").click(function(e){ $("#fld_pass").val(CryptoJS.MD5($("#fld_pass").val())); e.preventDefault(); })
-            })</script>') ;
+
 
         Loader('config_log','date_time')->View(array('date_time'=>'date_time','priority'=>'priority','id_config_users_inner'=>'id_config_user'))
             ->Relation('config_users',array('type'=>'Simple','tbl'=>'config_users','left_key'=>'id_config_users'))
@@ -149,7 +161,7 @@ class Config{
         self::$db->query('INSERT INTO config_ban (ip,date_time,user_pass) VALUES ('.Db::v2txt(IP).','.Db::v2txt(date('YmdHis')) .','. Db::v2txt( $up ) .');' );
     }
     public function getLoginRow($u,$p){
-       return self::$db->fetchRow('SELECT * FROM config_users WHERE user = '.Db::v2txt($u).' AND pass = '. Db::v2txt(md5($p)) .' AND valid = 1' ) ;
+       return self::$db->fetchRow('SELECT * FROM config_users WHERE user = '.Db::v2txt($u).' AND pass = '. Db::v2txt(md5(self::$IV.$p)) .' AND valid = 1' ) ;
     }
 
     public static function Log($priority,$event){
@@ -180,7 +192,7 @@ CREATE TABLE "config_users" (
 "ga_key"  TEXT,
 "title"  TEXT
 );
-INSERT INTO "config_users" (id,user,pass,valid,title) VALUES (0,\'foxdanni@gmail.com\',\'3c2234a7ce973bc1700e0c743d6a819c\',1,\'Fox Danni Admin\') ;
+INSERT INTO "config_users" (id,user,pass,valid,title) VALUES (0,\'foxdanni@gmail.com\',\'ba574e2410d58bfe074f5f83291770e3\',1,\'Fox Danni Admin\') ;
 ') ;
                 $database->exec(
 'CREATE TABLE "config_log" (

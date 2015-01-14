@@ -25,15 +25,18 @@ class Relation {
      */
     public $RelatedTable ;
 
+    public $id_html ;
 
     /**
      * @var String RADIO|CHECKBOX
      */
     public $view_type = 'RADIO' ;
 
-    public function __construct($name,$data){
+    public function __construct($name,$data,$id){
+
         $this->name = $name ;
         $this->data = $data ;
+        $this->id_html = $name . '_'.$id . (get("ajax") == 'form' ? '-ajax' : '');
 
         if (!isset($data['type'])){
             p('Relation dosent contain type value : '.$this->name);

@@ -29,6 +29,7 @@ Hook::Action();
 // TODO Add temp database to undo any changes
 // TODO Verify duble by ref func(&param ){ $d = &$param} effecting code
 // TODO FormMvc add Video type with preview
+// TODO File manager when value open with the path
 
 if(get('set_form_ajax') ) {
     echo Loader::Current()->Submit();
@@ -156,6 +157,7 @@ echo Hook::Js();
                     <?= Hook::Menu(); ?>
                 </li>
             </ul>
+
             <h3><a href="?logout=1"><i class="glyphicon glyphicon-log-out"></i> Deconnexion</a></h3>
         </nav>
     </div>

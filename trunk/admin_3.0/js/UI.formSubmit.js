@@ -19,6 +19,11 @@
 				return ok;
 			}
 			,callback:function(callback){
+
+				if (typeof(callback) ==  "string") {
+					callback = $.parseJSON(callback);
+				}
+
 				form 		= $(this);
 				context 	= form.data('context') ;
 				
@@ -48,7 +53,8 @@
 					$('input[name="id"]',this).val(0)
 					$('input[name="form_submit_action_type"]',this).val( 'add' )
 				}
-				
+
+				$msg = 'undefined';
 				if (callback.action == "mod")	$msg =UI.lang.POST_BACK_MODIFIED  ;
 				if (callback.action == "del")		$msg =UI.lang.POST_BACK_DELETED  ;
 				if (callback.action == "add")	$msg =UI.lang.POST_BACK_ADDED  ;

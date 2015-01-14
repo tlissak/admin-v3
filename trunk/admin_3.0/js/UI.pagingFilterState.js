@@ -13,7 +13,8 @@
 	}) ;	
 	ui.getFilterPagingList = function (page){		
 		if ( $('.list-state',this).data('viewtype')  == 'SELECT-EDIT'  ){
-			if (!confirm(UI.lang.CONFIRM_DATA_LOST)) return ;		// the data not saved in db (in the relation table) yet
+
+			//if (!confirm(UI.lang.CONFIRM_DATA_LOST)) return ;		// the data not saved in db (in the relation table) yet
 		}
 		$.ajax('?get_list_ajax=1&'+ $.param(this.data()) +  '&page='+page,{
 							data:$(":input",this).serializeArray()

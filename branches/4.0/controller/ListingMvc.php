@@ -31,7 +31,7 @@ class ListingMvc{
                     if (in_array($f,array_keys($this->parent->viewFields))) {
                         if ($file = $r[$f]) {
                             if (is_image(P_PHOTO . $file)) {
-                                $r[$f] = '<img src="' . U_PHOTO . $file . ',width=100" class="image_preview">';
+                                $r[$f] = '<img src="' . U_PHOTO .'w100/'. $file . '" class="image_preview">';
                             }
                         }
                     }

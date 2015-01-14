@@ -155,7 +155,7 @@ class FormMvc
         }
         if ($type == 'sort') {
             $out .= '<span class="input-group-addon"><i class="fa fa-sort"></i></span>';
-            $out .= '<input type="number" name="' . $fld . ' "id="fld_' . $fld . '" value="' . $value . '" class="form-control" step="any"  data-type="float" data-limit="50" ' . $extends . ' />';
+            $out .= '<input type="number" name="' . $fld . '"id="fld_' . $fld . '" value="' . $value . '" class="form-control" step="any"  data-type="float" data-limit="50" ' . $extends . ' />';
         }
         if ($type == 'url') {
             $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span>';

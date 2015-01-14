@@ -54,13 +54,13 @@ class Listing{
 
         /* FILTER */
         if (get('search')) {
-            $this->sql['search'] = ' WHERE (`' . $this->parent->name . '`.id LIKE ' . SQL::v2txt( intval(get('search')) . '%') .NL;
+            $this->sql['search'] = ' WHERE (`' . $this->parent->name . '`.id LIKE ' . Db::v2txt( intval(get('search')) . '%') .NL;
             foreach ($this->selected_db_fileds  as $fld) {
-                $this->sql['search'] .= ' OR '.$fld. ' LIKE ' . SQL::v2txt('%' . get('search') . '%').NL;
+                $this->sql['search'] .= ' OR '.$fld. ' LIKE ' . Db::v2txt('%' . get('search') . '%').NL;
             }
             foreach($this->parent->relations_instances as &$rel) {
                 if ($rel->type == 'InnerSimple') {
-                    $this->sql['search'] .= ' OR ' . $rel->field . ' LIKE ' . SQL::v2txt(get('search') . '%') . NL;
+                    $this->sql['search'] .= ' OR ' . $rel->field . ' LIKE ' . Db::v2txt(get('search') . '%') . NL;
                 }
             }
             $this->sql['search'] .= ') ';

@@ -27,6 +27,9 @@ class Db{
 		$this->db = null ;	
 	}
 
+	static function v2txt($str){ 		return "'". SQLite3::escapeString($str) ."'";	}
+	static function v2int($str){ if (is_numeric($str)){ return $str ;} return intval($str); }
+
 	static function iso2utf8(&$value, $key){
 		$value = iconv('ISO-8859-1','UTF-8', $value);
 	}
@@ -135,13 +138,13 @@ class Db{
 		}
 		if ($type == 'UPDATE'){
 			$sql = 'UPDATE `'.$tbl.'` SET ' ;
-			foreach($pairs_txt as $key=>$val){$sql_pairs[] = '`'.$key.'`='.SQL::v2txt($val);}
-			foreach($pairs_int as $key=>$val){$sql_pairs[] = '`'.$key.'`='. SQL::v2int($val);}
+			foreach($pairs_txt as $key=>$val){$sql_pairs[] = '`'.$key.'`='.self::v2txt($val);}
+			foreach($pairs_int as $key=>$val){$sql_pairs[] = '`'.$key.'`='. self::v2int($val);}
 			$sql .=  join($sql_pairs,','). ' WHERE id = '.$id ;
 		}elseif($type=='INSERT'){
 			$sql = 'INSERT INTO `'.$tbl .'`' ;
-			foreach($pairs_txt as $key=>$val){$sql_pairs[] = '`'.$key.'`'; $sql_values[]=SQL::v2txt($val);}
-			foreach($pairs_int as $key=>$val){$sql_pairs[] = '`'.$key.'`'; $sql_values[]=SQL::v2int($val);}
+			foreach($pairs_txt as $key=>$val){$sql_pairs[] = '`'.$key.'`'; $sql_values[]=self::v2txt($val);}
+			foreach($pairs_int as $key=>$val){$sql_pairs[] = '`'.$key.'`'; $sql_values[]=self::v2int($val);}
 			$sql .= '('.    join($sql_pairs,',')  . ') VALUES ('.    join($sql_values,',')     .') ' ;
 		}elseif($type=='DUPLICATE'){
 			foreach($pairs_txt as $key=>$val){$sql_pairs[] = '`'.$key.'`'; }

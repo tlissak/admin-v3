@@ -192,6 +192,7 @@ class Postback{
         if ($this->VIRTUAL_MODE) return true;
 
         $sql = $this->db->build('INSERT',$this->name,$this->form->data_posted) ;
+        $this->sql[] = $sql ;
         if ($this->_id = $this->db->query($sql ) ){
             Config::Log(1,'ADD '.$this->name.' '.$this->_id) ;
             $this->addRelations() ;
@@ -211,6 +212,7 @@ class Postback{
         $data = array_filter( $this->form->data , function($kyes){ return $kyes !="id" ;},ARRAY_FILTER_USE_KEY ) ;
 
         $sql = $this->db->build('DUPLICATE',$this->name,$data,$this->_id) ;
+        $this->sql[] = $sql ;
         if ($this->_id = $this->db->query($sql ) ){
             $this->addRelations( true ) ;
             return true;
@@ -227,7 +229,7 @@ class Postback{
         if ($this->VIRTUAL_MODE) return true;
 
         $sql = $this->db->build('UPDATE',$this->name,$this->form->data_posted,$this->_id );
-
+        $this->sql[] = $sql ;
         if ($this->db->query($sql)  ){
             $this->deleteRelations() ;
             $this->addRelations() ;
@@ -243,6 +245,7 @@ class Postback{
         if ($this->VIRTUAL_MODE) return true;
 
         $sql = 'DELETE  FROM `'.$this->name.'` WHERE id = '. $this->_id ;
+        $this->sql[] = $sql ;
         if ($this->db->query($sql) ){
             $this->deleteRelations() ;
             return true;

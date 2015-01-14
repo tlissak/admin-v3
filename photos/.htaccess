@@ -1,9 +1,12 @@
 Options +FollowSymlinks -Indexes
 RewriteEngine On
 RewriteCond %{QUERY_STRING} ^(width=[0-9]+|height=[0-9]+)$
-RewriteRule ^(.*\.(jpg|png|jpeg|gif))$ ../inc/image.php?file=$1&%0 [NC]
-RewriteRule ^(.*\.(jpg|png|jpeg|gif)),(width|height)=([0-9]+)$ ../inc/image.php?file=$1&$3=$4 [NC,L]
-RewriteRule ^(.*\.(jpg|png|jpeg|gif))?(width|height)=([0-9]+)$ ../inc/image.php?file=$1&$3=$4 [NC,L]
-RewriteRule ^(.*\.(jpg|png|jpeg|gif))-(width|height)-([0-9]+)$ ../inc/image.php?file=$1&$3=$4 [NC,L]
+RewriteRule ^(.*\.(jpg|png|jpeg|gif))$ index.php?file=$1&%0 [NC]
+RewriteRule ^w([0-9]+)/(.*\.(jpg|png|jpeg|gif))$ index.php?file=$2&width=$1 [NC,L]
+RewriteRule ^h([0-9]+)/(.*\.(jpg|png|jpeg|gif))$ index.php?file=$2&height=$1 [NC,L]
+RewriteRule ^(.*\.(jpg|png|jpeg|gif)),(width|height)=([0-9]+)$ index.php?file=$1&$3=$4 [NC,L]
+RewriteRule ^(.*\.(jpg|png|jpeg|gif))?(width|height)=([0-9]+)$ index.php?file=$1&$3=$4 [NC,L]
+RewriteRule ^(.*\.(jpg|png|jpeg|gif))-(width|height)-([0-9]+)$ index.php?file=$1&$3=$4 [NC,L]
 
-ErrorDocument 403 /photos/index.php
+ErrorDocument 404 /photos/index.php?error=404
+ErrorDocument 403 /photos/index.php?error=403

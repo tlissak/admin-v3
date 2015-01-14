@@ -80,15 +80,15 @@ class AdminMvc extends AdminList{
 			$h .= '>';
 			
 			if (count($this->selected ) == 0 && $this->viewtype == "SELECT-ONE-EDIT"){
-				$h .= '<input type="hidden" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name .'" value="0"   checked="checked" />'  ;
+				$h .= '<input type="'. (DEV_MODE ? 'text' : 'hidden').'" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name .'" value="0"   checked="checked" />'  ;
 			}
 			
 			foreach($this->selected as $id){
 				if ($this->viewtype == "SELECT-EDIT"){
-					$h .= '<input type="hidden" name="'.$this->name.'[]" value="'.$id .'"    />'  ;
+					$h .= '<input type="'.(DEV_MODE ? 'text' : 'hidden').'" name="'.$this->name.'[]" value="'.$id .'"    />'  ;
 				}
 				if ($this->viewtype == "SELECT-ONE-EDIT"){
-					$h .= '<input type="hidden" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name .'" value="'.$id .'" />'  ;
+					$h .= '<input type="'.(DEV_MODE ? 'text' : 'hidden').'" name="'.$this->keys['left_key'].'"  id="fld_'.$this->name .'" value="'.$id .'" />'  ;
 				}
 			}
 			

@@ -80,9 +80,11 @@ class FormMvc
         $opt = isset($a['opts'] ) ? $a['opts'] : false ;
         $value = false ;
 
-        if ($fld != 'set_form_ajax' && $fld != 'tbl' && $type != 'html' ) // && $fld != 'id'
+        if ($fld != 'set_form_ajax' && $fld != 'tbl' && $type != 'html' && $type != 'hidden' ) // && $fld != 'id'
             $value = post('set_form_ajax') ? $this->parent->Form->data_posted[$fld] : $this->parent->Form->data[$fld]  ;
-
+        if ($type == 'hidden' && isset($opt["value"])){
+            $value = $opt['value'] ;
+        }
         $value = isset($a['value']) ? $a['value'] : $value ;
 
 
@@ -190,7 +192,7 @@ class FormMvc
             }
         }
         if ($type == 'hidden') {
-            $out .= '<input type="hidden" name="' . $fld . '" id="hdn_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';
+            $out .= '<input type="'.(DEV_MODE ? 'text' :'text').'" name="' . $fld . '" id="hdn_fld_' . $fld . '" value="' . $value . '" ' . $extends . ' />';
         }
         if ($type == 'range') {
             $out .= '<input type="range" name="' . $fld . '" id="fld_' . $fld . '" class="form-control" data-type="int" value="' . ($value ? $value : 0) . '" ';

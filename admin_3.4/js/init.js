@@ -46,7 +46,6 @@ $(function () {
                 _href += '&fldr=' + curr_val.substr(0,curr_val.lastIndexOf('/')) ;
             }
         }
-        console.log(_href) ;
         $('iframe',this).attr('src',_href );
     })
 })

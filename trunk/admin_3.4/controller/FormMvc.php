@@ -23,8 +23,6 @@ class FormMvc
 
         if ($this->parent->id) {
             $this->parent->Form->initDbData();
-        } else {
-            $this->parent->Form->initPostData();
         }
 
 
@@ -46,12 +44,6 @@ class FormMvc
             }
         }
 
-
-
-
-        //$cst = array('name'=>'action','value'=>$this->parent->id ? 'mod' : 'add' ,'type'=>'hidden');
-        //$panelFields['default'] .= $this->Control($cst) . NL;
-
         $out = '';
         foreach($this->parent->formPanel as $key=>&$pnl){
             $out .= $this->parent->PanelMvc->RenderPanel($key.'-form',$panelFields[$key],'form',$pnl['title']. ' form' ,'') ;
@@ -72,7 +64,6 @@ class FormMvc
     private function Control($a)
     {
 
-
         $fld = $a['name'];
         $type = $a['type'];
 
@@ -80,15 +71,15 @@ class FormMvc
         $opt = isset($a['opts'] ) ? $a['opts'] : false ;
         $value = false ;
 
-        if ($fld != 'set_form_ajax' && $fld != 'tbl' && $type != 'html' && $type != 'hidden' ) // && $fld != 'id'
-            $value = post('set_form_ajax') ? $this->parent->Form->data_posted[$fld] : $this->parent->Form->data[$fld]  ;
-        if ($type == 'hidden' && isset($opt["value"])){
+        if ( isset($opt["value"])){ //as default value
             $value = $opt['value'] ;
         }
-        $value = isset($a['value']) ? $a['value'] : $value ;
+        if ($fld != 'set_form_ajax' && $type != 'html' ) // && $fld != 'id' && $fld != 'tbl'
+            $value =  isset($this->parent->Form->data[$fld]) ? $this->parent->Form->data[$fld] : '' ;
 
-
-// if (! array_key_exists($fld,$d)){fb('Trying to create field  "'. $fld . '" but the table ("'.$this->name.'")  does not have this field  ');}
+        // if ajax disabled :
+        // $this->parent->Form->initPostData();
+        // $value = isset($this->parent->Form->data_posted[$fld]) ? $this->parent->Form->data_posted[$fld] :  $this->parent->Form->data[$fld] ;
 
         $out = "";
 

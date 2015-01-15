@@ -38,7 +38,7 @@ class Postback{
 
 
     public function deleteRelations() {
-        if ($this->VIRTUAL_MODE) return true;
+
 
         foreach ($this->parent->relations_instances as $r){
             if ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect'){
@@ -46,12 +46,14 @@ class Postback{
                 //$sql = 'DELETE  FROM `'. $r->by_tbl . '` WHERE `' .$r->right_key . '` = ' . $this->_id  ;
                 $sql = 'UPDATE `'. $r->by_tbl . '` SET `' .$r->right_key . '` = -' . $this->_id .' WHERE `' .$r->right_key . '` = ' . $this->_id  ;
                 $this->sql[] = $sql;
-                $this->db->query($sql);
+                if (! $this->VIRTUAL_MODE)
+                    $this->db->query($sql);
             }
             if ($r->type == 'ManyToOne' ) {
                 $sql =  'UPDATE `'. $r->name . '` SET `' .$r->left_key  . '` = -'.$this->_id.' WHERE `' . $r->left_key . '` = ' . $this->_id ;
                 $this->sql[] = $sql;
-                $this->db->query( $sql);
+                if (! $this->VIRTUAL_MODE)
+                    $this->db->query( $sql);
             }
             if ($r->type == 'ManyToOneByKey'){
 				$sql =  'UPDATE `'. $r->name . '` SET `'.$r->left_key  . '` = -1
@@ -59,23 +61,22 @@ class Postback{
                     (isset($this->form->data_posted[ $r->right_key ]) && $this->form->data_posted[ $r->right_key ] && !is_array($this->form->data_posted[ $r->right_key ])
                         ?  $this->form->data_posted[ $r->right_key ] : '-1' ) ;
                 $this->sql[] = $sql;
-                $this->db->query($sql ) ;
+                if (! $this->VIRTUAL_MODE)
+                    $this->db->query($sql ) ;
 			}
         }
     }
 
     public function addRelations($duplicate = false) {
-        if ($this->VIRTUAL_MODE) return true;
 
         foreach ($this->parent->relations_instances as $r){
 
             if (!$duplicate) {
-                $ids_left_key = post($r->left_key) ? post($r->left_key) : array() ;
+                $ids_left_key = $this->form->post($r->left_key.'[]') ? $this->form->post($r->left_key.'[]') : array() ;
             }else{
                 $this->debug[] = 'duplicate relation value';
                 $ids_left_key = array() ;
                 if ($r->type ==  'ManyToMany' ||  $r->type ==  'ManyToManySelect'){
-
                     $sql = 'SELECT `'.$r->left_key .'` AS k_id FROM `'. $r->name . '` WHERE `'.$r->right_key.'` = ' . $this->_id  ;
                     $keys = $this->db->fetch($sql);
                     foreach($keys as $k){	$ids_left_key[] = $k['k_id'] ;		}
@@ -102,12 +103,14 @@ class Postback{
                             ?  $this->form->data_posted[ $r->right_key ] : '-1' )
                         . ' WHERE id IN(' . implode(",",$ids_left_key) . ') ' ;
                     $this->sql[] = $sql;
-                    $this->db->query($sql);
+                    if (! $this->VIRTUAL_MODE)
+                        $this->db->query($sql);
                 }
                 if ($this->cleanup_relation_data) {
                     $sql2 = 'DELETE  FROM `'. $r->name. '` WHERE `' . $r->left_key. '` < 0 '  ; //=0
                     $this->sql[] = $sql2;
-                    $this->db->query(  $sql2);
+                    if (! $this->VIRTUAL_MODE)
+                        $this->db->query(  $sql2);
                 }
             }
 
@@ -123,7 +126,8 @@ class Postback{
                             : ' UNION SELECT '.$id .','. $this->_id  ;
                     }
                     $this->sql[] = $sql2;
-                    $this->db->query($sql2 );
+                    if (! $this->VIRTUAL_MODE)
+                        $this->db->query($sql2 );
                 }
             }
 
@@ -132,12 +136,14 @@ class Postback{
                 if (count($ids_left_key)>0) {
                     $sql = 'UPDATE `'. $r->name. '` SET `' . $r->left_key . '` = ' . $this->_id . ' WHERE id IN(' . implode(",",$ids_left_key) . ') '  ;
                     $this->sql[] = $sql;
-                    $this->db->query($sql);
+                    if (! $this->VIRTUAL_MODE)
+                        $this->db->query($sql);
                 }
                 if ($this->cleanup_relation_data) {
                     $sql2 = 'DELETE  FROM `'. $r->name. '` WHERE `' . $r->left_key. '` <  0 '  ;//=0
                     $this->sql[] = $sql2;
-                    $this->db->query( $sql2);
+                    if (! $this->VIRTUAL_MODE)
+                        $this->db->query( $sql2);
                 }
             }
         }
@@ -186,14 +192,13 @@ class Postback{
     }
 
     public function Add(){
-
         $this->form->initPostData() ;
-
-        if ($this->VIRTUAL_MODE) return true;
-
         $sql = $this->db->build('INSERT',$this->name,$this->form->data_posted) ;
         $this->sql[] = $sql ;
-        if ($this->_id = $this->db->query($sql ) ){
+
+        if (! $this->VIRTUAL_MODE)
+            $this->_id = $this->db->query($sql ) ;
+        if ($this->_id ){
             Config::Log(1,'ADD '.$this->name.' '.$this->_id) ;
             $this->addRelations() ;
             return true;
@@ -207,13 +212,14 @@ class Postback{
         Config::Log(1,'DUPLICATE '.$this->name.' '.$this->_id) ;
         $this->form->initData();
 
-        if ($this->VIRTUAL_MODE) return true;
-
         $data = array_filter( $this->form->data , function($kyes){ return $kyes !="id" ;},ARRAY_FILTER_USE_KEY ) ;
-
         $sql = $this->db->build('DUPLICATE',$this->name,$data,$this->_id) ;
         $this->sql[] = $sql ;
-        if ($this->_id = $this->db->query($sql ) ){
+
+        if (! $this->VIRTUAL_MODE)
+            $this->_id = $this->db->query($sql ) ;
+
+        if ($this->_id ){
             $this->addRelations( true ) ;
             return true;
         }else{
@@ -226,11 +232,12 @@ class Postback{
         Config::Log(1,'EDIT '.$this->name.' '.$this->_id) ;
         $this->form->initPostData() ;
 
-        if ($this->VIRTUAL_MODE) return true;
-
         $sql = $this->db->build('UPDATE',$this->name,$this->form->data_posted,$this->_id );
         $this->sql[] = $sql ;
-        if ($this->db->query($sql)  ){
+
+        $edited = (! $this->VIRTUAL_MODE) ? $this->db->query($sql) : 1 ;
+
+        if ( $edited ){
             $this->deleteRelations() ;
             $this->addRelations() ;
             return true;
@@ -242,11 +249,12 @@ class Postback{
 
     public function Delete(){
         Config::Log(1,'DELETE '.$this->name.' '.$this->_id) ;
-        if ($this->VIRTUAL_MODE) return true;
 
         $sql = 'DELETE  FROM `'.$this->name.'` WHERE id = '. $this->_id ;
         $this->sql[] = $sql ;
-        if ($this->db->query($sql) ){
+
+        $edited = (! $this->VIRTUAL_MODE) ? $this->db->query($sql) : 1 ;
+        if ($edited ){
             $this->deleteRelations() ;
             return true;
         }else{

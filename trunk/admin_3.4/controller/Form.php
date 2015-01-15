@@ -14,7 +14,7 @@ class Form{
     public $post ;
 
     public function __construct(&$p)    {
-        $this->parent   = $p;
+        $this->parent   = &$p;
         $this->db       = &$p->db ;
     }
 

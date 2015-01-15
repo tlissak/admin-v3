@@ -11,7 +11,7 @@ class RelationMvc{
     private $db ;
 
     public function __construct(&$p)    {
-        $this->parent = $p;
+        $this->parent = &$p;
         $this->db = &$p->db ;
     }
     public function GetTabs(){
@@ -24,7 +24,7 @@ class RelationMvc{
         return implode(NL,$tabs) ;
     }
 
-    private function filePreview(Relation $r,&$row) {
+    private function filePreview(Relation &$r,&$row) {
         if (count($r->RelatedTable->fileField) && in_array($r->RelatedTable->titleField,$r->RelatedTable->fileField)){
             if (is_image(P_PHOTO . $row['title_field'])){
                 $row['title_field'] = '<img src="'.U_PHOTO .$row['title_field'] .'">' ;
@@ -32,7 +32,7 @@ class RelationMvc{
         }
     }
 
-    public function GetState(Relation $r,$data){
+    public function GetState(Relation &$r,$data){
 
         $out = '';
         $titleField = $r->RelatedTable->titleField ;

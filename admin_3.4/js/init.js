@@ -39,7 +39,15 @@ $(function () {
     $('#ModalFileManager').on('hidden.bs.modal', function () {
         $('iframe',this).removeAttr('src');
     }).on('shown.bs.modal', function (e) {
-        $('iframe',this).attr('src',$(e.relatedTarget).data("href") );
+        var _href =  $(e.relatedTarget).data("href")
+        var curr_val = $(e.relatedTarget).next().val() ;
+        if (curr_val){
+            if (curr_val.indexOf('/')>0){
+                _href += '&fldr=' + curr_val.substr(0,curr_val.lastIndexOf('/')) ;
+            }
+        }
+        console.log(_href) ;
+        $('iframe',this).attr('src',_href );
     })
 })
 

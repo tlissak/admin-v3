@@ -113,7 +113,12 @@ $(document).ready(function(){
         window.changed = true;
     });
 
-    $('form.main-form').on("submit",function() {
+    $('form.main-form').on("submit",function(e) {
+        e.preventDefault() ;
+        var data = $(this).serializeArray() ;
+        $(this).find('.cbr input:checkbox:not(:checked)').each(function() {
+            data.push({'name':$(this).attr('name'),'value':0})
+        });
         $.ajax($(this).attr('action') ,{type:'POST',data:$(this).serialize(),success:function(s){
             Callback.Mainform(s);
         }}) ;
@@ -121,9 +126,14 @@ $(document).ready(function(){
     })
 
 
-    $('#modal form').on("submit",function() {
+    $('#modal form').on("submit",function(e) {
+        e.preventDefault() ;
+        var data = $(this).serializeArray() ;
+        $(this).find('.cbr input:checkbox:not(:checked)').each(function() {
+            data.push({'name':$(this).attr('name'),'value':0})
+        });
         var context = $(this).data('context') ;
-        $.ajax($(this).attr('action') ,{type:'POST' ,data:$(this).serialize(),success:function(s){
+        $.ajax($(this).attr('action') ,{type:'POST' ,data:data,success:function(s){
                 Callback.Relation(s,context) ;
             } }) ;
         return false;

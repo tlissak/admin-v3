@@ -11,6 +11,8 @@ class Form{
      */
     private $db ;
 
+    public $post ;
+
     public function __construct(&$p)    {
         $this->parent   = $p;
         $this->db       = &$p->db ;
@@ -35,14 +37,45 @@ class Form{
             $this->parent->id = 0;
         }
     }
+
     function initPostData(){
+        $this->post = is_array($this->post) ?  $this->post  : $this->parse_post_input( file_get_contents("php://input") ) ;
         foreach($this->parent->dbFields as $k){
-            if (isset($_POST[$k])) {
-                $this->data_posted[$k]	 = post($k);
+            if (isset($this->post[$k])) {
+                $this->data_posted[$k]	 = $this->post[$k];
             }
         }
     }
 
+    public function post($k){
+        $this->post = is_array($this->post) ?  $this->post  : $this->parse_post_input( file_get_contents("php://input") ) ;
+        if (isset($this->post[$k])) { return $this->post[$k] ; }
+        return "" ;
+    }
+
+    function parse_post_input($str) {
+        if ($str === '') return array();
+        $arr = array();    $pairs = explode('&', $str);
+        foreach ($pairs as $i) {
+            list($name,$value) = explode('=', $i, 2);
+            $name = urldecode($name);
+            $value = urldecode($value) ;
+            if( isset($arr[$name]) ) {
+                if( is_array($arr[$name]) ) {
+                    $arr[$name][] = $value ;
+                }else {
+                    $arr[$name] = array($arr[$name], $value);
+                }
+            }else {
+                if (strpos(strrev($name), strrev('[]')) === 0){
+                    $arr[$name] = array($value);
+                }else {
+                    $arr[$name] = $value;
+                }
+            }
+        }
+        return $arr;
+    }
 
 
 }

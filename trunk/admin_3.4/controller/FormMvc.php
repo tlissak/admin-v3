@@ -74,8 +74,8 @@ class FormMvc
         if ( isset($opt["value"])){ //as default value
             $value = $opt['value'] ;
         }
-        if ($fld != 'set_form_ajax' && $type != 'html' ) // && $fld != 'id' && $fld != 'tbl'
-            $value =  isset($this->parent->Form->data[$fld]) ? $this->parent->Form->data[$fld] : '' ;
+        if ($type != 'html' ) // && $fld != 'id'
+            $value =  isset($this->parent->Form->data[$fld]) ? $this->parent->Form->data[$fld] : $value ;
 
         // if ajax disabled :
         // $this->parent->Form->initPostData();

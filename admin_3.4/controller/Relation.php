@@ -75,7 +75,7 @@ class Relation {
 
     public function Load(Loader &$parent)
     {
-        $this->parent = $parent;
+        $this->parent = &$parent;
 
         $this->RelatedTable = &Loader::Get($this->name);
 

@@ -56,7 +56,7 @@ class FormMvc
 
     public function __construct(Loader &$p)
     {
-        $this->parent = $p;
+        $this->parent = &$p;
     }
 
 

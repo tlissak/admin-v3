@@ -20,16 +20,13 @@ $config = new Config();
 
 Hook::Action();
 
-// TODO Filemanager when lots of files freeze
 // TODO Auth tokens , Auth protect file manager
 // TODO save in cache user state for each table sorting and view
 // TODO Add form input validator AND input chnaged should change window.changed = true
-// TODO add module list sort editable
-// TODO Add option todo Relation selection require sometime
+// TODO add module - list sort editable
+// TODO Add option todo Relation selection is Require sometime
 // TODO Add temp database to undo any changes
-// TODO Verify duble by ref func(&param ){ $d = &$param} effecting code
 // TODO FormMvc add Video type with preview
-// TODO File manager when value open with the path
 
 if(get('set_form_ajax') ) {
     echo Loader::Current()->Submit();

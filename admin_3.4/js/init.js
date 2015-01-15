@@ -50,18 +50,20 @@ $(function () {
     })
 })
 
-$(function(){
-    $("textarea.rte").tinymce({
-        script_url: 'tinymce/tinymce.gzip.php',  //  selector: "textarea.rte",
+function initForm(_form){
+    $('.date_picker',_form).parent().datetimepicker({format:'dd/MM/yyyy'});
+    $('.color_picker',_form).colorpicker();
+    $("textarea.rte",_form).tinymce({
+        script_url: 'tinymce/tinymce.gzip.php',
         menubar: false,    toolbar_items_size: 'small',
-        plugins: [  "advlist autolink link image lists charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking save table contextmenu directionality emoticons paste textcolor colorpicker"    //responsivefilemanager
+        plugins: [  "advlist autolink link image lists charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking save table contextmenu directionality emoticons paste textcolor colorpicker"
         ],
-        relative_urls: false,                //browser_spellcheck : true ,
+        relative_urls: false,
         filemanager_title:"Responsive Filemanager",  external_filemanager_path:"filemanager/","filemanager_access_key":"7B6YhaP5en6B6lcxD5l3Bg" ,
         external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}, image_advtab: true,
         toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | cut copy paste removeformat searchreplace | bullist numlist outdent indent | styleselect fontsizeselect  | image media link unlink anchor | fullscreen preview code charmap visualchars visualblocks | forecolor backcolor | table | hr ltr rtl"   //responsivefilemanager
     });
-})
+}
 
 $(window).on("beforeunload",function(){
     if (window.changed){
@@ -70,7 +72,7 @@ $(window).on("beforeunload",function(){
 })
 
 function mainFormater(value,row){
-    return '<a href="?tbl='+ row._tbl +'&id='+row.id+'">' + value + '</a>';
+    return value === null ? '-' : '<a href="?tbl='+ row._tbl +'&id='+row.id+'">' + value + '</a>' ;
 }
 function relationFormater(value,row){
     return ([
@@ -79,15 +81,13 @@ function relationFormater(value,row){
         '<i class="glyphicon glyphicon-edit"></i></a>',
         ' &nbsp; ',
         '<a class="remove" data-confirm="Etes-vous certain de vouloir supprimer?" '
-        ,' href="?tbl='+row._tbl+'&action=del&id='+row.id+'&set_form_ajax=1&relation=1" >',
+        ,' href="?tbl='+row._tbl+'&action=del&id='+row.id+'&relation=1" >',
         '<i class="glyphicon glyphicon-remove"></i></a>'
     ].join('')) ;
 }
 $(document).ready(function(){
 
-    //$.fn.datepicker.defaults.format = "dd/mm/yy";
-    $('.date_picker').parent().datetimepicker({format:'dd/MM/yyyy'});//
-    $('.color_picker').colorpicker();
+
 
     var touchScreen = 'ontouchstart' in window /* works on most browsers */ || 'onmsgesturechange' in window; /* works on ie10*/;
     if (touchScreen) $("body").addClass('touch') ;
@@ -98,59 +98,24 @@ $(document).ready(function(){
         },100) ;
     }).trigger("scroll");
 
-    $(document).on('click','#dataConfirmOK',function(e) {
-        e.preventDefault();
-        $('#dataConfirmModal').modal('hide');
-        $.ajax($(this).attr("href"),{success:function(s){
-            Callback.Postback(s) ;
-        }})
-    })
+    initForm($('form.main-form')) ;
 
     //Act readonly as disabled becouse disabled dosent serialize()
     $(document).on('click','input[readonly]', function (e) {  e.preventDefault();  })
 
-    $(document).on('click','.state-cont .close', function(e) {
-        window.changed = true;
-    });
-
-    $('form.main-form').on("submit",function(e) {
-        e.preventDefault() ;
-        var data = $(this).serializeArray() ;
-        $(this).find('.cbr input:checkbox:not(:checked)').each(function() {
-            data.push({'name':$(this).attr('name'),'value':0})
-        });
-        $.ajax($(this).attr('action') ,{type:'POST',data:$(this).serialize(),success:function(s){
-            Callback.Mainform(s);
-        }}) ;
-        return false;
-    })
-
-
-    $('#modal form').on("submit",function(e) {
-        e.preventDefault() ;
-        var data = $(this).serializeArray() ;
-        $(this).find('.cbr input:checkbox:not(:checked)').each(function() {
-            data.push({'name':$(this).attr('name'),'value':0})
-        });
-        var context = $(this).data('context') ;
-        $.ajax($(this).attr('action') ,{type:'POST' ,data:data,success:function(s){
-                Callback.Relation(s,context) ;
-            } }) ;
-        return false;
-    })
+    $(document).on('click','.state-cont .close', function(e) {   window.changed = true;   });
 
     $("#modal").on('show.bs.modal', function (e) {
         $("form", this).data('context', $(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]'))
-            .attr("action", $(e.relatedTarget).data('href') + "&action="+ $(e.relatedTarget).data('action') +"&set_form_ajax=1");
+            .attr("action", $(e.relatedTarget).data('href') + "&action="+ $(e.relatedTarget).data('action') ) ;
         $.ajax($(e.relatedTarget).data('href'), {
             context: this, success: function (s) {
                 $(".modal-body", this).html(s);
                 $('.table', this).bootstrapTable();
-                //TODO: Load rte
+                initForm(this) ;
             }
         })
     })
-
 
     $('.panel-relationlist .table').on('load-success.bs.table',function(e){
         State.Select(this) ;
@@ -165,7 +130,42 @@ $(document).ready(function(){
     }
 })
 
+//AJAX Control  ;
+$(document).ready(function(){
 
+    $(document).on('click','#dataConfirmOK',function(e) {
+        e.preventDefault();
+        $('#dataConfirmModal').modal('hide');
+        $.ajax($(this).attr("href") +"&set_form_ajax=1",{success:function(s){
+            Callback.Postback(s) ;
+        }})
+    })
+
+    $('form.main-form').on("submit",function(e) {
+        e.preventDefault() ;
+        var data = $(this).serializeArray() ;
+        $(this).find('.cbr input:checkbox:not(:checked)').each(function() {
+            data.push({'name':$(this).attr('name'),'value':0})
+        });
+        $.ajax($(this).attr('action') +"&set_form_ajax=1" ,{type:'POST',data:$(this).serialize(),success:function(s){
+            Callback.Mainform(s);
+        }}) ;
+        return false;
+    })
+
+    $('#modal form').on("submit",function(e) {
+        e.preventDefault() ;
+        var data = $(this).serializeArray() ;
+        $(this).find('.cbr input:checkbox:not(:checked)').each(function() {
+            data.push({'name':$(this).attr('name'),'value':0})
+        });
+        var context = $(this).data('context') ;
+        $.ajax($(this).attr('action') +'&set_form_ajax=1' ,{type:'POST' ,data:data,success:function(s){
+            Callback.Relation(s,context) ;
+        } }) ;
+        return false;
+    })
+})
 var Callback = {
     ChangeAttribute:function(elm,atr,keys,obj){
         //use $.extend ?
@@ -191,10 +191,12 @@ var Callback = {
 
             $('.panel-mainlist .table').bootstrapTable("refresh") ;
         }else{
+            //reset dosent work on value="value"
+            //$(".main-form").get(0).reset() ;
+            $('.state-cont').html();
             $("li[data-controller]").hide();
             this.ChangeAttribute($(".main-form"),'action',['id','action'], $.extend(o,{action:'add'}));
             $('#breadcrumb .active').text("Add");
-            //TODO : reset form !
         }
     }
     ,Message : function(cls,msg) {

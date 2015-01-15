@@ -32,6 +32,12 @@ if(get('set_form_ajax') ) {
     echo Loader::Current()->Submit();
     die;
 }
+
+$json_postback = array( 'status'=> 0  ) ;
+if (get('set_form_classic')) {
+    $json_postback =     json_decode(Loader::Current()->Submit(), true) ;
+}
+
 if (get('ajax') == 'form'){
 ?>
 <ul class="nav nav-tabs nav-justified" data-tabs="tabs">
@@ -163,7 +169,11 @@ echo Hook::Js();
 
 <div id="col-right">
 
-    <div id="message" ></div>
+    <div id="message" >
+        <? if ($json_postback['status']){
+            echo '<div class="alert alert-info" ><a href="#" class="close btn btn-default" data-dismiss="alert">&times;</a>' .  $json_postback['message'] . ' '. $json_postback['status'] . '</div>' ;
+        } ?>
+    </div>
     <? if (Loader::Current()){ ?>
         <div class="container-fluid primary-content">
 
@@ -183,7 +193,7 @@ echo Hook::Js();
 
 
     <form class="main-form tabbable tabs" data-toggle="validator" method="post"
-          action="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=<?= Loader::Current()->id ? 'mod' : 'add' ; ?>" >
+          action="?set_form_classic=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=<?= Loader::Current()->id ? 'mod' : 'add' ; ?>" >
 
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
@@ -217,9 +227,9 @@ echo Hook::Js();
 
 
                         <li data-controller="devider" class="nav-divider"></li>
-                        <li data-controller="del"><a data-confirm="Etes-vous certain de vouloir supprimer?" href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=del"> <i class="glyphicon glyphicon-trash" ></i> Supprimer</a></li>
+                        <li data-controller="del"><a data-confirm="Etes-vous certain de vouloir supprimer?" href="?tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=del"> <i class="glyphicon glyphicon-trash" ></i> Supprimer</a></li>
                         <li data-controller="devider" class="nav-divider"></li>
-                        <li data-controller="dup"><a data-confirm="Etes-vous certain de vouloir dupliquer?" href="?set_form_ajax=1&tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=dup"> <i class="glyphicon glyphicon-plus"></i> Dupliquer</a></li>
+                        <li data-controller="dup"><a data-confirm="Etes-vous certain de vouloir dupliquer?" href="?tbl=<?= Loader::Current()->name ?>&id=<?= Loader::Current()->id ?>&action=dup"> <i class="glyphicon glyphicon-plus"></i> Dupliquer</a></li>
 
                         <?= Hook::Controls(); ?>
 
@@ -272,7 +282,7 @@ echo Hook::Js();
 <div class="modal fade " id="modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form>
+            <form method="post">
             <div class="modal-body">
             </div>
             <div class="modal-footer">

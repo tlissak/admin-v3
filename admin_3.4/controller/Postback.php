@@ -173,7 +173,7 @@ class Postback{
             $out['status'] = $this->Delete() ? 204 : 504 ;
         }
 
-        if ($this->action == "add" || $this->action == 'mod' || $this->action == 'dup' ){
+        if ($this->action == "add" || $this->action == 'mod' || $this->action == 'dup'  ){
             if ($this->VIRTUAL_MODE) {
                 $out['row'] = $this->form->data_posted ;
                 $out['row']['id'] = 0 ;
@@ -184,6 +184,9 @@ class Postback{
                 //
                 $out['row'] = $this->form->data ; // Should contains ID key
             }
+        }elseif ($this->action == 'del'){
+            $out['id'] = 0 ;
+            $this->parent->id = $this->_id;
         }
         $out['sql'] = $this->sql ;
 

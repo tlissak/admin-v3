@@ -135,6 +135,7 @@ h3.panel-title a{  border-left: #EEE 1px solid; }
 .panel-state .panel-body{ padding:10px 10px 0px 10px; background: #F8F8F8 }
 .state-cont .alert{ padding: 0; margin: 0;}
 .state-cont .input-group-addon{ padding: 4px 10px;}
+.state-cont img{ max-width: 300px;}
 .state-item{    cursor: pointer; border-right: 0;}
 /* BootstrapTable */
 th {    border-radius:2px;}

@@ -53,15 +53,24 @@ $(function () {
 function initForm(_form){
     $('.date_picker',_form).parent().datetimepicker({format:'dd/MM/yyyy'});
     $('.color_picker',_form).colorpicker();
+
+    var content_css = 'tinymce/bootstrap-rte.css' ;
+
+    if (window.Hook && window.Hook.MCE_css){
+        content_css +=  window.Hook.MCE_css  ;
+    }
+
     $("textarea.rte",_form).tinymce({
         script_url: 'tinymce/tinymce.gzip.php',
         menubar: false,    toolbar_items_size: 'small',
-        plugins: [  "advlist autolink link image lists charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking save table contextmenu directionality emoticons paste textcolor colorpicker"
+        plugins: [  "advlist autolink link image lists charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen media nonbreaking save table contextmenu directionality emoticons paste textcolor responsivefilemanager colorpicker importcss"
         ],
+        schema: "html5",
+        content_css :content_css,
         relative_urls: false,
         filemanager_title:"Responsive Filemanager",  external_filemanager_path:"filemanager/","filemanager_access_key":"7B6YhaP5en6B6lcxD5l3Bg" ,
         external_plugins: { "filemanager" : "../filemanager/plugin.min.js"}, image_advtab: true,
-        toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | cut copy paste removeformat searchreplace | bullist numlist outdent indent | styleselect fontsizeselect  | image media link unlink anchor | fullscreen preview code charmap visualchars visualblocks | forecolor backcolor | table | hr ltr rtl"   //responsivefilemanager
+        toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | cut copy paste removeformat searchreplace | bullist numlist outdent indent | styleselect fontsizeselect  | responsivefilemanager image media link unlink anchor | fullscreen preview code charmap visualchars visualblocks | forecolor backcolor | table | hr ltr rtl"
     });
 }
 
@@ -143,10 +152,6 @@ $(document).ready(function(){
 
     $('form.main-form').on("submit",function(e) {
         e.preventDefault() ;
-        var data = $(this).serializeArray() ;
-        $(this).find('.cbr input:checkbox:not(:checked)').each(function() {
-            data.push({'name':$(this).attr('name'),'value':0})
-        });
         $.ajax($(this).attr('action') +"&set_form_ajax=1" ,{type:'POST',data:$(this).serialize(),success:function(s){
             Callback.Mainform(s);
         }}) ;
@@ -155,12 +160,8 @@ $(document).ready(function(){
 
     $('#modal form').on("submit",function(e) {
         e.preventDefault() ;
-        var data = $(this).serializeArray() ;
-        $(this).find('.cbr input:checkbox:not(:checked)').each(function() {
-            data.push({'name':$(this).attr('name'),'value':0})
-        });
         var context = $(this).data('context') ;
-        $.ajax($(this).attr('action') +'&set_form_ajax=1' ,{type:'POST' ,data:data,success:function(s){
+        $.ajax($(this).attr('action') +'&set_form_ajax=1' ,{type:'POST' ,data:$(this).serialize(),success:function(s){
             Callback.Relation(s,context) ;
         } }) ;
         return false;
@@ -368,3 +369,6 @@ var State ={
 
 
 }
+
+
+//var data = $(this).serializeArray() ;        $(this).find('.cbr input:checkbox:not(:checked)').each(function() { data.push({'name':$(this).attr('name'),'value':0})    });

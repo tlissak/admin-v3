@@ -49,8 +49,9 @@ class RelationMvc{
                 if (count($row)) {
                     $this->filePreview($r,$row) ;
                     $out .= $this->wrap_input('<input type="radio" name="' . $r->left_key . '" value="' . $current_value . '" checked > '
+                        , $current_value
                         , $row['title_field']
-                        ,$r->name);
+                        , $r->name);
                 }
             }
             if ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect') {
@@ -60,23 +61,28 @@ class RelationMvc{
                 $sql .= ' WHERE tbl.id = by_tbl.`' . $r->left_key . '`';
                 $sql .= ' AND  by_tbl.`' . $r->right_key . '` = ' . $data['id'];
 
-               // $out .= $this->wrap_input("sql",$sql) ;
-
                 $results = $this->db->fetch($sql);
                 foreach ($results as $row) {
                     $this->filePreview($r,$row) ;
                     $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >'
+                        , $row['left_key']
                         , $row['title_field']
-                        ,$r->name);
+                        , $r->name);
                 }
             }
 
-            //TODO important add $r->type == 'ManyToOneByKey'
-
             if ($r->type == 'ManyToOne'){
-                //$sql = 'SELECT tbl.`'.$titleField.'` AS title_field FROM  `' . $r->name . '` AS tbl WHERE tbl.id = ' . $current_value;
-
-                //' WHERE `'. $obj->keys['left_key'] .'` =  ' . $this->id ;
+                $current_value = isset($r->parent->Form->data['id']) ? $r->parent->Form->data['id'] : 0 ;
+                $sql = 'SELECT tbl.`'.$titleField.'` AS title_field, id AS left_key FROM  `' . $r->name . '` AS tbl WHERE '.$r->left_key.' = ' . $current_value;
+               // $out .= $sql ;
+                $results = $this->db->fetch($sql);
+                foreach ($results as $row) {
+                    $this->filePreview($r,$row) ;
+                    $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->right_key . '[]" value="' . $row['left_key'] . '" checked >'
+                        , $row['left_key']
+                        , $row['title_field']
+                        , $r->name);
+                }
             }
             if ($r->type == 'ManyToOneByKey') {
 
@@ -87,7 +93,7 @@ class RelationMvc{
                 $results = $this->db->fetch($sql);
                 foreach ($results as $row) {
                     $this->filePreview($r,$row) ;
-                    $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >', $row['title_field'],$r->name);
+                    $out .= $this->wrap_input('<input type="checkbox" readonly name="' . $r->left_key . '[]" value="' . $row['left_key'] . '" checked >',$row['left_key'], $row['title_field'],$r->name);
                 }
             }
         }
@@ -98,9 +104,9 @@ class RelationMvc{
 
         $out .= '<script type="text/template">' ;
         if ($r->type == 'Simple' || $r->type == 'InnerSimple') {
-            $out .= $this->wrap_input('<input type="radio" name="{$left_key}" value="{$value}" checked >', '{$title}',$r->name);
-        }elseif ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect') {
-            $out .= $this->wrap_input('<input type="checkbox" readonly name="{$left_key}" value="{$value}" checked >', '{$title}',$r->name);
+            $out .= $this->wrap_input('<input type="radio" name="{$left_key}" value="{$value}" checked >','{$value}', '{$title}',$r->name);
+        }elseif ($r->type == 'ManyToOne' || $r->type == 'ManyToOneSelect' || $r->type == 'ManyToMany' || $r->type == 'ManyToManySelect') {
+            $out .= $this->wrap_input('<input type="checkbox" readonly name="{$left_key}" value="{$value}" checked >','{$value}', '{$title}',$r->name);
         }
         $out .= '</script>' ;
 
@@ -109,7 +115,7 @@ class RelationMvc{
 
     }
 
-    public function wrap_input($input,$title,$_tbl){
+    public function wrap_input($input,$id,$title,$_tbl){
         return '
         <label>
         <div class="input-group alert">
@@ -118,7 +124,7 @@ class RelationMvc{
             data-action="mod"
             data-target="#modal"
             data-toggle="modal"
-                data-href="?tbl='.$_tbl.'&amp;ajax=form" >
+                data-href="?tbl='.$_tbl.'&id='.$id.'&ajax=form" >
                 <i class="fa fa-eye"></i>
             </div>
             <div class="input-group-addon input-group-addon-clean"> '.$title.'</div>

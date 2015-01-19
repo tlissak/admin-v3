@@ -109,6 +109,7 @@ class Config{
             ->FormControl('textarea',"ga_key",'GA Key')
             ->FormControl('html','<a href="https://console.developers.google.com/project/ABC/apiui/credential?authuser=0" class="btn btn-danger" target="_blank">Generate</a>',"Generate GA Key")
             ->FormControl('check','valid','valid')
+            ->Attr('icon','glyphicon glyphicon-cog')
             ->Attr('title',"Config Users");
 
         Hook::Add('js','<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>');
@@ -125,9 +126,7 @@ class Config{
             ->FormControl('text','ip','ip')
             ->FormControl('date','date_time','date_time')
             ->FormControl('text','user_pass','user $ pass')
-
-
-
+            ->Attr('icon','glyphicon glyphicon-cog')
             ->Attr('title',"Config Attamps Ban");
 
 
@@ -135,6 +134,7 @@ class Config{
             ->Relation('config_users',array('type'=>'Simple','tbl'=>'config_users','left_key'=>'id_config_users'))
             ->FormControl('date','date_time','date_time',array("extends"=>' data-format="yyyy-MM-dd hh:mm:ss" '))
             ->FormControl('textarea',"event",'event')
+            ->Attr('icon','glyphicon glyphicon-cog')
             ->Attr('title',"Config Log")
             ->Attr('sort_name','date_time')
             ->Attr('sort_order','DESC')

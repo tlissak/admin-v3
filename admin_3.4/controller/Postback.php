@@ -199,8 +199,8 @@ class Postback{
         $sql = $this->db->build('INSERT',$this->name,$this->form->data_posted) ;
         $this->sql[] = $sql ;
 
-        if (! $this->VIRTUAL_MODE)
-            $this->_id = $this->db->query($sql ) ;
+        $this->_id = (! $this->VIRTUAL_MODE) ? $this->db->query($sql ) : -1 ;
+
         if ($this->_id ){
             Config::Log(1,'ADD '.$this->name.' '.$this->_id) ;
             $this->addRelations() ;
@@ -219,8 +219,7 @@ class Postback{
         $sql = $this->db->build('DUPLICATE',$this->name,$data,$this->_id) ;
         $this->sql[] = $sql ;
 
-        if (! $this->VIRTUAL_MODE)
-            $this->_id = $this->db->query($sql ) ;
+        $this->_id = (! $this->VIRTUAL_MODE) ? $this->db->query($sql ) : -1 ;
 
         if ($this->_id ){
             $this->addRelations( true ) ;
@@ -234,7 +233,7 @@ class Postback{
     public function Edit(){
         Config::Log(1,'EDIT '.$this->name.' '.$this->_id) ;
         $this->form->initPostData() ;
-
+        //p($this->form->data_posted);
         $sql = $this->db->build('UPDATE',$this->name,$this->form->data_posted,$this->_id );
         $this->sql[] = $sql ;
 

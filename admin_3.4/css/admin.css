@@ -141,7 +141,11 @@ h3.panel-title a{  border-left: #EEE 1px solid; }
 th {    border-radius:2px;}
 .panel-relationlist .table tr{    cursor: pointer;}
 .fixed-table-container{ clear: none;}
-.fixed-table-toolbar .columns{ margin:15px 20px 0; }
+
+.fixed-table-pagination .pagination-detail .pagination-info{ width: 50px;}
+.fixed-table-toolbar{ clear: none;}
+.fixed-table-toolbar .columns{ margin:10px 20px 0 0; }
+.fixed-table-toolbar .search{ display: inline-block; vertical-align: top;}
 .fixed-table-pagination ul.pagination{ margin:5px 0;}
 .fixed-table-pagination .pagination a {    padding:4px 8px;}
 
@@ -157,7 +161,7 @@ th {    border-radius:2px;}
 .input-group-addon-clean{ background: #FFF; white-space: normal; }
 button.save{ background: none; height: 50px; border: none; padding: 15px; display: block; cursor: pointer; width: 100%; text-align: left; }
 
-/* Checkbox Radio */
+/* Checkbox Radio
 .cbr { position: relative; vertical-align: top;height: 30px;    width: 30px;}
 .cbr input{      opacity: 0;    position:absolute ; top: 0; left: 0; margin: 0; display: block;    vertical-align: bottom;    cursor: pointer;
     height: 30px;    width: 30px;    z-index:3;}
@@ -166,6 +170,23 @@ button.save{ background: none; height: 50px; border: none; padding: 15px; displa
     padding: 2px;    margin-right: 10px;    text-align: center; line-height: 24px;  }
 .cbr input[type='radio'] + i {border-radius: 50%;}
 .cbr input:checked + i {    background: #337ab7;    color: #fff; visibility:visible ;}
+*/
+
+/* Checkbox Radio */
+.cbr { position: relative; vertical-align: top;height: 30px;    width: 30px;}
+.cbr input{      opacity: 0;    position:relative ; top: 0; left: 0; margin: 0; display:inline-block;    vertical-align: bottom;  cursor: pointer;
+    height: 30px;    width: 30px;    z-index:3; }
+.cbr i {    display: inline-block; color:#FFF;    vertical-align: middle;
+    height: 30px;    width: 30px;    z-index:2;  position: relative;    z-index: 2; background: #FFF;border: 1px solid #ddd; border-radius: 3px;
+    padding: 2px;      text-align: center; line-height: 24px; top: 0; left: -30px;margin-left: -3px;  }
+.cbr input[type='radio'] + i {border-radius: 50% 0 0 50%;}
+.cbr input[type='radio']+i+input[type='radio']+i{border-radius: 0 50% 50% 0; }
+
+.cbr input:checked + i {    background: #337ab7;    color: #fff; visibility:visible ;}
+.cbr input[type='radio']+i+input[type='radio']{ margin-left: -32px; }
+.cbr input[type='radio'] + i + input[type='radio']:checked + i { background: #838485; }
+
+
 
 /* TinyMCE Editor */
 .mce-panel{ background: #FFF !important; border-color: #ccc !important; border-radius: 2px;}
@@ -180,6 +201,7 @@ button.save{ background: none; height: 50px; border: none; padding: 15px; displa
 .scrolltop{ border: #DDD 1px solid; border-radius: 4px; background: #FFF; color: #CCC;  height: 38px; width: 38px; line-height: 38px; text-align: center; font-size: 18px; cursor: pointer; bottom: 0%; right: 2%; position: fixed; display: none; z-index: 999; }
 .scrolled .scrolltop{ display: block;}
 
+.fixed-table-header{ width: 100%;}
 
 .panel-compact .pagination-detail{    float: left;}
 .panel-compact .pagination{  float: right;}

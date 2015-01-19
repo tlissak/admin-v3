@@ -84,8 +84,8 @@ class FormMvc
         $out = "";
 
         if($label){
-            $out .= '<div class="form-group"><label class="col-sm-4 control-label" for="fld_' . ($type == 'html' ? '' : $fld) . '">' . $label . ' :</label>' . NL;
-            $out .= '<div class="input-group col-sm-8">' .NL;
+            $out .= '<div class="form-group"><label class="control-label col-md-4 col-lg-2" for="fld_' . ($type == 'html' ? '' : $fld) . '">' . $label . ' :</label>' . NL;
+            $out .= '<div class="input-group col-md-8 col-lg-10">' .NL;
         }
 
         if ($type == 'html'){
@@ -162,9 +162,13 @@ class FormMvc
             $out .= '<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>';
             $out .= '<input type="text" name="' . $fld . '" id="fld_' . $fld . '" value="' . $value . '" class="form-control" data-type="password" data-limit="50" ' . $extends . ' />';
         }
-        if ($type == 'checkbox' || $type == 'check') {
-            $out .= '<span class="cbr"><input type="checkbox" name="' . $fld . '" id="fld_' . $fld . '" value="1"  ' . (($value) ? ' checked="checked" ' : 'checked="checked"') ;
-            $out .= ' ' . $extends . ' /><i class="fa fa-check"></i></span>' ;
+        if ($type == 'checkbox' || $type == 'check' || $type == 'radio') {
+            //$out .= '<span class="cbr"><input type="checkbox" name="' . $fld . '" id="fld_' . $fld . '" value="1"  ' . (($value) ? ' checked="checked" ' : ' ') ;
+            //$out .= ' ' . $extends . ' /><i class="fa fa-check"></i></span>' ;
+            $out .= '<span class="cbr">';
+            $out .= '<input type="radio" id="fld_' . $fld . '" ' . $extends . ' name="' . $fld . '" value="1" '.(($value) ? ' checked="checked" ' : ' ').'><i class="fa fa-check"></i>';
+            $out .= '<input type="radio" id="fld_' . $fld . '" ' . $extends . '  name="' . $fld . '" value="0" '.(($value) ? ' ' : ' checked="checked" ').'><i class="fa fa-minus"></i>';
+            $out .= '</span>';
         }
         if ($type == 'textarea') {
             $out .= '<span class="input-group-addon"><i class="fa fa-paragraph"></i></span>';

@@ -48,11 +48,17 @@ class Relation {
         $this->type = $data['type'] ;
         $this->left_key = $data['left_key'] ;
 
+        if ( $this->type == 'ManyToOne' ){
+            $this->view_type = 'CHECKBOX';
+        }
+        if ($this->type == 'ManyToOneByKey' ){
+
+        }
 
         if ($this->type == 'Simple' || $this->type == 'InnerSimple') {
             $this->view_type = 'RADIO';
         }
-        if ($this->type == 'ManyToMany' || $this->type == 'ManyToOneByKey' || $this->type == 'ManyToManySelect') {
+        if ($this->type == 'ManyToMany'  || $this->type == 'ManyToManySelect') {
             $this->view_type = 'CHECKBOX';
 
             if (!isset($data['by_tbl'])){
@@ -64,11 +70,6 @@ class Relation {
 
             $this->right_key    = isset($data['right_key']) ? $data['right_key'] : null ;
             $this->by_tbl       = isset($data['by_tbl']) ? $data['by_tbl'] : null ;
-        }
-        if ($this->type == 'ManyToOne') {
-            p('ManyToOne type not implemented yet');
-            p('See RelationMvc GetState and GetTabsCont if need listing ');
-            die ;
         }
 
     }

@@ -1,6 +1,8 @@
 var version = "9.8.1";
 var active_contextmenu = false;
 var copy_count=0;
+window.w_console = 0 ;
+
 $(document).ready(function(){
 	// Right click menu
     if (active_contextmenu) {
@@ -356,63 +358,63 @@ $(document).ready(function(){
     });
 
     $('body').on('keypress',function(e){
-	var c = String.fromCharCode(e.which);
-	if (c=="'" || c=='"' || c=="\\" || c=='/') {
-	    return false;
-	}
+		var c = String.fromCharCode(e.which);
+		if (c=="'" || c=='"' || c=="\\" || c=='/') {
+			return false;
+		}
     });
 
     $('ul.grid').on('click','.rename-file',function(){
-	var _this = $(this);
+		var _this = $(this);
 
-	var file_container=_this.parent().parent().parent();
-	var file_title=file_container.find('h4');
-	var old_name=$.trim(file_title.text());
-	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
-	    if (name !== null){
-		name=fix_filename(name);
-		if (name!=old_name) {
-		    execute_action('rename_file',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_file_rename');
-		}
-	    }
-	},old_name);
+		var file_container=_this.parent().parent().parent();
+		var file_title=file_container.find('h4');
+		var old_name=$.trim(file_title.text());
+		bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
+			if (name !== null){
+			name=fix_filename(name);
+			if (name!=old_name) {
+				execute_action('rename_file',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_file_rename');
+			}
+			}
+		},old_name);
     });
 
     $('ul.grid').on('click','.rename-folder',function(){
-	var _this = $(this);
+		var _this = $(this);
 
-	var file_container=_this.parent().parent().parent();
-	var file_title=file_container.find('h4');
-	var old_name=$.trim(file_title.text());
-	bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
-	    if (name !== null){
-		name=fix_filename(name).replace('.','');
-		if (name!=old_name) {
-		    execute_action('rename_folder',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_folder_rename');
-		}
-	    }
-	},old_name);
+		var file_container=_this.parent().parent().parent();
+		var file_title=file_container.find('h4');
+		var old_name=$.trim(file_title.text());
+		bootbox.prompt($('#rename').val(),$('#cancel').val(),$('#ok').val(), function(name) {
+			if (name !== null){
+			name=fix_filename(name).replace('.','');
+			if (name!=old_name) {
+				execute_action('rename_folder',_this.attr('data-path'),_this.attr('data-thumb'),name,file_container,'apply_folder_rename');
+			}
+			}
+		},old_name);
     });
 
     $('ul.grid').on('click','.delete-file',function(){
-	var _this = $(this);
-	bootbox.confirm(_this.attr('data-confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
-	    if (result==true) {
-		execute_action('delete_file',_this.attr('data-path'),_this.attr('data-thumb'),'','','');
-		_this.parent().parent().parent().parent().remove();
-	    }
-	});
+		var _this = $(this);
+		bootbox.confirm(_this.attr('data-confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
+			if (result==true) {
+			execute_action('delete_file',_this.attr('data-path'),_this.attr('data-thumb'),'','','');
+			_this.parent().parent().parent().parent().remove();
+			}
+		});
     });
 
     $('ul.grid').on('click','.delete-folder',function(){
-	var _this = $(this);
+		var _this = $(this);
 
-	bootbox.confirm(_this.attr('data-confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
-	    if (result==true) {
-		execute_action('delete_folder',_this.attr('data-path'),_this.attr('data-thumb'),'','','');
-		_this.parent().parent().parent().remove();
-	    }
-	});
+		bootbox.confirm(_this.attr('data-confirm'),$('#cancel').val(),$('#ok').val(), function(result) {
+			if (result==true) {
+			execute_action('delete_folder',_this.attr('data-path'),_this.attr('data-thumb'),'','','');
+			_this.parent().parent().parent().remove();
+			}
+		});
     });
 
     $('.create-file-btn').on('click',function(){
@@ -420,21 +422,21 @@ $(document).ready(function(){
     });
 
     $('.new-folder').on('click',function(){
-	bootbox.prompt($('#insert_folder_name').val(),$('#cancel').val(),$('#ok').val(), function(name) {
-	    if (name !== null) {
-		name=fix_filename(name).replace('.','');
-		var folder_path=$('#sub_folder').val()+$('#fldr_value').val()+ name;
-		var folder_path_thumb=$('#cur_dir_thumb').val()+ name;
-		$.ajax({
-			  type: "POST",
-			  url: "execute.php?action=create_folder",
-			  data: {path: folder_path, path_thumb: folder_path_thumb}
-			}).done(function( msg ) {
-				setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},300);
+		bootbox.prompt($('#insert_folder_name').val(),$('#cancel').val(),$('#ok').val(), function(name) {
+			if (name !== null) {
+			name=fix_filename(name).replace('.','');
+			var folder_path=$('#sub_folder').val()+$('#fldr_value').val()+ name;
+			var folder_path_thumb=$('#cur_dir_thumb').val()+ name;
+			$.ajax({
+				  type: "POST",
+				  url: "execute.php?action=create_folder",
+				  data: {path: folder_path, path_thumb: folder_path_thumb}
+				}).done(function( msg ) {
+					setTimeout(function(){window.location.href = $('#refresh').attr('href') + '&' + new Date().getTime();},300);
 
-			});
-	    }
-	},$('#new_folder').val());
+				});
+			}
+		},$('#new_folder').val());
     });
 
     $('.view-controller button').on('click',function(){
@@ -527,16 +529,19 @@ $(document).ready(function(){
 
 	// New link handler
 	function handleFileLink($el) {
+		if (window.w_console) console.log("1",$el.attr('data-function'),$el.attr('data-file'),$el.attr('data-field_id'));
 		window[$el.attr('data-function')]($el.attr('data-file'), $el.attr('data-field_id'));
 	}
 
 	$('ul.grid .link').on('click',function(){
+		if (window.w_console) console.log("2",this) ;
 		handleFileLink($(this));
 	});
 
 	$('ul.grid div.box').on('click',function(e){
 
 		var fileLink = $(this).find(".link");
+		if (window.w_console) console.log("3",this,fileLink)
 			if (fileLink.length!==0) {
 				handleFileLink(fileLink);
 		}
@@ -1048,6 +1053,7 @@ function encodeURL(url){
 }
 
 function apply(file,external){
+	if (window.w_console) console.log(8,file,external) ;
   if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
   var path = $('#cur_dir').val();
   //path = path.replace('\\', '/');
@@ -1123,9 +1129,8 @@ function apply(file,external){
 	}
 }
 
-
-
 function apply_link(file,external){
+	if (window.w_console) console.log(9,file,external) ;
   if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
@@ -1158,6 +1163,7 @@ function apply_link(file,external){
 }
 
 function apply_img(file,external){
+	if (window.w_console) console.log(10,file,external) ;
   if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
@@ -1190,6 +1196,7 @@ function apply_img(file,external){
 }
 
 function apply_video(file,external){
+	if (window.w_console) console.log(11,file,external) ;
   if ($('#popup').val()==1) var window_parent=window.opener; else var window_parent=window.parent;
   var path = $('#cur_dir').val();
   path = path.replace('\\', '/');
@@ -1222,6 +1229,7 @@ function apply_video(file,external){
 }
 
 function apply_none(file,external){
+	if (window.w_console) console.log(12,file,external) ;
 	var _this=$('li[data-name="'+file+'"]').find('.preview');
 
 	if (_this.html()!="" && _this.html()!==undefined){
@@ -1264,6 +1272,7 @@ function apply_none(file,external){
 }
 
 function apply_any(url) {
+	if (window.w_console) console.log(13,url) ;
 	if ($('#crossdomain').val()==1){
 		window.parent.postMessage({
 				sender: 'responsivefilemanager',
@@ -1400,8 +1409,7 @@ function replace_last(str,find,replace) {
 	return str.replace(re, replace);
 }
 
-function replaceDiacritics(s)
-{
+function replaceDiacritics(s){
     var s;
 
     var diacritics =[
@@ -1464,7 +1472,6 @@ function execute_action(action,file1,file2,name,container,function_name){
 	});
     }
 }
-
 
 function sortUnorderedList(ul, sortDescending,sort_field) {
   if (typeof ul == "string")
@@ -1533,14 +1540,12 @@ function sortUnorderedList(ul, sortDescending,sort_field) {
   });
 }
 
-function show_animation()
-{
+function show_animation(){
     $('#loading_container').css('display', 'block');
     $('#loading').css('opacity', '.7');
 }
 
-function hide_animation()
-{
+function hide_animation(){
     $('#loading_container').fadeOut();
 }
 

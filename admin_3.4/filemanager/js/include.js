@@ -1304,9 +1304,9 @@ function close_window() {
 	if ($('#popup').val()==1){
 		window.close();
 	}else{
-		if(typeof parent.jQuery !== "undefined" && parent.jQuery) {
+		if(typeof parent.jQuery !== "undefined" && parent.jQuery && parent.jQuery.fancybox ) {
 		  parent.jQuery.fancybox.close();
-		}else{
+		}else if (parent.$.fancybox){
 		  parent.$.fancybox.close();
 		}
 	}

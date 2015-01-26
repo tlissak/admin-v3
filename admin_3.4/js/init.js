@@ -190,7 +190,7 @@ var Callback = {
 
             $('#breadcrumb .active').text("Edit #"+ o.id);
 
-            $('.panel-mainlist .table').bootstrapTable("refresh") ;
+           // $('.panel-mainlist .table').bootstrapTable("refresh") ;
         }else{
             //reset dosent work on value="value"
             //$(".main-form").get(0).reset() ;
@@ -201,7 +201,7 @@ var Callback = {
         }
     }
     ,Message : function(cls,msg) {
-        $('html, body').animate({scrollTop:0},500);
+        //$('html, body').animate({scrollTop:0},500);
         $("#message").html('<div class="alert alert-'+cls+'" ><a href="#" class="close btn btn-default" data-dismiss="alert">&times;</a>' +
         '<div class="collapse in">'+msg+'</div>' +
         '</div>' );//prepend

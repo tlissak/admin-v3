@@ -169,6 +169,9 @@ class Postback{
         } elseif ($this->action == 'mod') {
             $out['status'] = $this->Edit() ? 203 : 503 ;
         }elseif ($this->action == 'del') {
+            if ($this->parent->protected_del) {
+                return '{"status":403,"message":"Table is protected '.$this->parent->name.'->protected_del"}';
+            }
             $out['old_id'] = $this->_id;
             $out['status'] = $this->Delete() ? 204 : 504 ;
         }
@@ -216,7 +219,7 @@ class Postback{
         $this->form->initData();
 
         $data = array_merge(array(), $this->form->data);
-        unset($data['id']) ;
+        unset($data['id']);
         $sql = $this->db->build('DUPLICATE',$this->name,$data,$this->_id) ;
         $this->sql[] = $sql ;
 

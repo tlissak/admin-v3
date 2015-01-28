@@ -77,7 +77,7 @@ class Postback{
                 $this->debug[] = 'duplicate relation value';
                 $ids_left_key = array() ;
                 if ($r->type ==  'ManyToMany' ||  $r->type ==  'ManyToManySelect'){
-                    $sql = 'SELECT `'.$r->left_key .'` AS k_id FROM `'. $r->name . '` WHERE `'.$r->right_key.'` = ' . $this->_id  ;
+                    $sql = 'SELECT `'.$r->left_key .'` AS k_id FROM `'. $r->by_tbl . '` WHERE `'.$r->right_key.'` = ' . $this->_id  ;
                     $keys = $this->db->fetch($sql);
                     foreach($keys as $k){	$ids_left_key[] = $k['k_id'] ;		}
                 }elseif ($r->type ==  'ManyToOne' ){
@@ -215,7 +215,8 @@ class Postback{
         Config::Log(1,'DUPLICATE '.$this->name.' '.$this->_id) ;
         $this->form->initData();
 
-        $data = array_filter( $this->form->data , function($kyes){ return $kyes !="id" ;},ARRAY_FILTER_USE_KEY ) ;
+        $data = array_merge(array(), $this->form->data);
+        unset($data['id']) ;
         $sql = $this->db->build('DUPLICATE',$this->name,$data,$this->_id) ;
         $this->sql[] = $sql ;
 

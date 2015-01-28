@@ -85,11 +85,9 @@ class RelationMvc{
                 }
             }
             if ($r->type == 'ManyToOneByKey') {
-
                 $current_value = isset($r->parent->Form->data[$r->right_key]) ? $r->parent->Form->data[$r->right_key] : 0;
                 $FLD = strpos($titleField , 'concat_ws') !== false ? $titleField : 'tbl.`' . $titleField . '`';
-                $sql = 'SELECT '.$FLD.' AS title_field,id AS left_key FROM `' . $r->by_tbl . '` AS tbl WHERE tbl.`' . $r->left_key . '` = ' . $current_value;
-
+                $sql = 'SELECT '.$FLD.' AS title_field,id AS left_key FROM `' . $r->name . '` AS tbl WHERE tbl.`' . $r->left_key . '` = ' . $current_value;
                 $results = $this->db->fetch($sql);
                 foreach ($results as $row) {
                     $this->filePreview($r,$row) ;

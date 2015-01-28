@@ -52,7 +52,14 @@ class Relation {
             $this->view_type = 'CHECKBOX';
         }
         if ($this->type == 'ManyToOneByKey' ){
-
+            if (!isset($data['by_tbl'])){
+                p('Relation dosent contain by_tbl value : '.$this->name);
+            }
+            if (!isset($data['right_key'])){
+                p('Relation dosent contain right_key value : '.$this->name);
+            }
+            $this->right_key    = isset($data['right_key']) ? $data['right_key'] : null ;
+            $this->by_tbl       = isset($data['by_tbl']) ? $data['by_tbl'] : null ;
         }
 
         if ($this->type == 'Simple' || $this->type == 'InnerSimple') {

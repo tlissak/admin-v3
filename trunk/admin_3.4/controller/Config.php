@@ -130,7 +130,7 @@ class Config{
             ->Attr('title',"Config Attamps Ban");
 
 
-        Loader('config_log','date_time')->View(array('date_time'=>'date_time','priority'=>'priority','id_config_users_inner'=>'id_config_user'))
+        Loader('config_log','date_time')->View(array('date_time'=>'date_time','priority'=>'priority','id_config_users_inner'=>'id_config_user','event'=>'event'))
             ->Relation('config_users',array('type'=>'Simple','tbl'=>'config_users','left_key'=>'id_config_users'))
             ->FormControl('date','date_time','date_time',array("extends"=>' data-format="yyyy-MM-dd hh:mm:ss" '))
             ->FormControl('textarea',"event",'event')

@@ -66,8 +66,8 @@ class ListingMvc{
             , 'sort-order' => $this->parent->sort_order ? $this->parent->sort_order : 'ASC'
             , 'striped' => 'true'
             , 'toggle' => "table"
-            , 'height' => $this->parent->table_height ? $this->parent->table_height : 560
-            , 'page-size'=>$this->parent->table_count ? $this->parent->table_count : 14
+            , 'height' => $this->parent->table_height ? $this->parent->table_height : 'auto'
+            , 'page-size'=>$this->parent->table_count ? $this->parent->table_count : 20
             , 'url' => '?ajax=list&tbl=' . $this->parent->name
             , 'page-number'=>1
             , 'cache' => 'false'

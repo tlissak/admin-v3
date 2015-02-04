@@ -21,7 +21,6 @@ $config = new Config();
 Hook::Action();
 
 // TODO Auth tokens , Auth protect file manager
-// TODO save in cache user state for each table sorting and view
 // TODO Add form input validator AND input chnaged should change window.changed = true
 // TODO add module - list sort editable
 // TODO Add option todo Relation selection is Require sometime
@@ -78,22 +77,18 @@ if (get('ajax') == 'list') {
         <link href="css/ionicons.min.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
 
-        <script src="bs/bootstrap.min.js"></script>
         <link href="bs/bootstrap.min.css" rel="stylesheet">
+        <script src="bs/bootstrap.min.js"></script>
 
-        <script src="bs/bootstrap-table.1.5.0.js"></script>
-        <link href="bs/bootstrap-table.1.5.0.css" rel="stylesheet">
+
+        <link href="bs/bootstrap-table.1.6.0.css" rel="stylesheet">
+        <script src="bs/bootstrap-table.1.6.0.js"></script>
+
 
         <script src="js/jquery.tableExport/jquery.base64.js"></script>
         <script src="js/jquery.tableExport/html2canvas.js"></script>
         <script src="js/jquery.tableExport/tableExport.js"></script>
         <script src="bs/bootstrap-table-export.min.js"></script>
-
-<!--
-        <link href="bs/bootstrap-editable.css" rel="stylesheet"/>
-        <script src="bs/bootstrap-editable.min.js"></script>
-        <script src="bs/bootstrap-table-editable.min.js" data-dependeds="bootstrap-editable"></script>
--->
 
         <link href="bs/bootstrap-colorpicker.css" rel="stylesheet"/>
         <script src="bs/bootstrap-colorpicker.js" ></script>
@@ -110,7 +105,7 @@ if (get('ajax') == 'list') {
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <script src="bs/locale/bootstrap-table-fr-FR.min.js"></script>
+        <script src="bs/locale/bootstrap-table-fr-FR.js"></script>
         <link href="css/admin.css" id="admin-css" rel="stylesheet">
 
         <script type="text/javascript" src="js/init.js"></script>

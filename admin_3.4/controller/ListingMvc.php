@@ -82,7 +82,7 @@ class ListingMvc{
             , 'show-toggle' => 'true'
             , 'show_export' => 'true'
             , 'side-pagination' => 'server'
-
+            , 'context' => $this->parent->name . ($this->parent->tmpRelation ? '.relation'. $this->parent->tmpRelation->view_type : '')
             // ,'click-to-select'=>'true'
         );
 
@@ -106,6 +106,7 @@ class ListingMvc{
         }
 
         foreach( $this->parent->viewFields as $key=>$title) {
+            //data-searchable
             $fields[] = '<th data-field="'.$key.'" data-sortable="true" '
                 . ($key == 'id' ? ($this->parent->show_list_id ? '' : ' data-visible="false" ') : ''  )
                 .  (($this->parent->tmpRelation) ?  '' : ' data-formatter="mainFormater" ')

@@ -19,6 +19,7 @@ class Listing{
     private $sql = array('left_joins'=>'','inner_joins'=>'','search'=>'');
 
     private $selected_db_fileds = array();
+    private $available_search_fields = array();
 
     function __construct(Loader &$p){
         $this->parent   = &$p;
@@ -37,6 +38,7 @@ class Listing{
         foreach($this->parent->viewFields as $k=>$t ){
             if (in_array($k,$this->parent->dbFields)){
                 $this->selected_db_fileds[] = '`'.$this->parent->name .'`.'.$k ;
+                $this->available_search_fields[$k] = '`'.$this->parent->name .'`.'.$k ;
             }
         }
 
@@ -46,21 +48,28 @@ class Listing{
         /* RELATION */
         foreach($this->parent->relations_instances as &$rel){
             if($rel->type == 'Simple' 	|| $rel->type == 'InnerSimple' ){
+
+                $this->available_search_fields[$rel->view_field] = $rel->field ;
+
                 $this->sql['fields']        .= ','. $rel->field_alias . NL;
                 $this->sql['left_joins']    .= ' LEFT JOIN `'. $rel->name . '` AS '.$rel->alias .' '.NL;
-                $this->sql['left_joins'] .= ' ON '.$rel->alias.'.id  = `'. $this->parent->name.'`.'.  $rel->left_key  .' '.NL;
+                $this->sql['left_joins']    .= ' ON '.$rel->alias.'.id  = `'. $this->parent->name.'`.'.  $rel->left_key  .' '.NL;
             }
         }
 
         /* FILTER */
         if (get('search')) {
             $this->sql['search'] = ' WHERE (`' . $this->parent->name . '`.id LIKE ' . Db::v2txt( intval(get('search')) . '%') .NL;
-            foreach ($this->selected_db_fileds  as $fld) {
-                $this->sql['search'] .= ' OR '.$fld. ' LIKE ' . Db::v2txt('%' . get('search') . '%').NL;
-            }
-            foreach($this->parent->relations_instances as &$rel) {
-                if ($rel->type == 'InnerSimple') {
-                    $this->sql['search'] .= ' OR ' . $rel->field . ' LIKE ' . Db::v2txt(get('search') . '%') . NL;
+            if ($searchin = get('searchin')){
+                foreach($searchin as $fld){
+                    if (isset($this->available_search_fields[$fld])) {
+                        $this->sql['search'] .= ' OR ' . $this->available_search_fields[$fld] . ' LIKE ' . Db::v2txt( get('search') . '%') . NL;
+                    }
+                }
+            }else{
+                //if module/state.js Search in plugin is disable
+                foreach($this->available_search_fields as $k=>$fld){
+                    $this->sql['search'] .= ' OR '.$fld. ' LIKE ' . Db::v2txt('%' . get('search') . '%').NL;
                 }
             }
             $this->sql['search'] .= ') ';

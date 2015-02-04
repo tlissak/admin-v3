@@ -27,6 +27,7 @@ class Loader{
 
     public $formFields = array();
     public $fileField = array();
+    public $sortField = array() ;
     public $formPanel = array();
     public $dbFields = array();
     public $viewFields = array();
@@ -170,6 +171,9 @@ class Loader{
             foreach($loader->formFields as $f){
                 if ($f['type'] == 'file'){
                     $loader->fileField[] = $f['name'] ;
+                }
+                if ($f['type'] == 'sort'){
+                    $loader->sortField[] = $f['name'] ;
                 }
             }
 

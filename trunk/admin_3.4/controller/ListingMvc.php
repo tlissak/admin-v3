@@ -107,10 +107,16 @@ class ListingMvc{
 
         foreach( $this->parent->viewFields as $key=>$title) {
             //data-searchable
-            $fields[] = '<th data-field="'.$key.'" data-sortable="true" '
-                . ($key == 'id' ? ($this->parent->show_list_id ? '' : ' data-visible="false" ') : ''  )
-                .  (($this->parent->tmpRelation) ?  '' : ' data-formatter="mainFormater" ')
-                . ' >' . $title .'</th>' ;
+            $field = '<th data-field="'.$key.'" data-sortable="true" ' ;
+            if ($key == 'id')
+                $field .= ($this->parent->show_list_id) ? '' : ' data-visible="false" ' ;
+            if (! ($this->parent->tmpRelation) )
+                $field .=' data-formatter="mainFormater" '  ;
+            if (count($this->parent->sortField) &&  in_array($key,$this->parent->sortField)) {
+                $field .= ' data-editable="true" ' ;
+            }
+            $field .= ' >' . $title .'</th>' ;
+            $fields[] = $field ;
         }
 
         if ($this->parent->tmpRelation) { //TODO : add if table ->readonly

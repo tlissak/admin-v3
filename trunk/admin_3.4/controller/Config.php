@@ -11,6 +11,9 @@ class Config{
     public static $db = null ;
     public static $db_file = 'config.sqlite' ;
 
+    /**
+     * @var Db
+     */
     public static $db_loader = null ;
 
     /**

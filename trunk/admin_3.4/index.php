@@ -22,7 +22,6 @@ Hook::Action();
 
 // TODO Auth tokens , Auth protect file manager
 // TODO Add form input validator AND input chnaged should change window.changed = true
-// TODO add module - list sort editable
 // TODO Add option todo Relation selection is Require sometime
 // TODO Add temp database to undo any changes
 // TODO FormMvc add Video type with preview

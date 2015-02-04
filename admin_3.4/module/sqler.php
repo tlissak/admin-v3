@@ -27,7 +27,6 @@ function sqler_exec(){
         if (stripos($sql, 'SELECT') !== 0 && stripos($sql, 'UPDATE') !== 0) {
             $out['error'] = 'QueryNotAllowed';
         } else {
-            global $db;
             $out['list'] = Config::$db_loader->fetch($sql);
             $out['error'] = Config::$db_loader->last_error;
         }

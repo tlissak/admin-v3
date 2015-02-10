@@ -25,6 +25,8 @@ Hook::Action();
 // TODO Add option todo Relation selection is Require sometime
 // TODO Add temp database to undo any changes
 // TODO FormMvc add Video type with preview
+// TODO fields id can duplicate when relaton popup (filemanager callback issue)
+
 
 if(get('set_form_ajax') ) {
     echo Loader::Current()->Submit();

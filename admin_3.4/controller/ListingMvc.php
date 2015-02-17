@@ -119,7 +119,7 @@ class ListingMvc{
             $fields[] = $field ;
         }
 
-        if ($this->parent->tmpRelation) { //TODO : add if table ->readonly
+        if ($this->parent->tmpRelation) {
             $fields[] = '<th data-field="operate" data-formatter="relationFormater"  class="oprate" data-halign="center" data-align="center" >-</th>';
         }
         $out =  '<table class="table" ' ;

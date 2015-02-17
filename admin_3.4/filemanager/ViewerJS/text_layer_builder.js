@@ -160,7 +160,7 @@ var TextLayerBuilder = function textLayerBuilder(options) {
       }
 
       textDiv.textContent = bidiText.str;
-      // TODO refactor text layer to use text content position
+      //  refactor text layer to use text content position
       /**
        * var arr = this.viewport.convertToViewportPoint(bidiText.x, bidiText.y);
        * textDiv.style.left = arr[0] + 'px';
@@ -202,7 +202,7 @@ var TextLayerBuilder = function textLayerBuilder(options) {
         i++;
       }
 
-      // TODO: Do proper handling here if something goes wrong.
+      //  Do proper handling here if something goes wrong.
       if (i == bidiTexts.length) {
         console.error('Could not find matching mapping');
       }

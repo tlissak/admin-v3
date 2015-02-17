@@ -33,7 +33,7 @@ _html2canvas.Util.asFloat = function(v) {
 };
 
 (function() {
-  // TODO: support all possible length values
+  // _TODO: support all possible length values
   var TEXT_SHADOW_PROPERTY = /((rgba|rgb)\([^\)]+\)(\s-?\d+px){0,})/g;
   var TEXT_SHADOW_VALUES = /(-?\d+px)|(#.+)|(rgb\(.+\))|(rgba\(.+\))/g;
   _html2canvas.Util.parseTextShadows = function (value) {
@@ -162,7 +162,7 @@ _html2canvas.Util.Bounds = function (element) {
   if (element.getBoundingClientRect){
     clientRect = element.getBoundingClientRect();
 
-    // TODO add scroll position to bounds, so no scrolling of window necessary
+    // _TODO add scroll position to bounds, so no scrolling of window necessary
     bounds.top = clientRect.top;
     bounds.bottom = clientRect.bottom || (clientRect.top + clientRect.height);
     bounds.left = clientRect.left;
@@ -174,7 +174,7 @@ _html2canvas.Util.Bounds = function (element) {
   return bounds;
 };
 
-// TODO ideally, we'd want everything to go through this function instead of Util.Bounds,
+// _TODO ideally, we'd want everything to go through this function instead of Util.Bounds,
 // but would require further work to calculate the correct positions for elements with offsetParents
 _html2canvas.Util.OffsetBounds = function (element) {
   var parent = element.offsetParent ? _html2canvas.Util.OffsetBounds(element.offsetParent) : {top: 0, left: 0};
@@ -501,10 +501,10 @@ _html2canvas.Util.Font = (function () {
   ];
 
   /*
- * TODO: Add IE10 vendor prefix (-ms) support
- * TODO: Add W3C gradient (linear-gradient) support
- * TODO: Add old Webkit -webkit-gradient(radial, ...) support
- * TODO: Maybe some RegExp optimizations are possible ;o)
+ * _TODO: Add IE10 vendor prefix (-ms) support
+ * _TODO: Add W3C gradient (linear-gradient) support
+ * _TODO: Add old Webkit -webkit-gradient(radial, ...) support
+ * _TODO: Maybe some RegExp optimizations are possible ;o)
  */
   Generate.parseGradient = function(css, bounds) {
     var gradient, i, len = reGradients.length, m1, stop, m2, m2Len, step, m3, tl,tr,br,bl;
@@ -593,7 +593,7 @@ _html2canvas.Util.Font = (function () {
         case '-webkit-gradient':
 
           gradient = {
-            type: m1[2] === 'radial' ? 'circle' : m1[2], // TODO: Add radial gradient support for older mozilla definitions
+            type: m1[2] === 'radial' ? 'circle' : m1[2], // _TODO: Add radial gradient support for older mozilla definitions
             x0: 0,
             y0: 0,
             x1: 0,
@@ -774,7 +774,7 @@ _html2canvas.Util.Font = (function () {
                 }
                 break;
 
-            // TODO: add support for "30px 40px" sizes (webkit only)
+            // _TODO: add support for "30px 40px" sizes (webkit only)
             }
           }
 
@@ -831,7 +831,7 @@ _html2canvas.Util.Font = (function () {
     canvas.width = bounds.width;
     canvas.height = bounds.height;
 
-    // TODO: add support for multi defined background gradients
+    // _TODO: add support for multi defined background gradients
     gradient = _html2canvas.Generate.parseGradient(src, bounds);
 
     if(gradient) {
@@ -1280,7 +1280,7 @@ _html2canvas.Parse = function (images, options, cb) {
     ctx.setVariable("textAlign", (align) ? "right" : "left");
 
     if (shadows.length) {
-      // TODO: support multiple text shadows
+      // _TODO: support multiple text shadows
       // apply the first text shadow
       ctx.setVariable("shadowColor", shadows[0].color);
       ctx.setVariable("shadowOffsetX", shadows[0].offsetX);
@@ -1297,14 +1297,14 @@ _html2canvas.Parse = function (images, options, cb) {
     switch(text_decoration) {
       case "underline":
         // Draws a line at the baseline of the font
-        // TODO As some browsers display the line as more than 1px if the font-size is big, need to take that into account both in position and size
+        // _TODO As some browsers display the line as more than 1px if the font-size is big, need to take that into account both in position and size
         renderRect(ctx, bounds.left, Math.round(bounds.top + metrics.baseline + metrics.lineWidth), bounds.width, 1, color);
         break;
       case "overline":
         renderRect(ctx, bounds.left, Math.round(bounds.top), bounds.width, 1, color);
         break;
       case "line-through":
-        // TODO try and find exact position for line-through
+        // _TODO try and find exact position for line-through
         renderRect(ctx, bounds.left, Math.ceil(bounds.top + metrics.middle + metrics.lineWidth), bounds.width, 1, color);
         break;
     }
@@ -2088,7 +2088,7 @@ _html2canvas.Parse = function (images, options, cb) {
 
       image = loadImage(key);
 
-      // TODO add support for background-origin
+      // _TODO add support for background-origin
       if (image) {
         renderBackgroundRepeating(element, bounds, ctx, image, imageIndex);
       } else {
@@ -2156,7 +2156,7 @@ _html2canvas.Parse = function (images, options, cb) {
 
     setZ(element, stack, parentStack);
 
-    // TODO correct overflow for absolute content residing under a static position
+    // _TODO correct overflow for absolute content residing under a static position
     if (options.useOverflow === true && /(hidden|scroll|auto)/.test(getCSS(element, "overflow")) === true && /(BODY)/i.test(element.nodeName) === false){
       stack.clip = (stack.clip) ? clipBounds(stack.clip, bounds) : bounds;
     }
@@ -2225,8 +2225,8 @@ _html2canvas.Parse = function (images, options, cb) {
         }
         break;
       case "INPUT":
-        // TODO add all relevant type's, i.e. HTML5 new stuff
-        // todo add support for placeholder attribute for browsers which support it
+        // _TODO add all relevant type's, i.e. HTML5 new stuff
+        // _todo add support for placeholder attribute for browsers which support it
         if (/^(text|url|email|submit|button|reset)$/.test(element.type) && (element.value || element.placeholder || "").length > 0){
           renderFormValue(element, bounds, stack);
         }
@@ -2349,7 +2349,7 @@ _html2canvas.Preload = function( options ) {
     }
   }
 
-  // TODO modify proxy to serve images with CORS enabled, where available
+  // _TODO modify proxy to serve images with CORS enabled, where available
   function proxyGetImage(url, img, imageObj){
     var callback_name,
     scriptUrl = options.proxy,

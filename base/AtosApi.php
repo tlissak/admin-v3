@@ -60,7 +60,7 @@ class AtosApi{
 		$this->data[] = 'NO_RESPONSE_PAGE' ; //$this->FORCE_RETURN
 		
 		$this->params = $params;
-		$this->n_payment($AMOUNT); // TODO:
+		$this->n_payment($AMOUNT);
 		$this->params['data'] = implode(';', $this->data);
 	}
 		

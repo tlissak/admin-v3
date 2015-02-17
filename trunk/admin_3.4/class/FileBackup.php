@@ -7,7 +7,6 @@ class FileBackup{
 	private $base ;
 	private $root ;
 
-	//TODO verify empty folders
 	function __construct($path, $zfile){		
 		$this->ziph = new ZipArchive();		
 		if(is_file($zfile)) {

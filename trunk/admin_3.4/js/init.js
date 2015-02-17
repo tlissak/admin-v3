@@ -31,7 +31,6 @@ function responsive_filemanager_callback(field_id){
     if (url.indexOf("/photos/") === 0) {
         f.val( url.replace("/photos/",''))
     } ;
-    //TODO : Add image preview
     $('#ModalFileManager').modal('hide');
 }
 

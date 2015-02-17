@@ -84,7 +84,7 @@ function mainFormater(value,row){
 }
 function relationFormater(value,row){
     return ([
-        '<a class="edit" data-action="mod" data-target="#modal"  data-toggle="modal" '
+        '<a class="edit" data-action="mod" data-target="#modal2"  data-toggle="modal" '
         ,'data-href="?tbl='+row._tbl+'&amp;ajax=form&id='+row.id+'"  href="#tbl='+row._tbl+'&amp;ajax=form&id='+row.id+'" title="Edit">',
         '<i class="glyphicon glyphicon-edit"></i></a>',
         ' &nbsp; ',
@@ -113,7 +113,7 @@ $(document).ready(function(){
 
     $(document).on('click','.state-cont .close', function(e) {   window.changed = true;   });
 
-    $("#modal").on('show.bs.modal', function (e) {
+    $(".modal-window").on('show.bs.modal', function (e) {
         $("form", this).data('context', $(e.relatedTarget).closest('.tab-pane').find('.panel-relationlist .table[data-left-key]'))
             .attr("action", $(e.relatedTarget).data('href') + "&action="+ $(e.relatedTarget).data('action') ) ;
         $.ajax($(e.relatedTarget).data('href'), {
@@ -157,7 +157,7 @@ $(document).ready(function(){
         return false;
     })
 
-    $('#modal form').on("submit",function(e) {
+    $('.modal-window form').on("submit",function(e) {
         e.preventDefault() ;
         var context = $(this).data('context') ;
         $.ajax($(this).attr('action') +'&set_form_ajax=1' ,{type:'POST' ,data:$(this).serialize(),success:function(s){
@@ -267,7 +267,11 @@ var Callback = {
                 this.Message('success','Relation Object add successfuly') ;
                 State.Add(context,o.row);
             }
-            $("#modal").modal('hide') ;
+            if ($("#modal2").hasClass('in')){ //.data('bs.modal').isShown
+                $("#modal2").modal('hide') ;
+            }else{
+                $("#modal").modal('hide') ;
+            }
             context.bootstrapTable("refresh") ;
         } else {
             this.Message('warning', 'Relation object saved with error #' + o.status + ' details : ' + o.message) ;
@@ -368,6 +372,3 @@ var State ={
 
 
 }
-
-
-//var data = $(this).serializeArray() ;        $(this).find('.cbr input:checkbox:not(:checked)').each(function() { data.push({'name':$(this).attr('name'),'value':0})    });

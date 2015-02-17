@@ -52,7 +52,7 @@ if (get('ajax') == 'form'){
         <?= Loader::Current()->FormMvc->GetPanels(); ?>
     </div>
 
-    <?= Loader::Current()->RelationMvc->GetTabsCont(); ?>
+    <?= Loader::Current()->RelationMvc->GetTabsCont(1); ?>
 
 </div>
 <?
@@ -276,7 +276,8 @@ echo Hook::Js();
 
 
 
-<div class="modal fade " id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="modal fade modal-window" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form method="post">
@@ -290,6 +291,22 @@ echo Hook::Js();
         </div>
     </div>
 </div>
+
+<div class="modal fade modal-window" id="modal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    <input type="submit" class="btn btn-primary" value="Envoyer ma demande" name="contactSubmit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade " id="alert" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

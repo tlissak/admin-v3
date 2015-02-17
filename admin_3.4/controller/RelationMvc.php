@@ -133,7 +133,7 @@ class RelationMvc{
         </label>' ;
     }
 
-    public function GetTabsCont(){
+    public function GetTabsCont($ajax=false){
 
         $tabs_cont =array() ;
 
@@ -156,7 +156,7 @@ class RelationMvc{
 
             $tabs_cont[] = '<div class="tab-pane" id="tab-relation-'.$r->id_html.'">' ;
             $tabs_cont[] =  $this->parent->PanelMvc->RenderPanel('listing-'.$r->id_html, $cont  ,'relationlist'
-                ,$r->RelatedTable->title.' R list ',$r->RelatedTable->icon ,'<a data-toggle="modal" data-target="#modal" class="pull-right btn add-new" data-href="?tbl='.$r->name.'&ajax=form" data-action="add"><i class="icon ion-plus"></i></a>') ;
+                ,$r->RelatedTable->title.' R list ',$r->RelatedTable->icon ,'<a data-toggle="modal" data-target="#modal'.($ajax ? 2 : '').'" class="pull-right btn add-new" data-href="?tbl='.$r->name.'&ajax=form" data-action="add"><i class="icon ion-plus"></i></a>') ;
             $tabs_cont[] = '</div>';
 
         }

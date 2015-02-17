@@ -154,12 +154,12 @@ class AtosApi{
 			'datetime'=> date('Y-m-d h:m:s'),
 			'return_type'=>$return_type
 		);			
-		foreach ($vars as $k=>$v){
+		foreach ($vals as $k=>$v){
 			$log .= "\n\r<br />" .  $k .' : '. $v ;	
 		}
 		
 		try{
-			$sql = SQL::build('INSERT','transaction',$vals) ;
+			$sql = $db->build('INSERT','transaction',$vals) ;
 			$db->query( $sql );
 		}catch(Exception $e){
 			mail(ATOS_LOG_EMAIL,'Log paiement glasman ['.$return_type.']',$log . ' ' . $e->getMessage() ,_EMAIL_HEADER_);

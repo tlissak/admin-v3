@@ -9,6 +9,12 @@ class Db{
 	public $pdo_dsn  ;
 	public $columns = array();
 
+	/**
+	 * @param $p_dsn
+	 * @param $p_type
+	 * @param string $p_user
+	 * @param string $p_pass
+	 */
 	function __construct($p_dsn , $p_type  ,$p_user="",$p_pass=""){
 		$this->pdo_type 	= $p_type;
 		$this->pdo_dsn 		= $p_dsn;
@@ -122,15 +128,20 @@ class Db{
 	static function strpos_arr($haystack, $needle) {	if(!is_array($needle)) $needle = array($needle);
 		foreach($needle as $what) { 	if(($pos = strpos($haystack, $what))!==false) return $pos;}	return -1;
 	}
+
+	public $types = array() ;
+
 	function build($type,$tbl,$pairs  = array(),$id=0) {
 		$types_int = array('BOOLEAN' ,'BIT' ,'INTEGER','FLOAT','NUMERIC' ,'REAL','DOUBLE','DECIMAL') ;
 		$sql_pairs 		= array() ;
 		$sql_values		= array() ;
 		$pairs_txt 		= array() ;
 		$pairs_int 		= array() ;
-		$types 			= $this->ctypes($tbl );
+		if (!isset($this->types[$tbl])) {
+			$this->types[$tbl] = $this->ctypes($tbl);
+		}
 		foreach($pairs as $key=>$val){
-			if(self::strpos_arr( $types[$key] , $types_int ) == 0){
+			if(self::strpos_arr( $this->types[$tbl][$key] , $types_int ) == 0){
 				$pairs_int[$key] = $val ;
 			}else{
 				$pairs_txt[$key] = $val ;

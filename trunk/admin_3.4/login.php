@@ -21,7 +21,7 @@ $config = new Config(true);
     <style>
         @import url("//fonts.googleapis.com/css?family=Ubuntu+Condensed");
         html , html > body{ height: 100%; font-family: 'Ubuntu Condensed'}
-        body{background:#a7cfdf;background:-moz-linear-gradient(top,#a7cfdf 0,#23538a 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#a7cfdf),color-stop(100%,#23538a));background:-webkit-linear-gradient(top,#a7cfdf 0,#23538a 100%);background:-o-linear-gradient(top,#a7cfdf 0,#23538a 100%);background:-ms-linear-gradient(top,#a7cfdf 0,#23538a 100%);background:linear-gradient(to bottom,#a7cfdf 0,#23538a 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#a7cfdf', endColorstr='#23538a', GradientType=0)}
+        body{background:#a7cfdf;background:#333333}
         #loginbox{            margin: 50px auto 50px;            max-width: 400px;        }
         #loginbox > .panel{ margin-bottom: 0;            background-color: #f8f8f8;            border-color: #d2d2d2;            border-radius: 5px;            border-width: 5px;           box-shadow: 0 1px 0 #cfcfcf;            padding: 10px;            }
         footer,header{ color:#FFF; text-align: center; margin: 10px 0;   }

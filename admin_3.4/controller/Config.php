@@ -2,7 +2,7 @@
 
 class Config{
 
-    public static $version = '3.4.1' ;
+    public static $version = '3.4.2' ;
 
     private static $IV = 'IvCrypt34' ;
     /**

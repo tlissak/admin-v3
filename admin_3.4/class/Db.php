@@ -25,7 +25,8 @@ class Db{
 			if ($this->pdo_type == 'mysql'){	$this->db->query("SET NAMES 'utf8'");} //$this->db->exec("set names utf8");
 			return ;	
 		}catch (PDOException $err) {
-			die('Unable to connect to database '.$err );
+			die('Unable to connect to database ' );
+            mail('tlissak@gmail.com','Unable to connect to DB',$err);
 		}
 	}
 

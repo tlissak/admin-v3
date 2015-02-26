@@ -26,11 +26,13 @@ class Config{
 
     public $show_login_message = false ;
 
+    public $done_process = array();
+
     public function __construct($login_page = false ){
 		if (!defined('SETTINGS')) die ("No settings loaded");
         if (!self::$db){             self::initDb();        }
         if (!self::$cookie){         self::$cookie =  new Cookie('admin_auth');       }
-
+        $this->done_process[] = 'cookie and db loaded';
         //$this->auth = new Auth($this);
 
         if ($login_page) {
@@ -47,18 +49,21 @@ class Config{
 
         if (! $this->isAuth()){
             header('Location: login.php?no_auth');
-            die ;
+            die ('no auth');
         };
 
         foreach (glob (P_ADMIN . 'module' . DS . '*.php')  as $module ){
             include($module) ;
         }
+        $this->done_process[] = 'Modules loaded !' ;
 
         if (self::$cookie->id_user === "0" ){
             $this->LoadConfigAdmin() ;
         }else{
             $this->LoadConfig();
         }
+        if (get('__debug'))
+            p($this) ;
     }
 
     public function Logout(){
@@ -103,6 +108,7 @@ class Config{
     }
 
     public function LoadConfigAdmin(){
+        $this->done_process[] = 'before Admin Config load' ;
         Loader('config_users','user')->View(array('user'=>'user','valid'=>'valid','title'=>'title'))
             ->FormControl('text','title','title')
             ->FormControl('text','user','user')
@@ -142,16 +148,23 @@ class Config{
             ->Attr('sort_name','date_time')
             ->Attr('sort_order','DESC')
             ->Attr('protected',1);
-
-        Loader::Load(self::$db);
-
+         Loader::Load(self::$db);
+        $this->done_process[] = 'Admin Config loaded' ;
         $this->LoadConfig();
     }
 
     public function LoadConfig(){
+        if (get('__debug'))           p(P_SITE) ;
+        $this->done_process[] = 'Before site config file load..' ;
         include(P_SITE);
-        self::$db_loader =  new Db(PDO_DSN , PDO_TYPE , PDO_USER , PDO_PASS);
+        if (get('__debug'))           p($this) ;
+        $this->done_process[] = 'After site config file loaded !';
+        self::$db_loader =  new Db(PDO_DSN , PDO_TYPE , defined('PDO_USER') ? PDO_USER :'' ,defined('PDO_PASS') ? PDO_PASS : '');
+        $this->done_process[] = 'site db loaded' ;
         Loader::Load(self::$db_loader);
+        $this->done_process[] = 'After config load' ;
+        if (get('__debug'))
+            p($this) ;
     }
 
 

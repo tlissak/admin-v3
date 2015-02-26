@@ -11,7 +11,11 @@ class ImageResize{
 		
 		$file =  P_PHOTO . str_replace('/',DS,$u_file );		
 		if (! is_file( $file )){		header("HTTP/1.0 404 Not Found"); die('input file not found ');	}
-		if ($dims['height'] == 0 && $dims['width'] == 0){ header("HTTP/1.0 406 Dim not set"); die('dimensions not seted ' .$_SERVER['QUERY_STRING'] . ' ' . $_SERVER['REQUEST_URI']);}
+		if ($dims['height'] == 0 && $dims['width'] == 0){
+            $this->output['path'] = $file;
+            $this->output_file();
+            return ;
+        }
 		
 		$info 								= getimagesize($file);		
 		$this->input['path']			= $file ;
@@ -69,13 +73,18 @@ class ImageResize{
 			imagedestroy($this->output['file']) ;	
 		}
 		
-		$info 						= getimagesize($this->output['path']);
-		$this->output['width']		= $info[0];
-		$this->output['height']		= $info[1];	
-		$this->output['type']		= $info[2];
-		$this->output['mime'] 		= $info['mime'] ;
-		$this->output['length']		= (string)(filesize($this->output['path'])) ;
+        $this->output_file();
+		
+	}
 
+    public function output_file(){
+
+        $info 						= getimagesize($this->output['path']);
+        $this->output['width']		= $info[0];
+        $this->output['height']		= $info[1];
+        $this->output['type']		= $info[2];
+        $this->output['mime'] 		= $info['mime'] ;
+        $this->output['length']		= (string)(filesize($this->output['path'])) ;
 
         header('X-Robots-Tag: index,archive');
         header('X-Pad: avoid browser bug');
@@ -90,15 +99,15 @@ class ImageResize{
             die();
         }
 
-		header('Accept-Ranges: bytes');
-		header('Content-Length: '.$this->output['length']);
-		header("Content-Transfer-Encoding: binary");
-		header('Content-Type:'.image_type_to_mime_type($this->output['type']));		
-		//ob_clean();flush();set_time_limit(0);
-		readfile($this->output['path']);
-		exit ;
-		
-	}
+        header('Accept-Ranges: bytes');
+        header('Content-Length: '.$this->output['length']);
+        header("Content-Transfer-Encoding: binary");
+        header('Content-Type:'.image_type_to_mime_type($this->output['type']));
+        //ob_clean();flush();set_time_limit(0);
+        readfile($this->output['path']);
+        exit ;
+    }
+
     protected function sendHTTPCacheHeaders($cache_file_name, $check_request = false)  {
         $mtime = @filemtime($cache_file_name);
         if($mtime > 0) {

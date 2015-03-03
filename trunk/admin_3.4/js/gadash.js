@@ -1,6 +1,9 @@
 //source : https://ga-dev-tools.appspot.com/embed-api/
 
 (function(){
+
+    return ;
+
     var panels = [
         {
             html  : '<div class="alert"><div id="embed-api-auth-container" ></div></div><div id="view-selector-container"></div>'
@@ -32,6 +35,8 @@
         }
     ] ;
 
+
+
     for (var i=0 ; i< panels.length;i++){
         var p = panels[i] ;
 
@@ -45,60 +50,60 @@
 
     }
 
+    (function(w,d,s,g,js,fs){
+        g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
+        js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
+        js.src='https://apis.google.com/js/platform.js';
+        fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
+    }(window,document,'script'));
+
+    gapi.analytics.ready(function() {
+
+        // query editor :  https://ga-dev-tools.appspot.com/explorer/
+        /* for best keywords : ga:searchKeyword  , ga:sessions , -ga:sessions on -yearAgo*/
+        if (!GA_KEY) return;
+        gapi.analytics.auth.authorize({
+            container: 'embed-api-auth-container',
+            clientid: GA_KEY
+        });
+        var viewSelector = new gapi.analytics.ViewSelector({container: 'view-selector-container'});
+        viewSelector.execute();
+
+        var dataChart1 = new gapi.analytics.googleCharts.DataChart({
+            query: {metrics: 'ga:sessions',  dimensions: 'ga:country','start-date': '90daysAgo','end-date': 'yesterday','max-results': 8, sort: '-ga:sessions'},
+            chart: {container: 'chart-1-container',type: 'PIE',options: {width: '100%'}}
+        });
+
+        var dataChart4 = new gapi.analytics.googleCharts.DataChart({
+            query: {metrics: 'ga:sessions',dimensions: 'ga:date','start-date': '30daysAgo','end-date': 'yesterday'},
+            chart: {container: 'chart-2-container',type: 'LINE',options: {width: '100%'}}
+        });
+        var dataChart2 = new gapi.analytics.googleCharts.DataChart({
+            query: {metrics: 'ga:pageviews',dimensions: 'ga:date','start-date': '30daysAgo','end-date': 'yesterday'},
+            chart: {container: 'chart-3-container',type: 'LINE',options: {width: '100%'}}
+        });
+        var dataChart3 = new gapi.analytics.googleCharts.DataChart({
+            query: {  metrics: 'ga:visitors', dimensions: 'ga:date',  'start-date': '90daysAgo', 'end-date': 'yesterday'  },
+            chart: {  container: 'chart-4-container',  type: 'LINE', options: {  width: '100%' } }
+        });
+        var dataChart5 = new gapi.analytics.googleCharts.DataChart({    //add comparation with another period
+            query: {metrics: 'ga:sessions',dimensions: 'ga:date','start-date': '180daysAgo','end-date': 'yesterday'},
+            chart: {container: 'chart-5-container',type: 'LINE',options: {width: '100%'}}
+        });
+        var dataChart6 = new gapi.analytics.googleCharts.DataChart({/* Search engings */
+            query: {'dimensions': 'ga:source','metrics': 'ga:organicSearches','sort': '-ga:organicSearches','max-results': '10'},
+            chart: {type: 'TABLE',container: 'chart-6-container',options: {width: '100%'}}
+        });
+
+        viewSelector.on('change', function(ids) {
+            dataChart1.set({query: {ids: ids}}).execute();
+            dataChart2.set({query: {ids: ids}}).execute();
+            dataChart3.set({query: {ids: ids}}).execute();
+            dataChart4.set({query: {ids: ids}}).execute();
+            dataChart5.set({query: {ids: ids}}).execute();
+            dataChart6.set({query: {ids: ids}}).execute();
+        });
+
+    });
+
 })() ;
-
-(function(w,d,s,g,js,fs){
-    g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(f){this.q.push(f);}};
-    js=d.createElement(s);fs=d.getElementsByTagName(s)[0];
-    js.src='https://apis.google.com/js/platform.js';
-    fs.parentNode.insertBefore(js,fs);js.onload=function(){g.load('analytics');};
-}(window,document,'script'));
-
-gapi.analytics.ready(function() {
-
-    // query editor :  https://ga-dev-tools.appspot.com/explorer/
-    /* for best keywords : ga:searchKeyword  , ga:sessions , -ga:sessions on -yearAgo*/
-    if (!GA_KEY) return;
-    gapi.analytics.auth.authorize({
-        container: 'embed-api-auth-container',
-        clientid: GA_KEY
-    });
-    var viewSelector = new gapi.analytics.ViewSelector({container: 'view-selector-container'});
-    viewSelector.execute();
-
-    var dataChart1 = new gapi.analytics.googleCharts.DataChart({
-        query: {metrics: 'ga:sessions',  dimensions: 'ga:country','start-date': '90daysAgo','end-date': 'yesterday','max-results': 8, sort: '-ga:sessions'},
-        chart: {container: 'chart-1-container',type: 'PIE',options: {width: '100%'}}
-    });
-
-    var dataChart4 = new gapi.analytics.googleCharts.DataChart({
-        query: {metrics: 'ga:sessions',dimensions: 'ga:date','start-date': '30daysAgo','end-date': 'yesterday'},
-        chart: {container: 'chart-2-container',type: 'LINE',options: {width: '100%'}}
-    });
-    var dataChart2 = new gapi.analytics.googleCharts.DataChart({
-        query: {metrics: 'ga:pageviews',dimensions: 'ga:date','start-date': '30daysAgo','end-date': 'yesterday'},
-        chart: {container: 'chart-3-container',type: 'LINE',options: {width: '100%'}}
-    });
-    var dataChart3 = new gapi.analytics.googleCharts.DataChart({
-        query: {  metrics: 'ga:visitors', dimensions: 'ga:date',  'start-date': '90daysAgo', 'end-date': 'yesterday'  },
-        chart: {  container: 'chart-4-container',  type: 'LINE', options: {  width: '100%' } }
-    });
-    var dataChart5 = new gapi.analytics.googleCharts.DataChart({    //add comparation with another period
-        query: {metrics: 'ga:sessions',dimensions: 'ga:date','start-date': '180daysAgo','end-date': 'yesterday'},
-        chart: {container: 'chart-5-container',type: 'LINE',options: {width: '100%'}}
-    });
-    var dataChart6 = new gapi.analytics.googleCharts.DataChart({/* Search engings */
-        query: {'dimensions': 'ga:source','metrics': 'ga:organicSearches','sort': '-ga:organicSearches','max-results': '10'},
-        chart: {type: 'TABLE',container: 'chart-6-container',options: {width: '100%'}}
-    });
-
-    viewSelector.on('change', function(ids) {
-        dataChart1.set({query: {ids: ids}}).execute();
-        dataChart2.set({query: {ids: ids}}).execute();
-        dataChart3.set({query: {ids: ids}}).execute();
-        dataChart4.set({query: {ids: ids}}).execute();
-        dataChart5.set({query: {ids: ids}}).execute();
-        dataChart6.set({query: {ids: ids}}).execute();
-    });
-
-});

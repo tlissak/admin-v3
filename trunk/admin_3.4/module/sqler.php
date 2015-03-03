@@ -24,7 +24,7 @@ function sqler_exec(){
     if (get('sqler_exec')) {
         $sql = trim(get('sql'));
         $out = array('sql' => $sql);
-        if (stripos($sql, 'SELECT') !== 0 && stripos($sql, 'UPDATE') !== 0) {
+        if (stripos($sql, 'SELECT') !== 0 && stripos($sql, 'UPDATE') !== 0 && stripos($sql, 'INSERT') !== 0) {
             $out['error'] = 'QueryNotAllowed';
         } else {
             $out['list'] = Config::$db_loader->fetch($sql);

@@ -48,10 +48,17 @@ class RelationMvc{
                 $row = $this->db->fetchRow($sql);
                 if (count($row)) {
                     $this->filePreview($r,$row) ;
-                    $out .= $this->wrap_input('<input type="radio" name="' . $r->left_key . '" value="' . $current_value . '" checked > '
+
+
+                   $ipt = '
+                    <input type="radio" value="0" name="'.$r->left_key .'"  ><i class="fa fa-minus"></i>
+                   <input type="radio" checked="checked" value="'.$current_value.'" name="'.$r->left_key .'" checked >
+                    ' ;
+                    //'<input type="radio" name="' . $r->left_key . '" value="' . $current_value . '" checked > '
+                    $out .= $this->wrap_input($ipt
                         , $current_value
                         , $row['title_field']
-                        , $r->name);
+                        , $r->name,false);
                 }
             }
             if ($r->type == 'ManyToMany' || $r->type == 'ManyToManySelect') {
@@ -113,9 +120,9 @@ class RelationMvc{
 
     }
 
-    public function wrap_input($input,$id,$title,$_tbl){
+    public function wrap_input($input,$id,$title,$_tbl,$close=true){
         return '
-        <label>
+        <div class="state-table">
         <div class="input-group alert">
             <div class="input-group-addon"><span class="cbr"> '.$input.'<i class="fa fa-check"></i></span></div>
             <div class="input-group-addon input-group-addon-clean state-item"
@@ -125,12 +132,14 @@ class RelationMvc{
                 data-href="?tbl='.$_tbl.'&id='.$id.'&ajax=form" >
                 <i class="fa fa-eye"></i>
             </div>
-            <div class="input-group-addon input-group-addon-clean"> '.$title.'</div>
-            <div class="input-group-addon input-group-addon-clean" >
+            <div class="input-group-addon input-group-addon-clean"> '.$title.'</div>' .
+         ( $close ?
+            '<div class="input-group-addon input-group-addon-clean" >
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" aria-hidden="true">&times;</button>
-            </div>
-        </div>
-        </label>' ;
+            </div>'
+        : ''  )
+        .'</div>
+        </div>' ;
     }
 
     public function GetTabsCont($ajax=false){

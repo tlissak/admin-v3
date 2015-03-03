@@ -133,10 +133,13 @@ h3.panel-title a{  border-left: #EEE 1px solid; }
 
 /* State */
 .panel-state .panel-body{ padding:10px 10px 0px 10px; background: #F8F8F8 }
-.state-cont .alert{ padding: 0; margin: 0;}
-.state-cont .input-group-addon{ padding: 4px 10px;}
+.panel-state .state-table{ display: inline-block;}
+.state-cont .alert{ padding: 0; margin: 0; display:table-row; min-width: 4%;}
+.state-cont .input-group-addon{ padding: 4px 10px; white-space: normal;}
+.state-cont .input-group-addon:first-child{ width: 1%;white-space:nowrap;}
 .state-cont img{ max-width: 300px;}
 .state-item{    cursor: pointer; border-right: 0;}
+
 /* BootstrapTable */
 th {    border-radius:2px;}
 .panel-relationlist .table tr{    cursor: pointer;}
